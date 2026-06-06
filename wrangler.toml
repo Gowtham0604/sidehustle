@@ -1,6 +1,12 @@
 name = "sidehustlesjob"
 compatibility_date = "2025-01-01"
 compatibility_flags = [ "nodejs_compat" ]
+workers_dev = false
+preview_urls = false
 
 [assets]
 directory = "./dist"
+
+[[kv_namespaces]]
+binding = "SESSION"
+id = "cb0e6243ffd5444fb7bba517ee7bf217"

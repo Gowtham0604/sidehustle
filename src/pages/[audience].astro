@@ -67,29 +67,29 @@ const featured = hustles.slice(0, 3);
   </nav>
 
   <!-- Hero -->
-  <section class="pt-16 pb-20 mesh-gradient" aria-labelledby="page-heading">
+  <section class="pt-12 pb-14 sm:pt-16 sm:pb-20 mesh-gradient" aria-labelledby="page-heading">
     <div class="container-page">
       <div class="max-w-2xl">
-        <p class="text-xs font-mono text-[var(--color-mute)] uppercase tracking-wider mb-4">
+        <p class="text-xs font-mono text-[var(--color-mute)] uppercase tracking-wider mb-3 sm:mb-4">
           {type === "audience" ? "By audience" : "By situation"}
         </p>
         <h1
           id="page-heading"
-          class="text-4xl md:text-5xl font-semibold text-[var(--color-ink)] tracking-[-2px] leading-[1.05] mb-4 text-balance"
+          class="text-2xl sm:text-4xl md:text-5xl font-semibold text-[var(--color-ink)] tracking-[-1.5px] sm:tracking-[-2px] leading-[1.1] mb-3 sm:mb-4 text-balance"
         >
           {meta.headline}
         </h1>
-        <p class="text-lg text-[var(--color-body)] leading-7 mb-8">
+        <p class="text-base sm:text-lg text-[var(--color-body)] leading-7 mb-6 sm:mb-8">
           {meta.description}
         </p>
-        <div class="flex items-center gap-3">
+        <div class="flex flex-wrap items-center gap-3">
           <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--color-canvas)]/80 border border-[var(--color-hairline)] text-xs font-medium text-[var(--color-body)]">
             <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-success)]" aria-hidden="true"></span>
             {hustles.length} {hustles.length === 1 ? "result" : "results"}
           </span>
           <a
             href="/#finder"
-            class="text-sm text-[var(--color-link)] hover:text-[var(--color-link-deep)] transition-colors"
+            class="text-xs sm:text-sm text-[var(--color-link)] hover:text-[var(--color-link-deep)] transition-colors"
           >
             Take the quiz instead →
           </a>
@@ -125,7 +125,7 @@ const featured = hustles.slice(0, 3);
         <!-- Grid -->
         <div
           id="hustles-grid"
-          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5"
           role="list"
           aria-label="Side hustle cards"
         >

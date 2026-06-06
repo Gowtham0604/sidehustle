@@ -62,11 +62,11 @@ const difficultyColor: Record<string, string> = {
   </nav>
 
   <!-- Hero -->
-  <section class="pt-12 pb-16 bg-[var(--color-canvas)]" aria-labelledby="hustle-heading">
+  <section class="pt-8 sm:pt-12 pb-12 sm:pb-16 bg-[var(--color-canvas)]" aria-labelledby="hustle-heading">
     <div class="container-page">
       <div class="max-w-3xl">
         <!-- Category + difficulty -->
-        <div class="flex items-center gap-2 mb-5">
+        <div class="flex items-center gap-2 mb-4 sm:mb-5">
           <span class="text-xs font-mono text-[var(--color-mute)] uppercase tracking-wider">{hustle.category}</span>
           <span aria-hidden="true" class="text-[var(--color-hairline)]">·</span>
           <span
@@ -81,25 +81,30 @@ const difficultyColor: Record<string, string> = {
 
         <h1
           id="hustle-heading"
-          class="text-3xl md:text-5xl font-semibold text-[var(--color-ink)] tracking-[-2px] leading-[1.05] mb-5 text-balance"
+          class="text-2xl sm:text-3xl md:text-5xl font-semibold text-[var(--color-ink)] tracking-[-1.5px] sm:tracking-[-2px] leading-[1.1] mb-4 sm:mb-5 text-balance"
         >
           {hustle.name}
         </h1>
-        <p class="text-lg text-[var(--color-body)] leading-7 mb-8 max-w-2xl">
+        <p class="text-base sm:text-lg text-[var(--color-body)] leading-7 mb-6 sm:mb-8 max-w-2xl">
           {hustle.description}
         </p>
 
         <!-- Quick stats -->
-        <dl class="grid grid-cols-2 sm:grid-cols-4 gap-0 rounded-[var(--radius-md)] border border-[var(--color-hairline)] overflow-hidden bg-[var(--color-canvas)] card-shadow mb-8 w-full">
+        <dl class="grid grid-cols-2 sm:grid-cols-4 gap-0 rounded-[var(--radius-md)] border border-[var(--color-hairline)] overflow-hidden bg-[var(--color-canvas)] card-shadow mb-6 sm:mb-8 w-full">
           {[
             { label: "Income", value: hustle.incomePotential },
             { label: "Startup", value: hustle.startupCost },
             { label: "First income", value: hustle.timeToFirstIncome },
             { label: "Work type", value: hustle.remote ? "Remote" : "Local" },
           ].map(({ label, value }, i) => (
-            <div class:list={["px-4 py-4", i > 0 ? "border-l border-[var(--color-hairline)] sm:border-l border-t sm:border-t-0" : ""]}>
-              <dt class="text-[10px] font-mono text-[var(--color-mute)] uppercase tracking-wider mb-1">{label}</dt>
-              <dd class="text-sm font-semibold text-[var(--color-ink)] tabular-nums">{value}</dd>
+            <div class:list={[
+              "px-3 sm:px-4 py-3 sm:py-4",
+              i === 1 ? "border-l border-[var(--color-hairline)]" : "",
+              i === 2 ? "border-t sm:border-t-0 sm:border-l border-[var(--color-hairline)]" : "",
+              i === 3 ? "border-t sm:border-t-0 border-l border-[var(--color-hairline)]" : "",
+            ]}>
+              <dt class="text-[9px] sm:text-[10px] font-mono text-[var(--color-mute)] uppercase tracking-wider mb-0.5 sm:mb-1">{label}</dt>
+              <dd class="text-xs sm:text-sm font-semibold text-[var(--color-ink)] tabular-nums">{value}</dd>
             </div>
           ))}
         </dl>
@@ -107,7 +112,7 @@ const difficultyColor: Record<string, string> = {
         <!-- CTA -->
         <a
           href="/#finder"
-          class="inline-flex items-center h-12 px-6 text-base font-medium text-[var(--color-on-primary)] bg-[var(--color-ink)] rounded-[var(--radius-pill)] hover:opacity-90 transition-opacity duration-150 focus-visible:ring-2 focus-visible:ring-[var(--color-link)]"
+          class="inline-flex items-center h-11 sm:h-12 px-5 sm:px-6 text-sm sm:text-base font-medium text-[var(--color-on-primary)] bg-[var(--color-ink)] rounded-[var(--radius-pill)] hover:opacity-90 transition-opacity duration-150 focus-visible:ring-2 focus-visible:ring-[var(--color-link)]"
         >
           Find more hustles like this →
         </a>
