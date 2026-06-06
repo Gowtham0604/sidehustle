@@ -18,13 +18,16 @@ export const INCOME_ORDER: Record<string, number> = {
 };
 
 // Maximum possible score — used to normalise to 0–100%
-// Remote(20) + Experience(25) + Budget(20) + QuickIncome(20) + Skills(30) + IncomeGoal(20) + BeginnerBonus(10) = 145
-const MAX_SCORE = 145;
+// Skills(60) + Remote(20) + Experience(25) + Budget(20) + QuickIncome(20) + IncomeGoal(20) + BeginnerBonus(10) = 175
+const MAX_SCORE = 175;
 
 // Minimum raw score a hustle must achieve to appear in results.
 // This prevents completely irrelevant hustles from showing up.
-// A hustle with no skill match and weak criteria fits should score < 25.
 const MIN_SCORE_THRESHOLD = 20;
+
+// When the user has selected skills, hustles with ZERO skill overlap are excluded entirely.
+// This ensures results always reflect the profession the user actually chose.
+const REQUIRE_SKILL_MATCH_WHEN_SKILLS_SELECTED = true;
 
 // ─── Skill synonym mapping ───────────────────────────────────────────────────
 // Each entry is [synonym, requireWordBoundary]
@@ -199,8 +202,8 @@ function termMatches(text: string, term: string, boundary: boolean): boolean {
   return re.test(text);
 }
 
-function skillsMatch(hustle: SideHustle, userSkills: string[]): { points: number; reasons: string[] } {
-  if (userSkills.length === 0) return { points: 0, reasons: [] };
+function skillsMatch(hustle: SideHustle, userSkills: string[]): { points: number; reasons: string[]; hasAnyMatch: boolean } {
+  if (userSkills.length === 0) return { points: 0, reasons: [], hasAnyMatch: false };
 
   // Build separate searchable text for skills/tags (more reliable) vs description (looser)
   const skillTagText = [
@@ -212,6 +215,7 @@ function skillsMatch(hustle: SideHustle, userSkills: string[]): { points: number
 
   let points = 0;
   const reasons: string[] = [];
+  let hasAnyMatch = false;
 
   for (const userSkill of userSkills) {
     const synonyms = SKILL_MAP[userSkill] ?? [{ term: userSkill, boundary: true }];
@@ -220,15 +224,17 @@ function skillsMatch(hustle: SideHustle, userSkills: string[]): { points: number
     const matchedInDesc = !matchedInSkillTag && synonyms.some(({ term, boundary }) => termMatches(descText, term, true)); // always boundary in desc
 
     if (matchedInSkillTag) {
-      points += 8; // stronger signal from skills/tags
+      points += 20; // primary signal — hustle directly uses this skill
+      hasAnyMatch = true;
       reasons.push(`matches your ${userSkill} skills`);
     } else if (matchedInDesc) {
-      points += 4; // weaker signal from description
+      points += 8; // secondary signal — skill mentioned in description
+      hasAnyMatch = true;
       reasons.push(`relates to your ${userSkill} skills`);
     }
   }
 
-  return { points: Math.min(points, 30), reasons };
+  return { points: Math.min(points, 60), reasons, hasAnyMatch };
 }
 
 // ─── Core scoring ────────────────────────────────────────────────────────────
@@ -332,7 +338,7 @@ export function scoreHustle(
     score += 5; // small bonus for not needing quick income (more options)
   }
 
-  // ── Skills overlap (30 pts) ──
+  // ── Skills overlap (60 pts) — primary ranking factor ──
   const { points: skillPts, reasons: skillReasons } = skillsMatch(hustle, answers.skills);
   score += skillPts;
   reasons.push(...skillReasons);
@@ -383,6 +389,8 @@ export function getScoredRecommendations(
   answers: FinderAnswer,
   limit = 10
 ): ScoredHustle[] {
+  const hasSkills = answers.skills.length > 0;
+
   return hustles
     .map((hustle) => {
       const { score, reasons } = scoreHustle(hustle, answers);
@@ -397,6 +405,9 @@ export function getScoredRecommendations(
       // Deduplicate reasons and cap at 3
       const uniqueReasons = [...new Set(reasons)].slice(0, 3);
 
+      // Track skill overlap for filtering
+      const { hasAnyMatch: hasSkillMatch } = skillsMatch(hustle, answers.skills);
+
       return {
         hustle,
         score,
@@ -404,11 +415,24 @@ export function getScoredRecommendations(
         whyMatch: uniqueReasons,
         difficulty: hustle.difficulty,
         confidence,
-      } satisfies ScoredHustle;
+        hasSkillMatch,
+      };
     })
-    .filter(({ score }) => score >= MIN_SCORE_THRESHOLD)
+    .filter(({ score, hasSkillMatch }) => {
+      // If the user selected skills, only show hustles that match at least one
+      if (REQUIRE_SKILL_MATCH_WHEN_SKILLS_SELECTED && hasSkills && !hasSkillMatch) return false;
+      return score >= MIN_SCORE_THRESHOLD;
+    })
     .sort((a, b) => b.score - a.score)
-    .slice(0, limit);
+    .slice(0, limit)
+    .map(({ hustle, score, matchPercent, whyMatch, difficulty, confidence }): ScoredHustle => ({
+      hustle,
+      score,
+      matchPercent,
+      whyMatch,
+      difficulty,
+      confidence,
+    }));
 }
 
 // Legacy compat — returns plain SideHustle[]

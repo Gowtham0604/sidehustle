@@ -89,6 +89,15 @@ const resolvedCanonical = canonical ?? siteUrl;
     <ClientRouter />
 
     <title>{title}</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EQTXMQ3157"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-EQTXMQ3157');
+    </script>
   </head>
   <!-- Hash scroll fix for Astro ClientRouter cross-page anchor navigation -->
   <script is:inline>
