@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import HustleCard from "../components/HustleCard.astro";
 import HustleFinder from "../components/HustleFinder.astro";
 import Search from "../components/Search.astro";
+import FAQ from "../components/FAQ.astro";
 import type { SideHustle } from "../types/side-hustle";
 import { homeMeta } from "../utils/seo";
 import hustleData from "../data/side-hustles.json";
@@ -23,22 +24,187 @@ const stats = [
 ];
 
 const categories = [...new Set(hustles.map((h) => h.category))].sort();
+
+// Home page JSON-LD: WebSite + WebApplication schema
+const homeJsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://sidehustlefinder.com/#website",
+      "url": "https://sidehustlefinder.com",
+      "name": "SideHustleFinder",
+      "description": "Discover 150+ side hustle ideas to make extra money from home or anywhere. Find side hustle jobs matched to your skills, schedule, and income goals.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "SideHustleFinder",
+        "url": "https://sidehustlefinder.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://sidehustlefinder.com/favicon-96x96.png"
+        }
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://sidehustlefinder.com/#browse?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://sidehustlefinder.com/#webpage",
+      "url": "https://sidehustlefinder.com",
+      "name": `Side Hustle Ideas to Make Extra Money in ${new Date().getFullYear()} | SideHustleFinder`,
+      "description": "Looking for a side hustle? Discover 150+ side hustle ideas to make extra money from home or anywhere.",
+      "isPartOf": { "@id": "https://sidehustlefinder.com/#website" },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://sidehustlefinder.com"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a side hustle?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A side hustle is any income-generating activity you do outside of your primary job or main source of income. It could be a freelance service, gig work, an online business, or a creative project — as long as it pays you. Popular examples include freelance writing, driving for Uber, delivering for DoorDash or Instacart, selling on Etsy, online tutoring, and web development."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How to start a side hustle?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Starting a side hustle comes down to four steps: (1) Pick a hustle that matches your skills, schedule, and budget. (2) Set up the minimum viable presence — a profile on Upwork, a gig on Fiverr, a DoorDash driver account, or a simple website. (3) Get your first client or first delivery — don't wait until everything is perfect. (4) Reinvest early earnings to grow. Most side hustles can be started in a single weekend."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is DoorDash a good side hustle?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "DoorDash is a solid side hustle for people who want flexible, on-demand income with zero experience required. Dashers typically earn $15–$25 per hour including tips, depending on your market and the hours you choose. It's one of the easiest gigs to start — you just need a smartphone, a valid driver's license, insurance, and a background check."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a good side hustle?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A good side hustle is one that matches your skills, fits your schedule, and meets your income goal. For high earners, freelance web development, copywriting, SEO consulting, or UX design can generate $2,000–$5,000+/month. For beginners, transcription, virtual assistance, or food delivery can get you earning within days."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What's a good side hustle for making extra money fast?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "If you need money quickly, the fastest side hustles are food delivery (DoorDash, Uber Eats, Instacart), rideshare driving (Uber, Lyft), task-based gigs (TaskRabbit), and freelance services (writing, design, data entry on Upwork or Fiverr). All can generate income within your first week."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Uber a good side hustle?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Uber is a reliable side hustle if you have a qualifying vehicle and want flexible hours. Drivers typically earn $18–$30 per hour before expenses in most US cities, with surge pricing boosting earnings during peak times. However, you bear the cost of gas, maintenance, and depreciation, which can significantly reduce net earnings."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Instacart a good side hustle?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Instacart is a good side hustle for people who like grocery shopping and want flexible hours. Shoppers earn $10–$20 per hour on average, plus tips, which can meaningfully boost income. Full-service shoppers who both shop and deliver tend to earn more than in-store-only shoppers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Instacart worth it as a side hustle?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Whether Instacart is worth it depends on your market and goals. In high-demand urban areas, experienced shoppers can earn $20–$30+/hour including tips. In smaller markets or during off-peak hours, earnings can dip to $10–$12/hour. Tips are the biggest variable — good service consistently leads to better tips."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Uber Eats a good side hustle?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Uber Eats is a popular food delivery side hustle with earnings typically between $12–$22 per hour including tips. Like DoorDash, it offers complete schedule flexibility and is easy to start. Uber Eats has the added benefit of being on the same platform as Uber rideshare, so some drivers do both to maximize their active time."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How to start a side hustle with no money?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Many of the best side hustles cost nothing to start. Freelance writing, copywriting, virtual assistance, social media management, online tutoring, transcription, and data annotation all require only a laptop and internet connection. Create a free profile on Upwork, Fiverr, or LinkedIn and offer a discounted rate for your first 2–3 clients to build reviews."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are current side hustle statistics?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "As of 2024–2025, over 44% of full-time employed Americans have a side hustle. The average side hustler earns approximately $810/month in supplemental income. Nearly 28% of Americans say their side hustle income is essential to covering monthly expenses. The gig economy employs over 59 million Americans annually."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the best side hustle?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "There's no single best side hustle — it depends on your skills, time, and income goal. Freelance web development, copywriting, and SEO consulting rank highest for hourly earning potential ($50–$150/hr). For passive income, digital products and affiliate marketing rank highest for scalability. For fastest time-to-income, food delivery and rideshare gigs win."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How to make money with a side hustle?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Making money with a side hustle follows a simple pattern: pick a hustle with demand, show up consistently, and improve over time. For service-based hustles, land your first client within 7 days using Upwork, Fiverr, or direct outreach. For gig work, complete your first shift within the week. Track your hours and earnings from day one, then look for ways to increase your rate or add a complementary income stream."
+          }
+        }
+      ]
+    }
+  ]
+});
 ---
 
-<Layout title={meta.title} description={meta.description} canonical={meta.canonical}>
+<Layout
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  jsonLd={homeJsonLd}
+  keywords="side hustle, what is a side hustle, side hustle jobs, side hustle ideas, side hustle ideas to make extra money, side hustle stack, side hustle from home, side hustle ideas from home"
+>
   <!-- ─── Hero ─────────────────────────────────────────────────────────────── -->
-  <section class="relative overflow-hidden pt-32 pb-32 md:pt-48 md:pb-40" aria-labelledby="hero-heading">
+  <section class="relative overflow-hidden pt-28 pb-20 md:pt-48 md:pb-40" aria-labelledby="hero-heading">
     <!-- Animated Glowing Background elements -->
     <div class="absolute inset-0 z-0 bg-gradient-to-br from-slate-50 via-white to-slate-100 opacity-60"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-tr from-violet-100/50 to-cyan-100/50 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-tr from-pink-100/50 to-purple-100/50 rounded-full blur-3xl pointer-events-none"></div>
 
     <div class="container-page relative z-10">
       <div class="max-w-4xl mx-auto text-center flex flex-col items-center">
         <!-- Eyebrow -->
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-slate-200 bg-white shadow-sm text-xs font-semibold text-slate-600 mb-10 transform hover:scale-105 transition-transform duration-300">
           <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-500 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-500 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-pink-500"></span>
           </span>
           {hustles.length}+ real opportunities, no fluff
         </div>
@@ -46,7 +212,7 @@ const categories = [...new Set(hustles.map((h) => h.category))].sort();
         <!-- Headline -->
         <h1
           id="hero-heading"
-          class="text-5xl md:text-7xl font-bold text-slate-900 tracking-[-0.04em] leading-[1.1] mb-8 text-balance"
+          class="text-4xl sm:text-5xl md:text-7xl font-bold text-slate-900 tracking-[-0.04em] leading-[1.1] mb-8 text-balance"
         >
           Find the best side hustle <br class="hidden md:block"/> for you.
         </h1>
@@ -78,7 +244,7 @@ const categories = [...new Set(hustles.map((h) => h.category))].sort();
   <!-- ─── Quick Stats ──────────────────────────────────────────────────────── -->
   <section class="border-y border-slate-200 bg-slate-50 relative z-10" aria-label="Site statistics">
     <div class="container-page">
-      <dl class="grid grid-cols-2 md:grid-cols-4 divide-x divide-slate-200">
+      <dl class="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 divide-x-0 md:divide-x divide-slate-200">
         {stats.map(({ label, value }) => (
           <div class="flex flex-col items-center py-10 px-4 text-center group">
             <dd class="text-4xl font-bold text-slate-800 tracking-tight tabular-nums mb-2 group-hover:scale-110 transition-transform duration-300">{value}</dd>
@@ -90,17 +256,17 @@ const categories = [...new Set(hustles.map((h) => h.category))].sort();
   </section>
 
   <!-- ─── Featured hustles ─────────────────────────────────────────────────── -->
-  <section class="py-24 md:py-32 relative" aria-labelledby="featured-heading">
+  <section class="py-16 md:py-32 relative" aria-labelledby="featured-heading">
     <!-- Subtle glow background -->
-    <div class="absolute top-1/2 left-0 w-96 h-96 bg-violet-100/50 blur-[120px] rounded-full pointer-events-none"></div>
+    <div class="absolute top-1/2 left-0 w-96 h-96 bg-pink-100/50 blur-[120px] rounded-full pointer-events-none"></div>
 
     <div class="container-page relative z-10">
       <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
         <div>
-          <p class="text-sm font-bold text-violet-600 uppercase tracking-widest mb-3">Popular picks</p>
+          <p class="text-sm font-bold text-pink-600 uppercase tracking-widest mb-3">Popular picks</p>
           <h2
             id="featured-heading"
-            class="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight text-balance"
+            class="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight text-balance"
           >
             Top side hustles right now.
           </h2>
@@ -128,14 +294,14 @@ const categories = [...new Set(hustles.map((h) => h.category))].sort();
   <HustleFinder />
 
   <!-- ─── Browse All ───────────────────────────────────────────────────────── -->
-  <section id="browse" class="py-24 md:py-32 border-t border-slate-200 bg-slate-50 relative" aria-labelledby="browse-heading">
+  <section id="browse" class="py-16 md:py-32 border-t border-slate-200 bg-slate-50 relative" aria-labelledby="browse-heading">
     <div class="container-page relative z-10">
       <!-- Header -->
       <div class="max-w-3xl mb-12">
-        <p class="text-sm font-bold text-violet-600 uppercase tracking-widest mb-3">Browse all</p>
+        <p class="text-sm font-bold text-pink-600 uppercase tracking-widest mb-3">Browse all</p>
         <h2
           id="browse-heading"
-          class="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight mb-6 text-balance"
+          class="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight mb-6 text-balance"
         >
           {hustles.length} side hustles. Find yours.
         </h2>
@@ -184,7 +350,7 @@ const categories = [...new Set(hustles.map((h) => h.category))].sort();
   </section>
 
   <!-- ─── Audience links ───────────────────────────────────────────────────── -->
-  <section class="py-24 md:py-32 relative border-t border-slate-200" aria-labelledby="audience-heading">
+  <section class="py-16 md:py-32 relative border-t border-slate-200" aria-labelledby="audience-heading">
     <div class="container-page relative z-10">
       <div class="max-w-2xl mb-14">
         <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-3">By audience</p>
@@ -211,10 +377,10 @@ const categories = [...new Set(hustles.map((h) => h.category))].sort();
         ].map(({ href, label }) => (
           <a
             href={href}
-            class="flex items-center justify-between gap-2 p-5 rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-300 group shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_4px_30px_rgba(139,92,246,0.1)] hover:-translate-y-1 backdrop-blur-md"
+            class="flex items-center justify-between gap-2 p-5 rounded-[var(--radius-lg)] border border-slate-200 bg-white hover:bg-slate-900 hover:border-slate-900 transition-all duration-300 group shadow-sm hover:shadow-[0_4px_30px_rgba(217,70,168,0.15)] hover:-translate-y-1"
           >
-            <span class="text-sm font-semibold text-[var(--color-ink)] group-hover:text-white">{label}</span>
-            <svg width="14" height="14" viewBox="0 0 12 12" fill="none" class="shrink-0 text-[var(--color-mute)] group-hover:text-[var(--color-cyan)] transition-colors transform group-hover:translate-x-1" aria-hidden="true">
+            <span class="text-sm font-semibold text-slate-700 group-hover:text-white transition-colors">{label}</span>
+            <svg width="14" height="14" viewBox="0 0 12 12" fill="none" class="shrink-0 text-slate-400 group-hover:text-pink-400 transition-colors transform group-hover:translate-x-1" aria-hidden="true">
               <path d="M2.5 6h7M6 2.5l3.5 3.5L6 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </a>
@@ -243,10 +409,10 @@ const categories = [...new Set(hustles.map((h) => h.category))].sort();
           ].map(({ href, label }) => (
             <a
               href={href}
-              class="flex items-center justify-between gap-2 p-5 rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-300 group shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_4px_30px_rgba(45,212,191,0.1)] hover:-translate-y-1 backdrop-blur-md"
+              class="flex items-center justify-between gap-2 p-5 rounded-[var(--radius-lg)] border border-slate-200 bg-white hover:bg-slate-900 hover:border-slate-900 transition-all duration-300 group shadow-sm hover:shadow-[0_4px_30px_rgba(147,51,234,0.15)] hover:-translate-y-1"
             >
-              <span class="text-sm font-semibold text-[var(--color-ink)] group-hover:text-white">{label}</span>
-              <svg width="14" height="14" viewBox="0 0 12 12" fill="none" class="shrink-0 text-[var(--color-mute)] group-hover:text-[var(--color-cyan)] transition-colors transform group-hover:translate-x-1" aria-hidden="true">
+              <span class="text-sm font-semibold text-slate-700 group-hover:text-white transition-colors">{label}</span>
+              <svg width="14" height="14" viewBox="0 0 12 12" fill="none" class="shrink-0 text-slate-400 group-hover:text-purple-400 transition-colors transform group-hover:translate-x-1" aria-hidden="true">
                 <path d="M2.5 6h7M6 2.5l3.5 3.5L6 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </a>
@@ -255,6 +421,70 @@ const categories = [...new Set(hustles.map((h) => h.category))].sort();
       </div>
     </div>
   </section>
+  <!-- ─── SEO Content ─────────────────────────────────────────────────────── -->
+  <section class="py-16 md:py-24 border-t border-slate-200 bg-white" aria-labelledby="seo-content-heading">
+    <div class="container-page">
+      <div class="max-w-4xl mx-auto prose prose-slate prose-lg">
+
+        <h2 id="seo-content-heading" class="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-6">
+          What Is a Side Hustle — And How Do You Find the Right One?
+        </h2>
+
+        <p class="text-slate-600 leading-relaxed mb-6">
+          A <strong>side hustle</strong> is any income-generating activity you pursue outside of your primary job. It might be something you do a few hours a week on weekday evenings, or a full weekend project that slowly grows into something bigger. The key difference between a side hustle and a hobby is simple: a side hustle pays you. Whether you want an extra $200 a month for bills or you're chasing $5,000 a month to eventually go full-time, there is a side hustle that fits your situation — you just have to find the right one.
+        </p>
+
+        <h3 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Side Hustle Ideas to Make Extra Money in {new Date().getFullYear()}</h3>
+
+        <p class="text-slate-600 leading-relaxed mb-6">
+          The landscape of <strong>side hustle ideas to make extra money</strong> has never been broader. Remote work technology, the creator economy, and the gig marketplace have unlocked hundreds of legitimate ways to earn on the side. Some of the most popular <strong>side hustle jobs</strong> right now include freelance writing, copywriting, virtual assistance, social media management, video editing, graphic design, online tutoring, and web development. These fields have massive demand, low startup costs, and can be started from your laptop within days.
+        </p>
+
+        <p class="text-slate-600 leading-relaxed mb-6">
+          If you have a technical background, options like <strong>freelance web development</strong>, <strong>SEO consulting</strong>, or <strong>mobile app development</strong> can yield $2,000–$5,000 or more per month. If you're a complete beginner, roles like transcription, data annotation, or print-on-demand let you earn your first dollar with zero experience and zero startup cost.
+        </p>
+
+        <h3 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Side Hustle Ideas From Home</h3>
+
+        <p class="text-slate-600 leading-relaxed mb-6">
+          The best <strong>side hustle ideas from home</strong> don't require a commute, a storefront, or a large investment. They require a laptop, an internet connection, and the willingness to put in consistent hours. Here are the top categories to consider:
+        </p>
+
+        <ul class="space-y-3 mb-6 text-slate-600">
+          <li><strong>Content &amp; Writing:</strong> Freelance writing, copywriting, and blogging are among the most accessible <strong>side hustles from home</strong>. Businesses constantly need blog posts, emails, product descriptions, and web copy — and they pay writers well for it.</li>
+          <li><strong>Tech &amp; Digital Services:</strong> Web development, UX/UI design, email marketing, and SEO consulting are high-value skills you can sell remotely. Even a couple of clients can generate meaningful monthly income.</li>
+          <li><strong>Teaching &amp; Coaching:</strong> Online tutoring and business consulting let you monetize expertise you already have. Platforms like Wyzant, Varsity Tutors, and direct Zoom sessions make this easy to launch.</li>
+          <li><strong>Creative Services:</strong> Graphic design, video editing, and podcast editing are in constant demand as every brand and creator needs visual and audio content.</li>
+          <li><strong>E-commerce:</strong> Dropshipping, print-on-demand, and Etsy selling let you run a product business entirely from home, with no inventory in most cases.</li>
+        </ul>
+
+        <h3 class="text-2xl font-bold text-slate-900 mt-10 mb-4">What Is the Side Hustle Stack?</h3>
+
+        <p class="text-slate-600 leading-relaxed mb-6">
+          The <strong>side hustle stack</strong> is the idea of layering multiple income streams together — a freelance service for active income, a digital product for semi-passive income, and a content channel for long-term passive income. For example: you might offer freelance copywriting for immediate cash flow, sell a writing template pack on Etsy for passive sales, and build a YouTube channel over time for ad revenue. Each layer compounds your earnings without requiring you to work three times as hard.
+        </p>
+
+        <h3 class="text-2xl font-bold text-slate-900 mt-10 mb-4">How SideHustleFinder Works</h3>
+
+        <p class="text-slate-600 leading-relaxed mb-6">
+          SideHustleFinder takes the guesswork out of choosing a <strong>side hustle</strong>. Instead of scrolling through endless lists of generic ideas, you answer 7 quick questions about where you want to work, how many hours you have, your experience level, your startup budget, and your income goal. Our matching engine then scores every hustle in our database against your answers and surfaces the most relevant opportunities — ranked by fit, not commission or sponsored placement.
+        </p>
+
+        <p class="text-slate-600 leading-relaxed mb-6">
+          Each result includes real income data, realistic startup costs, time-to-first-income estimates, required skills, and a step-by-step guide to getting started. We track {hustles.length}+ side hustles across categories including freelancing, gig work, content creation, e-commerce, local services, and the creator economy. New hustle ideas are added regularly to keep the database current with real market demand.
+        </p>
+
+        <p class="text-slate-600 leading-relaxed">
+          Whether you're a student looking for flexible <strong>side hustle jobs</strong>, a parent who needs <strong>side hustle ideas from home</strong>, or a professional ready to turn your expertise into consulting income — SideHustleFinder has a match for you. It takes 90 seconds, it's completely free, and no account is required. Start the quiz above and find your side hustle today.
+        </p>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FAQ ─────────────────────────────────────────────────────────────── -->
+  <FAQ />
+
 </Layout>
 
 <script>
@@ -272,11 +502,11 @@ const categories = [...new Set(hustles.map((h) => h.category))].sort();
 
         document.querySelectorAll<HTMLButtonElement>(".cat-filter").forEach((b) => {
           b.setAttribute("aria-pressed", "false");
-          b.classList.remove("border-[var(--color-cyan)]", "text-[var(--color-canvas)]", "bg-[var(--color-cyan)]", "shadow-[0_0_15px_rgba(45,212,191,0.3)]");
+          b.classList.remove("border-[var(--color-violet)]", "text-[var(--color-canvas)]", "bg-[var(--color-violet)]", "shadow-[0_0_15px_rgba(217,70,168,0.3)]");
           b.classList.add("border-[var(--color-hairline-strong)]", "text-[var(--color-body)]", "bg-transparent");
         });
         newBtn.setAttribute("aria-pressed", "true");
-        newBtn.classList.add("border-[var(--color-cyan)]", "text-[var(--color-canvas)]", "bg-[var(--color-cyan)]", "shadow-[0_0_15px_rgba(45,212,191,0.3)]");
+        newBtn.classList.add("border-[var(--color-violet)]", "text-[var(--color-canvas)]", "bg-[var(--color-violet)]", "shadow-[0_0_15px_rgba(217,70,168,0.3)]");
         newBtn.classList.remove("border-[var(--color-hairline-strong)]", "text-[var(--color-body)]", "bg-transparent");
 
         grid?.querySelectorAll<HTMLElement>("[data-slug]").forEach((card) => {

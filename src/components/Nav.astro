@@ -2,6 +2,9 @@
 // Navigation component with glassmorphism
 const { pathname } = Astro.url;
 const isHowItWorks = pathname === "/how-it-works" || pathname === "/how-it-works/";
+const isHome = pathname === "/" || pathname === "";
+const browseHref = isHome ? "#browse" : "/#browse";
+const finderHref = isHome ? "#finder" : "/#finder";
 ---
 
 <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="navbar">
@@ -9,21 +12,16 @@ const isHowItWorks = pathname === "/how-it-works" || pathname === "/how-it-works
   
   <div class="container-page relative z-10 flex items-center justify-between h-20">
     <!-- Logo -->
-    <a href="/" class="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-cyan)] rounded-lg">
-      <div class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-violet)] to-[var(--color-cyan)] shadow-[0_0_15px_rgba(139,92,246,0.2)] group-hover:shadow-[0_0_20px_rgba(45,212,191,0.3)] transition-all duration-300 transform group-hover:scale-105">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="text-white relative z-10">
-          <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-          <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-        </svg>
-      </div>
+    <a href="/" class="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-violet)] rounded-lg" aria-label="SideHustleFinder home">
+      <img src="/favicon-96x96.png" alt="" width="32" height="32" class="w-8 h-8 rounded-[var(--radius-xs)]" />
       <span class="text-xl font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-violet)] transition-colors duration-300">
-        SideHustle<span class="text-[var(--color-cyan)]">Finder</span>
+        SideHustle<span class="text-[var(--color-violet)]">Finder</span>
       </span>
     </a>
 
     <!-- Desktop Nav -->
     <nav class="hidden md:flex items-center gap-8" aria-label="Main navigation">
-      <a href="#browse" class="text-sm font-semibold text-[var(--color-body)] hover:text-[var(--color-ink)] transition-colors duration-300 px-3 py-2 rounded-md hover:bg-slate-100/50">
+      <a href={browseHref} class="text-sm font-semibold text-[var(--color-body)] hover:text-[var(--color-ink)] transition-colors duration-300 px-3 py-2 rounded-md hover:bg-slate-100/50">
         Browse Hustles
       </a>
       {isHowItWorks ? (
@@ -35,7 +33,7 @@ const isHowItWorks = pathname === "/how-it-works" || pathname === "/how-it-works
           How it Works
         </a>
       )}
-      <a href="#finder" class="relative inline-flex items-center justify-center h-10 px-6 overflow-hidden font-bold text-white bg-gradient-to-r from-[var(--color-violet)] to-[var(--color-cyan)] rounded-full transition-all duration-300 hover:opacity-90 shadow-[0_0_20px_rgba(139,92,246,0.2)] hover:shadow-[0_0_30px_rgba(45,212,191,0.3)] transform hover:-translate-y-0.5">
+      <a href={finderHref} class="relative inline-flex items-center justify-center h-10 px-6 overflow-hidden font-bold text-white bg-gradient-to-r from-[var(--color-violet)] to-[var(--color-cyan)] rounded-full transition-all duration-300 hover:opacity-90 shadow-[0_0_20px_rgba(217,70,168,0.25)] hover:shadow-[0_0_30px_rgba(217,70,168,0.4)] transform hover:-translate-y-0.5">
         <span class="relative z-10">Get Started</span>
       </a>
     </nav>
@@ -58,20 +56,20 @@ const isHowItWorks = pathname === "/how-it-works" || pathname === "/how-it-works
     class="absolute top-full left-0 right-0 bg-white/95 backdrop-blur-2xl border-b border-[var(--color-hairline)] overflow-hidden transition-all duration-300 origin-top scale-y-0 opacity-0 invisible"
   >
     <nav class="container-page py-6 flex flex-col gap-4">
-      <a href="#browse" class="text-lg font-semibold text-[var(--color-ink)] hover:text-[var(--color-violet)] transition-colors duration-300 px-4 py-3 rounded-xl hover:bg-slate-50">
+      <a href={browseHref} class="text-lg font-semibold text-[var(--color-ink)] hover:text-[var(--color-violet)] transition-colors duration-300 px-4 py-3 rounded-xl hover:bg-pink-50">
         Browse Hustles
       </a>
       {isHowItWorks ? (
-        <a href="/" class="text-lg font-semibold text-[var(--color-ink)] hover:text-[var(--color-violet)] transition-colors duration-300 px-4 py-3 rounded-xl hover:bg-slate-50">
+        <a href="/" class="text-lg font-semibold text-[var(--color-ink)] hover:text-[var(--color-violet)] transition-colors duration-300 px-4 py-3 rounded-xl hover:bg-pink-50">
           Home
         </a>
       ) : (
-        <a href="/how-it-works" class="text-lg font-semibold text-[var(--color-ink)] hover:text-[var(--color-violet)] transition-colors duration-300 px-4 py-3 rounded-xl hover:bg-slate-50">
+        <a href="/how-it-works" class="text-lg font-semibold text-[var(--color-ink)] hover:text-[var(--color-violet)] transition-colors duration-300 px-4 py-3 rounded-xl hover:bg-pink-50">
           How it Works
         </a>
       )}
       <div class="h-px w-full bg-slate-200 my-2"></div>
-      <a href="#finder" class="flex items-center justify-center h-12 w-full font-bold text-white bg-gradient-to-r from-[var(--color-violet)] to-[var(--color-cyan)] rounded-xl shadow-lg">
+      <a href={finderHref} class="flex items-center justify-center h-12 w-full font-bold text-white bg-gradient-to-r from-[var(--color-violet)] to-[var(--color-cyan)] rounded-xl shadow-lg">
         Get Started
       </a>
     </nav>

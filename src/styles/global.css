@@ -2,8 +2,8 @@
 @source "../**/*.{astro,ts,html}";
 
 @theme {
-  /* ─── Premium Brand Colors (Light Mode) ─── */
-  --color-ink: #0f172a;
+  /* ─── Brand Colors — matched to favicon (black + pink/magenta) ─── */
+  --color-ink: #0f0f0f;
   --color-on-primary: #ffffff;
   --color-body: #475569;
   --color-mute: #64748b;
@@ -11,28 +11,30 @@
   --color-hairline-strong: rgba(0, 0, 0, 0.15);
   
   --color-canvas: #ffffff;
-  --color-canvas-soft: #f8fafc;
-  --color-canvas-soft-2: #f1f5f9;
+  --color-canvas-soft: #fafafa;
+  --color-canvas-soft-2: #f5f5f5;
   --color-canvas-card: rgba(255, 255, 255, 0.9);
   
-  --color-link: #8b5cf6;
-  --color-link-deep: #7c3aed;
-  --color-link-bg-soft: rgba(139, 92, 246, 0.1);
+  --color-link: #d946a8;
+  --color-link-deep: #b83593;
+  --color-link-bg-soft: rgba(217, 70, 168, 0.1);
   
   --color-success: #10b981;
   --color-error: #ef4444;
   --color-warning: #f59e0b;
   
-  --color-violet: #8b5cf6;
-  --color-violet-soft: rgba(139, 92, 246, 0.1);
-  --color-cyan: #06b6d4;
-  --color-cyan-soft: rgba(6, 182, 212, 0.1);
-  --color-highlight-pink: #ec4899;
+  /* Primary accent: pink-magenta from favicon */
+  --color-violet: #d946a8;
+  --color-violet-soft: rgba(217, 70, 168, 0.1);
+  /* Secondary accent: deeper magenta */
+  --color-cyan: #9333ea;
+  --color-cyan-soft: rgba(147, 51, 234, 0.1);
+  --color-highlight-pink: #f000f0;
 
-  /* Premium Gradients */
-  --color-gradient-start: #8b5cf6;
-  --color-gradient-mid: #ec4899;
-  --color-gradient-end: #06b6d4;
+  /* Premium Gradients — favicon pink to deep magenta/purple */
+  --color-gradient-start: #d946a8;
+  --color-gradient-mid: #b83593;
+  --color-gradient-end: #9333ea;
 
   /* ─── Typography ─── */
   --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
@@ -111,9 +113,9 @@
 }
 
 @utility mesh-gradient {
-  background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(139, 92, 246, 0.08) 0%, transparent 70%),
-              radial-gradient(ellipse 60% 50% at 80% 0%, rgba(236, 72, 153, 0.05) 0%, transparent 60%),
-              radial-gradient(ellipse 70% 60% at 20% 0%, rgba(6, 182, 212, 0.05) 0%, transparent 60%),
+  background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(217, 70, 168, 0.08) 0%, transparent 70%),
+              radial-gradient(ellipse 60% 50% at 80% 0%, rgba(240, 0, 240, 0.05) 0%, transparent 60%),
+              radial-gradient(ellipse 70% 60% at 20% 0%, rgba(147, 51, 234, 0.05) 0%, transparent 60%),
               var(--color-canvas);
 }
 
@@ -145,13 +147,13 @@
 @utility card-shadow-md {
   box-shadow: 0 0 0 1px var(--color-hairline) inset,
               0px 8px 24px -4px rgba(0,0,0,0.08),
-              0 0 20px 0 rgba(139, 92, 246, 0.05);
+              0 0 20px 0 rgba(217, 70, 168, 0.05);
 }
 
 @utility card-shadow-lg {
   box-shadow: 0 0 0 1px var(--color-hairline) inset,
               0px 16px 32px -8px rgba(0,0,0,0.1),
-              0 0 40px 0 rgba(139, 92, 246, 0.08);
+              0 0 40px 0 rgba(217, 70, 168, 0.08);
 }
 
 @utility text-balance {

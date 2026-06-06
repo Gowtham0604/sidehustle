@@ -9,14 +9,24 @@ interface Props {
   description?: string;
   canonical?: string;
   jsonLd?: string;
+  ogImage?: string;
+  keywords?: string;
+  ogType?: string;
 }
 
 const {
-  title = "SideHustleFinder — Find the Best Side Hustle for Your Situation",
-  description = "Answer 7 quick questions and discover side hustles matched to your skills, time, budget, and income goals. 150+ real opportunities. No fluff.",
+  title = `Side Hustle Ideas to Make Extra Money in ${new Date().getFullYear()} | SideHustleFinder`,
+  description = "Looking for a side hustle? Discover 150+ side hustle ideas to make extra money from home or anywhere. Find side hustle jobs matched to your skills, schedule, and income goals — free in 90 seconds.",
   canonical,
   jsonLd,
+  ogImage = "https://sidehustlefinder.com/og-image.png",
+  keywords = "side hustle, what is a side hustle, side hustle jobs, side hustle ideas, side hustle ideas to make extra money, side hustle stack, side hustle from home, side hustle ideas from home",
+  ogType = "website",
 } = Astro.props;
+
+const siteUrl = "https://sidehustlefinder.com";
+const siteName = "SideHustleFinder";
+const resolvedCanonical = canonical ?? siteUrl;
 ---
 
 <!doctype html>
@@ -25,20 +35,41 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <meta name="theme-color" content="#000000" />
+    <meta name="author" content={siteName} />
 
-    <!-- Open Graph -->
+    <!-- Canonical -->
+    <link rel="canonical" href={resolvedCanonical} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={siteName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:url" content={resolvedCanonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="SideHustleFinder — Discover the best side hustle ideas to make extra money" />
+    <meta property="og:locale" content="en_US" />
 
-    <!-- Twitter -->
+    <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@sidehustlefinder" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content="SideHustleFinder — Discover the best side hustle ideas to make extra money" />
 
-    {canonical && <link rel="canonical" href={canonical} />}
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="SideHustle" />
+    <link rel="manifest" href="/site.webmanifest" />
 
     <!-- Fonts: Outfit + JetBrains Mono via Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -58,6 +89,25 @@ const {
     <ClientRouter />
 
     <title>{title}</title>
+  </head>
+  <!-- Hash scroll fix for Astro ClientRouter cross-page anchor navigation -->
+  <script is:inline>
+    function scrollToHash() {
+      const hash = window.location.hash;
+      if (hash) {
+        // Small delay to let the page paint after ClientRouter transition
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            const el = document.querySelector(hash);
+            if (el) {
+              el.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+          }, 80);
+        });
+      }
+    }
+    document.addEventListener("astro:page-load", scrollToHash);
+  </script>
   </head>
   <body class="bg-[var(--color-canvas)] text-[var(--color-ink)] antialiased min-h-screen flex flex-col">
     <!-- Skip to main content for accessibility -->

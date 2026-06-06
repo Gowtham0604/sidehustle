@@ -81,7 +81,7 @@ const difficultyColor: Record<string, string> = {
 
         <h1
           id="hustle-heading"
-          class="text-4xl md:text-5xl font-semibold text-[var(--color-ink)] tracking-[-2px] leading-[1.05] mb-5 text-balance"
+          class="text-3xl md:text-5xl font-semibold text-[var(--color-ink)] tracking-[-2px] leading-[1.05] mb-5 text-balance"
         >
           {hustle.name}
         </h1>
@@ -90,14 +90,14 @@ const difficultyColor: Record<string, string> = {
         </p>
 
         <!-- Quick stats -->
-        <dl class="inline-grid grid-cols-2 sm:grid-cols-4 gap-0 rounded-[var(--radius-md)] border border-[var(--color-hairline)] overflow-hidden bg-[var(--color-canvas)] card-shadow mb-8">
+        <dl class="grid grid-cols-2 sm:grid-cols-4 gap-0 rounded-[var(--radius-md)] border border-[var(--color-hairline)] overflow-hidden bg-[var(--color-canvas)] card-shadow mb-8 w-full">
           {[
             { label: "Income", value: hustle.incomePotential },
             { label: "Startup", value: hustle.startupCost },
             { label: "First income", value: hustle.timeToFirstIncome },
             { label: "Work type", value: hustle.remote ? "Remote" : "Local" },
           ].map(({ label, value }, i) => (
-            <div class:list={["px-5 py-4", i > 0 ? "border-l border-[var(--color-hairline)]" : ""]}>
+            <div class:list={["px-4 py-4", i > 0 ? "border-l border-[var(--color-hairline)] sm:border-l border-t sm:border-t-0" : ""]}>
               <dt class="text-[10px] font-mono text-[var(--color-mute)] uppercase tracking-wider mb-1">{label}</dt>
               <dd class="text-sm font-semibold text-[var(--color-ink)] tabular-nums">{value}</dd>
             </div>

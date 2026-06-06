@@ -2,18 +2,18 @@
 // Side Hustle Finder — interactive multi-step quiz, runs entirely client-side
 ---
 
-<section id="finder" class="py-24 md:py-32 relative overflow-hidden" aria-labelledby="finder-heading">
+<section id="finder" class="py-16 md:py-32 relative overflow-hidden" aria-labelledby="finder-heading">
   <!-- Glow background -->
-  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-violet-100 to-cyan-100 rounded-full blur-[100px] pointer-events-none"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-pink-100 to-purple-100 rounded-full blur-[100px] pointer-events-none"></div>
 
   <div class="container-page relative z-10">
-    <div class="max-w-2xl mx-auto text-center mb-16">
-      <p class="text-sm font-bold text-violet-600 uppercase tracking-widest mb-4">
+    <div class="max-w-2xl mx-auto text-center mb-10 md:mb-16">
+      <p class="text-sm font-bold text-[var(--color-violet)] uppercase tracking-widest mb-4">
         Side Hustle Finder
       </p>
       <h2
         id="finder-heading"
-        class="text-4xl md:text-6xl font-bold text-slate-900 tracking-tight leading-none mb-6 text-balance"
+        class="text-3xl md:text-6xl font-bold text-slate-900 tracking-tight leading-none mb-6 text-balance"
       >
         Find your perfect hustle.
       </h2>
@@ -28,22 +28,23 @@
       class="max-w-2xl mx-auto bg-white/80 backdrop-blur-xl border border-slate-200 rounded-3xl shadow-xl overflow-hidden"
       role="form"
       aria-label="Side hustle finder quiz"
+      style="isolation: isolate;"
     >
       <!-- Progress bar -->
       <div class="h-1 bg-slate-100 relative" aria-hidden="true">
         <div
           id="finder-progress"
-          class="absolute inset-y-0 left-0 bg-gradient-to-r from-violet-500 to-cyan-500 transition-all duration-500 ease-out"
+          class="absolute inset-y-0 left-0 bg-gradient-to-r from-[var(--color-violet)] to-[var(--color-cyan)] transition-all duration-500 ease-out"
           style="width: 0%"
         />
       </div>
 
       <!-- Steps -->
-      <div id="finder-steps" class="p-8 md:p-12 min-h-[400px] flex flex-col justify-center">
+      <div id="finder-steps" class="p-5 sm:p-8 md:p-12 min-h-[360px] flex flex-col justify-center">
         <!-- Step 1: Remote or Local -->
         <div class="finder-step transition-opacity duration-300" data-step="1">
-          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-6" aria-live="polite">Step 1 of 7</p>
-          <h3 class="text-2xl font-bold text-slate-900 tracking-tight mb-8">
+          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6" aria-live="polite">Step 1 of 7</p>
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-5 sm:mb-8">
             Where do you want to work?
           </h3>
           <div class="grid grid-cols-1 gap-4" role="radiogroup" aria-labelledby="q1-label">
@@ -53,7 +54,7 @@
               { value: "local", label: "Local", desc: "In-person in my city or neighborhood" },
               { value: "both", label: "Both", desc: "Open to either option" },
             ].map(({ value, label, desc }) => (
-              <label class="finder-option group flex items-center gap-5 p-5 rounded-2xl border border-slate-200 cursor-pointer hover:border-violet-300 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-violet-500 has-[:checked]:bg-violet-50 has-[:checked]:shadow-sm bg-white">
+              <label class="finder-option group flex items-center gap-5 p-5 rounded-2xl border border-slate-200 cursor-pointer hover:border-pink-300 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white">
                 <input
                   type="radio"
                   name="remote"
@@ -62,11 +63,11 @@
                   aria-label={label}
                 />
                 <span class="flex-1 min-w-0">
-                  <span class="block text-base font-bold text-slate-900 group-has-[:checked]:text-violet-900">{label}</span>
-                  <span class="block text-sm text-slate-500 mt-1 group-has-[:checked]:text-violet-700">{desc}</span>
+                  <span class="block text-base font-bold text-slate-900 group-has-[:checked]:text-pink-900">{label}</span>
+                  <span class="block text-sm text-slate-500 mt-1 group-has-[:checked]:text-pink-700">{desc}</span>
                 </span>
                 <span
-                  class="shrink-0 w-5 h-5 rounded-full border-2 border-slate-300 group-has-[:checked]:border-violet-500 group-has-[:checked]:bg-violet-500 transition-all duration-300 shadow-[inset_0_0_0_4px_white]"
+                  class="shrink-0 w-5 h-5 rounded-full border-2 border-slate-300 group-has-[:checked]:border-pink-500 group-has-[:checked]:bg-pink-500 transition-all duration-300 shadow-[inset_0_0_0_4px_white]"
                   aria-hidden="true"
                 />
               </label>
@@ -76,11 +77,11 @@
 
         <!-- Step 2: Hours per week -->
         <div class="finder-step hidden transition-opacity duration-300" data-step="2">
-          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-6">Step 2 of 7</p>
-          <h3 class="text-2xl font-bold text-slate-900 tracking-tight mb-8">
+          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6">Step 2 of 7</p>
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-5 sm:mb-8">
             How many hours per week can you commit?
           </h3>
-          <div class="grid grid-cols-2 gap-4" role="radiogroup" aria-labelledby="q2-label">
+          <div class="grid grid-cols-2 gap-3 sm:gap-4" role="radiogroup" aria-labelledby="q2-label">
             <span id="q2-label" class="sr-only">Hours available per week</span>
             {[
               { value: "under5", label: "Under 5 hrs" },
@@ -88,9 +89,9 @@
               { value: "10to20", label: "10–20 hrs" },
               { value: "20plus", label: "20+ hrs" },
             ].map(({ value, label }) => (
-              <label class="finder-option group flex items-center justify-center p-6 rounded-2xl border border-slate-200 cursor-pointer hover:border-violet-300 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-violet-500 has-[:checked]:bg-violet-50 has-[:checked]:shadow-sm bg-white text-center">
+              <label class="finder-option group flex items-center justify-center p-4 sm:p-6 rounded-2xl border border-slate-200 cursor-pointer hover:border-pink-300 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white text-center min-h-[56px]">
                 <input type="radio" name="hoursPerWeek" value={value} class="sr-only" />
-                <span class="text-lg font-bold text-slate-900 group-has-[:checked]:text-violet-900">{label}</span>
+                <span class="text-base sm:text-lg font-bold text-slate-900 group-has-[:checked]:text-pink-900">{label}</span>
               </label>
             ))}
           </div>
@@ -98,8 +99,8 @@
 
         <!-- Step 3: Experience level -->
         <div class="finder-step hidden transition-opacity duration-300" data-step="3">
-          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-6">Step 3 of 7</p>
-          <h3 class="text-2xl font-bold text-slate-900 tracking-tight mb-8">
+          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6">Step 3 of 7</p>
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-5 sm:mb-8">
             What's your experience level?
           </h3>
           <div class="grid grid-cols-1 gap-4" role="radiogroup" aria-labelledby="q3-label">
@@ -109,13 +110,13 @@
               { value: "intermediate", label: "Intermediate", desc: "Some skills and experience in an area" },
               { value: "advanced", label: "Advanced", desc: "Expert with a proven track record" },
             ].map(({ value, label, desc }) => (
-              <label class="finder-option group flex items-center gap-5 p-5 rounded-2xl border border-slate-200 cursor-pointer hover:border-violet-300 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-violet-500 has-[:checked]:bg-violet-50 has-[:checked]:shadow-sm bg-white">
+              <label class="finder-option group flex items-center gap-5 p-5 rounded-2xl border border-slate-200 cursor-pointer hover:border-pink-300 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white">
                 <input type="radio" name="experienceLevel" value={value} class="sr-only" />
                 <span class="flex-1 min-w-0">
-                  <span class="block text-base font-bold text-slate-900 group-has-[:checked]:text-violet-900">{label}</span>
-                  <span class="block text-sm text-slate-500 mt-1 group-has-[:checked]:text-violet-700">{desc}</span>
+                  <span class="block text-base font-bold text-slate-900 group-has-[:checked]:text-pink-900">{label}</span>
+                  <span class="block text-sm text-slate-500 mt-1 group-has-[:checked]:text-pink-700">{desc}</span>
                 </span>
-                <span class="shrink-0 w-5 h-5 rounded-full border-2 border-slate-300 group-has-[:checked]:border-violet-500 group-has-[:checked]:bg-violet-500 transition-all duration-300 shadow-[inset_0_0_0_4px_white]" aria-hidden="true" />
+                <span class="shrink-0 w-5 h-5 rounded-full border-2 border-slate-300 group-has-[:checked]:border-pink-500 group-has-[:checked]:bg-pink-500 transition-all duration-300 shadow-[inset_0_0_0_4px_white]" aria-hidden="true" />
               </label>
             ))}
           </div>
@@ -123,8 +124,8 @@
 
         <!-- Step 4: Startup budget -->
         <div class="finder-step hidden transition-opacity duration-300" data-step="4">
-          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-6">Step 4 of 7</p>
-          <h3 class="text-2xl font-bold text-slate-900 tracking-tight mb-8">
+          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6">Step 4 of 7</p>
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-5 sm:mb-8">
             What's your startup budget?
           </h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" role="radiogroup" aria-labelledby="q4-label">
@@ -135,10 +136,10 @@
               { value: "under200", label: "Under $200", desc: "Willing to invest" },
               { value: "any", label: "$500+", desc: "Higher returns" },
             ].map(({ value, label, desc }) => (
-              <label class="finder-option group flex flex-col items-center justify-center text-center gap-2 p-6 rounded-2xl border border-slate-200 cursor-pointer hover:border-violet-300 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-violet-500 has-[:checked]:bg-violet-50 has-[:checked]:shadow-sm bg-white">
+              <label class="finder-option group flex flex-col items-center justify-center text-center gap-2 p-6 rounded-2xl border border-slate-200 cursor-pointer hover:border-pink-300 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white">
                 <input type="radio" name="startupBudget" value={value} class="sr-only" />
-                <span class="block text-2xl font-bold text-slate-900 group-has-[:checked]:text-violet-900">{label}</span>
-                <span class="block text-sm text-slate-500 group-has-[:checked]:text-violet-700">{desc}</span>
+                <span class="block text-2xl font-bold text-slate-900 group-has-[:checked]:text-pink-900">{label}</span>
+                <span class="block text-sm text-slate-500 group-has-[:checked]:text-pink-700">{desc}</span>
               </label>
             ))}
           </div>
@@ -146,20 +147,20 @@
 
         <!-- Step 5: Need income quickly -->
         <div class="finder-step hidden transition-opacity duration-300" data-step="5">
-          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-6">Step 5 of 7</p>
-          <h3 class="text-2xl font-bold text-slate-900 tracking-tight mb-8">
+          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6">Step 5 of 7</p>
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-5 sm:mb-8">
             Do you need income quickly?
           </h3>
-          <div class="grid grid-cols-2 gap-4" role="radiogroup" aria-labelledby="q5-label">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4" role="radiogroup" aria-labelledby="q5-label">
             <span id="q5-label" class="sr-only">Need income quickly?</span>
             {[
               { value: "true", label: "Yes", desc: "Within a few weeks" },
               { value: "false", label: "No", desc: "I can play the long game" },
             ].map(({ value, label, desc }) => (
-              <label class="finder-option group flex flex-col items-center text-center p-8 rounded-2xl border border-slate-200 cursor-pointer hover:border-violet-300 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-violet-500 has-[:checked]:bg-violet-50 has-[:checked]:shadow-sm bg-white">
+              <label class="finder-option group flex flex-col items-center text-center p-5 sm:p-8 rounded-2xl border border-slate-200 cursor-pointer hover:border-pink-300 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white min-h-[80px] justify-center">
                 <input type="radio" name="needsQuickIncome" value={value} class="sr-only" />
-                <span class="text-2xl font-bold text-slate-900 mb-2 group-has-[:checked]:text-violet-900">{label}</span>
-                <span class="text-sm font-medium text-slate-500 group-has-[:checked]:text-violet-700">{desc}</span>
+                <span class="text-xl sm:text-2xl font-bold text-slate-900 mb-1.5 group-has-[:checked]:text-pink-900">{label}</span>
+                <span class="text-sm font-medium text-slate-500 group-has-[:checked]:text-pink-700">{desc}</span>
               </label>
             ))}
           </div>
@@ -167,7 +168,7 @@
 
         <!-- Step 6: Skills -->
         <div class="finder-step hidden transition-opacity duration-300" data-step="6">
-          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-6">Step 6 of 7</p>
+          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6">Step 6 of 7</p>
           <h3 class="text-2xl font-bold text-slate-900 tracking-tight mb-3">
             What are your skills?
           </h3>
@@ -180,7 +181,7 @@
               "Customer Service", "Sales", "Finance/Accounting",
               "Physical Labor", "Cooking", "Languages",
             ].map((skill) => (
-              <label class="group inline-flex items-center gap-2 px-4 py-2 rounded-full border border-slate-200 cursor-pointer text-sm font-semibold text-slate-600 hover:border-slate-300 hover:text-slate-900 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-violet-500 has-[:checked]:text-violet-900 has-[:checked]:bg-violet-50 has-[:checked]:shadow-sm bg-white">
+              <label class="group inline-flex items-center gap-2 px-4 py-2 rounded-full border border-slate-200 cursor-pointer text-sm font-semibold text-slate-600 hover:border-slate-300 hover:text-slate-900 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-pink-500 has-[:checked]:text-pink-900 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white">
                 <input type="checkbox" name="skills" value={skill.toLowerCase()} class="sr-only" />
                 {skill}
               </label>
@@ -190,8 +191,8 @@
 
         <!-- Step 7: Income goal -->
         <div class="finder-step hidden transition-opacity duration-300" data-step="7">
-          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-6">Step 7 of 7</p>
-          <h3 class="text-2xl font-bold text-slate-900 tracking-tight mb-8">
+          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6">Step 7 of 7</p>
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-5 sm:mb-8">
             What's your income goal?
           </h3>
           <div class="grid grid-cols-1 gap-4" role="radiogroup" aria-labelledby="q7-label">
@@ -202,13 +203,13 @@
               { value: "fulltime", label: "Replace a second income", desc: "$2,000–$5,000/month" },
               { value: "replace", label: "Replace my full-time income", desc: "$5,000+/month" },
             ].map(({ value, label, desc }) => (
-              <label class="finder-option group flex items-center gap-5 p-5 rounded-2xl border border-slate-200 cursor-pointer hover:border-violet-300 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-violet-500 has-[:checked]:bg-violet-50 has-[:checked]:shadow-sm bg-white">
+              <label class="finder-option group flex items-center gap-5 p-5 rounded-2xl border border-slate-200 cursor-pointer hover:border-pink-300 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white">
                 <input type="radio" name="incomeGoal" value={value} class="sr-only" />
                 <span class="flex-1 min-w-0">
-                  <span class="block text-base font-bold text-slate-900 group-has-[:checked]:text-violet-900">{label}</span>
-                  <span class="block text-sm text-slate-500 mt-1 group-has-[:checked]:text-violet-700">{desc}</span>
+                  <span class="block text-base font-bold text-slate-900 group-has-[:checked]:text-pink-900">{label}</span>
+                  <span class="block text-sm text-slate-500 mt-1 group-has-[:checked]:text-pink-700">{desc}</span>
                 </span>
-                <span class="shrink-0 w-5 h-5 rounded-full border-2 border-slate-300 group-has-[:checked]:border-violet-500 group-has-[:checked]:bg-violet-500 transition-all duration-300 shadow-[inset_0_0_0_4px_white]" aria-hidden="true" />
+                <span class="shrink-0 w-5 h-5 rounded-full border-2 border-slate-300 group-has-[:checked]:border-pink-500 group-has-[:checked]:bg-pink-500 transition-all duration-300 shadow-[inset_0_0_0_4px_white]" aria-hidden="true" />
               </label>
             ))}
           </div>
@@ -216,16 +217,16 @@
 
         <!-- Results -->
         <div class="finder-step hidden transition-opacity duration-300" data-step="results">
-          <div class="flex items-center justify-between mb-8">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-8">
             <div>
               <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-2">Your matches</p>
-              <h3 class="text-3xl font-bold text-slate-900 tracking-tight">
+              <h3 class="text-2xl font-bold text-slate-900 tracking-tight">
                 Here are your top picks.
               </h3>
             </div>
             <button
               id="finder-restart"
-              class="text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors duration-300 bg-white px-4 py-2 rounded-full border border-slate-200 hover:border-slate-300 hover:bg-slate-50"
+              class="self-start sm:self-auto text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors duration-300 bg-white px-4 py-2.5 rounded-full border border-slate-200 hover:border-slate-300 hover:bg-slate-50 min-h-[44px]"
               aria-label="Restart the quiz"
             >
               Start over
@@ -238,10 +239,10 @@
       </div>
 
       <!-- Navigation -->
-      <div class="px-8 pb-8 md:px-12 md:pb-12 flex items-center justify-between gap-4 border-t border-slate-100 pt-6 bg-slate-50/50" id="finder-nav">
+      <div class="px-5 pb-5 sm:px-8 sm:pb-8 md:px-12 md:pb-12 flex items-center justify-between gap-4 border-t border-slate-100 pt-5 sm:pt-6 bg-slate-50/50" id="finder-nav">
         <button
           id="finder-prev"
-          class="hidden text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors duration-300 px-4 py-2 rounded-full hover:bg-slate-200/50"
+          class="hidden text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors duration-300 px-4 py-3 rounded-full hover:bg-slate-200/50 min-h-[44px]"
           aria-label="Go to previous question"
         >
           ← Back
@@ -249,8 +250,7 @@
         <div class="flex-1" />
         <button
           id="finder-next"
-          disabled
-          class="flex items-center h-12 px-8 text-sm font-bold text-white bg-slate-900 rounded-full transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-800 shadow-md disabled:shadow-none hover:shadow-lg transform hover:-translate-y-0.5 disabled:transform-none"
+          class="flex items-center justify-center h-12 px-8 min-w-[140px] text-sm font-bold text-white bg-slate-900 rounded-full transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-800 shadow-md disabled:shadow-none hover:shadow-lg transform hover:-translate-y-0.5 disabled:transform-none"
           aria-label="Continue to next question"
         >
           Continue →
@@ -345,7 +345,10 @@
   }
 
   function updateNextBtn() {
-    if (nextBtn) nextBtn.disabled = !isStepValid(currentStep);
+    if (!nextBtn) return;
+    const valid = isStepValid(currentStep);
+    nextBtn.disabled = !valid;
+    nextBtn.setAttribute("aria-disabled", String(!valid));
   }
 
   function renderResults() {
@@ -371,12 +374,12 @@
             class="flex items-center justify-between gap-4 p-5 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 transition-all duration-300 group shadow-sm hover:shadow-md"
           >
             <div class="min-w-0">
-              <p class="text-[10px] font-bold text-violet-600 uppercase tracking-widest mb-1">${h.category}</p>
-              <p class="text-lg font-bold text-slate-900 truncate mb-1">${h.name}</p>
+              <p class="text-[10px] font-bold text-pink-600 uppercase tracking-widest mb-1">${h.category}</p>
+              <p class="text-base font-bold text-slate-900 mb-1 line-clamp-2">${h.name}</p>
               <p class="text-sm font-medium text-slate-600 group-hover:text-slate-900 transition-colors">${h.incomePotential} · ${h.startupCost} startup</p>
             </div>
-            <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-violet-100 transition-colors duration-300">
-              <svg width="18" height="18" viewBox="0 0 16 16" fill="none" class="shrink-0 text-slate-400 group-hover:text-violet-600 transition-transform duration-300 transform group-hover:translate-x-1" aria-hidden="true">
+            <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-pink-100 transition-colors duration-300">
+              <svg width="18" height="18" viewBox="0 0 16 16" fill="none" class="shrink-0 text-slate-400 group-hover:text-pink-600 transition-transform duration-300 transform group-hover:translate-x-1" aria-hidden="true">
                 <path d="M3.5 8h9M9 4.5l3.5 3.5L9 11.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
@@ -394,9 +397,22 @@
   // Also listen on individual inputs in case event bubbling is interrupted
   document.querySelectorAll<HTMLInputElement>('#finder-quiz input[type="radio"], #finder-quiz input[type="checkbox"]').forEach((input) => {
     input.addEventListener("change", updateNextBtn);
+    // Also handle click events for desktop browsers where change may not fire reliably
+    input.addEventListener("click", updateNextBtn);
+  });
+
+  // Also enable the button when clicking anywhere on a label (desktop fix)
+  document.querySelectorAll<HTMLLabelElement>('#finder-quiz label.finder-option').forEach((label) => {
+    label.addEventListener("click", () => {
+      // Use setTimeout to allow the checked state to update before re-evaluating
+      setTimeout(updateNextBtn, 10);
+    });
   });
 
   nextBtn?.addEventListener("click", () => {
+    // Guard: don't advance if step isn't valid
+    if (!isStepValid(currentStep)) return;
+
     const val = getStepValue(currentStep);
 
     // Save answer

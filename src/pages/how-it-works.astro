@@ -8,8 +8,8 @@ const steps = [
     description:
       "Tell us where you want to work, how many hours you have, your experience level, startup budget, and income goal. No account needed — it takes about 90 seconds.",
     icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>`,
-    color: "from-violet-500 to-violet-600",
-    glow: "rgba(139,92,246,0.15)",
+    color: "from-pink-500 to-fuchsia-600",
+    glow: "rgba(217,70,168,0.15)",
   },
   {
     number: "02",
@@ -17,8 +17,8 @@ const steps = [
     description:
       "Our algorithm scores every hustle in our database against your answers — filtering by remote/local preference, beginner-friendliness, startup cost, and realistic income potential.",
     icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>`,
-    color: "from-cyan-500 to-cyan-600",
-    glow: "rgba(6,182,212,0.15)",
+    color: "from-purple-500 to-purple-700",
+    glow: "rgba(147,51,234,0.15)",
   },
   {
     number: "03",
@@ -26,8 +26,8 @@ const steps = [
     description:
       "Get a ranked list of side hustles tailored to your situation. Each result shows income range, startup cost, time commitment, and whether it's remote — everything you need to decide fast.",
     icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 17h7M17 14v7"/></svg>`,
-    color: "from-pink-500 to-pink-600",
-    glow: "rgba(236,72,153,0.15)",
+    color: "from-fuchsia-500 to-pink-600",
+    glow: "rgba(240,0,240,0.12)",
   },
   {
     number: "04",
@@ -35,8 +35,8 @@ const steps = [
     description:
       "Click any hustle to see a full breakdown: how it works, realistic earnings, skills you'll need, how to get started, and who it's best for. No fluff, just signal.",
     icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>`,
-    color: "from-violet-500 to-cyan-500",
-    glow: "rgba(139,92,246,0.12)",
+    color: "from-pink-500 to-purple-600",
+    glow: "rgba(217,70,168,0.12)",
   },
 ];
 
@@ -76,19 +76,19 @@ const faqs = [
   <!-- ─── Hero ──────────────────────────────────────────────────────────────── -->
   <section class="relative overflow-hidden pt-36 pb-24 md:pt-48 md:pb-32" aria-labelledby="hiw-hero-heading">
     <div class="absolute inset-0 z-0 bg-gradient-to-br from-slate-50 via-white to-slate-100 opacity-70"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-tr from-violet-100/60 to-cyan-100/60 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-tr from-pink-100/60 to-purple-100/60 rounded-full blur-3xl pointer-events-none"></div>
 
     <div class="container-page relative z-10 text-center max-w-3xl mx-auto">
       <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-slate-200 bg-white shadow-sm text-xs font-semibold text-slate-600 mb-10">
         <span class="relative flex h-2 w-2">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-500 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-violet-500"></span>
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-500 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-pink-500"></span>
         </span>
         No account required · 90 seconds
       </div>
       <h1
         id="hiw-hero-heading"
-        class="text-5xl md:text-7xl font-bold text-slate-900 tracking-[-0.04em] leading-[1.1] mb-6 text-balance"
+        class="text-4xl md:text-7xl font-bold text-slate-900 tracking-[-0.04em] leading-[1.1] mb-6 text-balance"
       >
         How it works.
       </h1>
@@ -106,13 +106,13 @@ const faqs = [
   </section>
 
   <!-- ─── Steps ─────────────────────────────────────────────────────────────── -->
-  <section class="py-24 md:py-32 relative border-t border-slate-200" aria-labelledby="steps-heading">
-    <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-violet-50/60 blur-[120px] rounded-full pointer-events-none"></div>
-    <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-cyan-50/60 blur-[120px] rounded-full pointer-events-none"></div>
+  <section class="pb-24 md:pb-32 pt-0 relative" aria-labelledby="steps-heading">
+    <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-pink-50/60 blur-[120px] rounded-full pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-purple-50/60 blur-[120px] rounded-full pointer-events-none"></div>
 
-    <div class="container-page relative z-10">
+    <div class="container-page relative z-10 border-t border-slate-200 pt-24 md:pt-32">
       <div class="max-w-xl mb-16">
-        <p class="text-sm font-bold text-violet-600 uppercase tracking-widest mb-3">The process</p>
+        <p class="text-sm font-bold text-pink-600 uppercase tracking-widest mb-3">The process</p>
         <h2
           id="steps-heading"
           class="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight text-balance"
@@ -176,7 +176,7 @@ const faqs = [
   <!-- ─── Data / Trust bar ──────────────────────────────────────────────────── -->
   <section class="border-y border-slate-200 bg-slate-50" aria-label="Trust statistics">
     <div class="container-page">
-      <dl class="grid grid-cols-2 md:grid-cols-4 divide-x divide-slate-200">
+      <dl class="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 divide-x-0 md:divide-x divide-slate-200">
         {[
           { value: "150+", label: "Side hustles tracked" },
           { value: "7", label: "Quiz questions" },
@@ -196,7 +196,7 @@ const faqs = [
   <section class="py-24 md:py-32 relative" aria-labelledby="matching-heading">
     <div class="container-page relative z-10">
       <div class="max-w-xl mb-14">
-        <p class="text-sm font-bold text-cyan-600 uppercase tracking-widest mb-3">The matching engine</p>
+        <p class="text-sm font-bold text-purple-600 uppercase tracking-widest mb-3">The matching engine</p>
         <h2
           id="matching-heading"
           class="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight text-balance"
@@ -268,8 +268,8 @@ const faqs = [
   <!-- ─── FAQ ───────────────────────────────────────────────────────────────── -->
   <section class="py-24 md:py-32 bg-slate-50 border-t border-slate-200 relative" aria-labelledby="faq-heading">
     <div class="container-page relative z-10">
-      <div class="max-w-xl mb-14">
-        <p class="text-sm font-bold text-violet-600 uppercase tracking-widest mb-3">FAQ</p>
+      <div class="mb-14">
+        <p class="text-sm font-bold text-pink-600 uppercase tracking-widest mb-3">FAQ</p>
         <h2
           id="faq-heading"
           class="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight text-balance"
@@ -278,7 +278,7 @@ const faqs = [
         </h2>
       </div>
 
-      <div class="max-w-3xl grid grid-cols-1 gap-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         {faqs.map(({ q, a }) => (
           <div class="bg-white rounded-2xl border border-slate-200 p-7 hover:border-slate-300 hover:shadow-sm transition-all duration-300">
             <p class="text-base font-bold text-slate-900 mb-3">{q}</p>
@@ -292,10 +292,10 @@ const faqs = [
   <!-- ─── Final CTA ─────────────────────────────────────────────────────────── -->
   <section class="py-24 md:py-32 relative overflow-hidden border-t border-slate-200" aria-labelledby="hiw-cta-heading">
     <div class="absolute inset-0 bg-gradient-to-br from-slate-900 to-slate-800"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-violet-600/20 to-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-pink-600/20 to-purple-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
     <div class="container-page relative z-10 text-center max-w-2xl mx-auto">
-      <p class="text-sm font-bold text-violet-400 uppercase tracking-widest mb-4">Ready?</p>
+      <p class="text-sm font-bold text-pink-400 uppercase tracking-widest mb-4">Ready?</p>
       <h2
         id="hiw-cta-heading"
         class="text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight mb-6 text-balance"

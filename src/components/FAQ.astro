@@ -1,0 +1,182 @@
+---
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+const faqs: FAQItem[] = [
+  {
+    question: "What is a side hustle?",
+    answer:
+      "A side hustle is any income-generating activity you do outside of your primary job or main source of income. It could be a freelance service, gig work, an online business, or a creative project — as long as it pays you. The defining trait is flexibility: you set the hours, you choose the work, and you keep the profits. Popular examples include freelance writing, driving for Uber, delivering for DoorDash or Instacart, selling on Etsy, online tutoring, and web development.",
+  },
+  {
+    question: "How to start a side hustle?",
+    answer:
+      "Starting a side hustle comes down to four steps: (1) Pick a hustle that matches your skills, schedule, and budget. (2) Set up the minimum viable presence — a profile on Upwork, a gig on Fiverr, a DoorDash driver account, or a simple website. (3) Get your first client or first delivery — don't wait until everything is perfect. (4) Reinvest early earnings to grow. Most side hustles can be started in a single weekend. Use the SideHustleFinder quiz above to find the best match for your situation.",
+  },
+  {
+    question: "Is DoorDash a good side hustle?",
+    answer:
+      "DoorDash is a solid side hustle for people who want flexible, on-demand income with zero experience required. Dashers typically earn $15–$25 per hour including tips, depending on your market and the hours you choose. It's one of the easiest gigs to start — you just need a smartphone, a valid driver's license, insurance, and a background check. The downside: earnings fluctuate with demand, and you cover your own gas and vehicle wear. It's best suited as a short-term income boost or a complement to other income streams.",
+  },
+  {
+    question: "What is a good side hustle?",
+    answer:
+      "A good side hustle is one that matches your skills, fits your schedule, and meets your income goal. For high earners, freelance web development, copywriting, SEO consulting, or UX design can generate $2,000–$5,000+/month. For beginners, transcription, virtual assistance, or food delivery can get you earning within days. The best side hustle for you depends on your time availability, startup budget, skill level, and whether you prefer active or passive income. Use the SideHustleFinder quiz to get a personalized match.",
+  },
+  {
+    question: "What's a good side hustle for making extra money fast?",
+    answer:
+      "If you need money quickly, the fastest side hustles are those with immediate demand and no setup lag. Food delivery (DoorDash, Uber Eats, Instacart), rideshare driving (Uber, Lyft), task-based gigs (TaskRabbit), and freelance services (writing, design, data entry on Upwork or Fiverr) can all generate income within your first week. Remote options like transcription, virtual assistance, and online surveys also pay quickly, though at lower rates.",
+  },
+  {
+    question: "Is Uber a good side hustle?",
+    answer:
+      "Uber is a reliable side hustle if you have a qualifying vehicle and want flexible hours. Drivers typically earn $18–$30 per hour before expenses in most US cities, with surge pricing boosting earnings during peak times. The appeal is pure schedule flexibility — you log on when you want and log off when you're done. However, you bear the cost of gas, maintenance, and depreciation, which can significantly reduce net earnings. Uber works best as supplemental income rather than a primary income source.",
+  },
+  {
+    question: "Is Instacart a good side hustle?",
+    answer:
+      "Instacart is a good side hustle for people who like grocery shopping and want flexible hours. Shoppers earn $10–$20 per hour on average, plus tips, which can meaningfully boost income. Full-service shoppers who both shop and deliver tend to earn more than in-store-only shoppers. Pay varies by batch, location, and time of day. Like other gig apps, Instacart workers are independent contractors, so you handle your own taxes and expenses. It's best for those who want to supplement income without committing to a set schedule.",
+  },
+  {
+    question: "Is Instacart worth it as a side hustle?",
+    answer:
+      "Whether Instacart is worth it depends on your market and goals. In high-demand urban areas, experienced shoppers can earn $20–$30+/hour including tips. In smaller markets or during off-peak hours, earnings can dip to $10–$12/hour. Tips are the biggest variable — good service consistently leads to better tips. If you enjoy the work and live in a busy area, Instacart can be worth it as a flexible income stream. Pair it with the Instacart referral program or other gig apps to maximize earnings.",
+  },
+  {
+    question: "Is Uber Eats a good side hustle?",
+    answer:
+      "Uber Eats is a popular food delivery side hustle with earnings typically between $12–$22 per hour including tips. Like DoorDash, it offers complete schedule flexibility and is easy to start. Uber Eats has the added benefit of being on the same platform as Uber rideshare, so some drivers do both to maximize their active time. The tradeoff is that earnings are inconsistent — restaurant volume, weather, and time of day all affect how many orders are available. It's a solid option for flexible supplemental income.",
+  },
+  {
+    question: "How to start a side hustle with no money?",
+    answer:
+      "Many of the best side hustles cost nothing to start. Freelance writing, copywriting, virtual assistance, social media management, online tutoring, transcription, and data annotation all require only a laptop and internet connection. To start with zero budget: (1) Identify a skill you already have. (2) Create a free profile on Upwork, Fiverr, or LinkedIn. (3) Offer a discounted rate for your first 2–3 clients to build reviews. (4) Raise your rates as you gain credibility. You can also start food delivery gigs like DoorDash or Instacart with just your phone and a car.",
+  },
+  {
+    question: "What are current side hustle statistics?",
+    answer:
+      "Side hustles are at an all-time high in the US. As of 2024–2025, over 44% of full-time employed Americans have a side hustle. The average side hustler earns approximately $810/month in supplemental income. Nearly 28% of Americans say their side hustle income is essential to covering monthly expenses. Freelancing platforms like Upwork and Fiverr report consistent year-over-year growth in both buyer and seller activity. The gig economy, encompassing delivery, rideshare, and task-based work, employs over 59 million Americans annually according to Statista estimates.",
+  },
+  {
+    question: "What is the best side hustle?",
+    answer:
+      "There's no single 'best' side hustle — it depends on your skills, time, and income goal. That said, freelance web development, copywriting, and SEO consulting consistently rank highest for hourly earning potential ($50–$150/hr). For passive income, digital products, affiliate marketing, and print-on-demand rank highest for scalability. For fastest time-to-income, food delivery and rideshare gigs win. For lowest risk and highest long-term upside, building a content channel (YouTube, newsletter, or blog) combined with a service business is the most powerful combination.",
+  },
+  {
+    question: "How to make money with a side hustle?",
+    answer:
+      "Making money with a side hustle follows a simple but consistent pattern: pick a hustle with demand, show up consistently, and improve over time. Start by choosing something you can do today — not someday. For service-based hustles, land your first client within 7 days using Upwork, Fiverr, or direct outreach. For gig work, complete your first shift within the week. Track your hours and earnings from day one. Once you're earning consistently, look for ways to increase your rate, automate parts of the workflow, or add a complementary income stream. The compounding effect over 6–12 months is where real income growth happens.",
+  },
+];
+---
+
+<section id="faq" class="py-16 md:py-32 border-t border-slate-200 bg-white" aria-labelledby="faq-heading">
+  <div class="container-page">
+    <div class="max-w-3xl mx-auto">
+      <!-- Header -->
+      <div class="mb-14 text-center">
+        <p class="text-sm font-bold text-pink-600 uppercase tracking-widest mb-3">FAQ</p>
+        <h2
+          id="faq-heading"
+          class="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight mb-4 text-balance"
+        >
+          Side hustle questions, answered.
+        </h2>
+        <p class="text-lg text-slate-600 font-medium text-balance">
+          Everything you need to know before starting, from "what is a side hustle" to which gigs are actually worth your time.
+        </p>
+      </div>
+
+      <!-- FAQ Accordion -->
+      <div class="divide-y divide-slate-200" itemscope itemtype="https://schema.org/FAQPage">
+        {faqs.map((faq, i) => (
+          <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <button
+              type="button"
+              class="faq-trigger w-full flex items-start justify-between gap-4 py-6 text-left group"
+              aria-expanded="false"
+              aria-controls={`faq-answer-${i}`}
+              id={`faq-question-${i}`}
+            >
+              <span
+                itemprop="name"
+                class="text-base md:text-lg font-semibold text-slate-900 group-hover:text-pink-600 transition-colors duration-200 leading-snug pr-2"
+              >
+                {faq.question}
+              </span>
+              <span
+                class="faq-icon shrink-0 mt-0.5 flex items-center justify-center w-7 h-7 rounded-full border border-slate-200 bg-slate-50 group-hover:border-pink-200 group-hover:bg-pink-50 transition-all duration-200"
+                aria-hidden="true"
+              >
+                <svg
+                  class="faq-chevron w-3.5 h-3.5 text-slate-500 group-hover:text-pink-500 transition-all duration-300"
+                  viewBox="0 0 12 12"
+                  fill="none"
+                >
+                  <path
+                    d="M2 4l4 4 4-4"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+
+            <div
+              id={`faq-answer-${i}`}
+              role="region"
+              aria-labelledby={`faq-question-${i}`}
+              class="faq-panel overflow-hidden max-h-0 transition-[max-height] duration-300 ease-in-out"
+              itemscope
+              itemprop="acceptedAnswer"
+              itemtype="https://schema.org/Answer"
+            >
+              <p
+                itemprop="text"
+                class="text-slate-600 leading-relaxed pb-6 text-base font-medium"
+              >
+                {faq.answer}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function setupFAQ() {
+    const triggers = document.querySelectorAll<HTMLButtonElement>(".faq-trigger");
+
+    triggers.forEach((trigger) => {
+      const newTrigger = trigger.cloneNode(true) as HTMLButtonElement;
+      trigger.parentNode?.replaceChild(newTrigger, trigger);
+
+      newTrigger.addEventListener("click", () => {
+        const expanded = newTrigger.getAttribute("aria-expanded") === "true";
+        const panelId = newTrigger.getAttribute("aria-controls")!;
+        const panel = document.getElementById(panelId);
+        const chevron = newTrigger.querySelector<SVGElement>(".faq-chevron");
+
+        if (expanded) {
+          newTrigger.setAttribute("aria-expanded", "false");
+          if (panel) panel.style.maxHeight = "0px";
+          if (chevron) chevron.style.transform = "rotate(0deg)";
+        } else {
+          newTrigger.setAttribute("aria-expanded", "true");
+          if (panel) panel.style.maxHeight = panel.scrollHeight + "px";
+          if (chevron) chevron.style.transform = "rotate(180deg)";
+        }
+      });
+    });
+  }
+
+  setupFAQ();
+  document.addEventListener("astro:page-load", setupFAQ);
+</script>

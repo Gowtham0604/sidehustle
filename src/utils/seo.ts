@@ -41,8 +41,8 @@ export function comparisonMeta(a: SideHustle, b: SideHustle): SEOMeta {
 
 export function homeMeta(): SEOMeta {
   return {
-    title: `SideHustleFinder — Find the Best Side Hustle for Your Situation`,
-    description: `Answer 7 quick questions and discover side hustles matched to your skills, time, budget, and income goals. 150+ real opportunities. No fluff.`,
+    title: `Side Hustle Ideas to Make Extra Money in ${new Date().getFullYear()} | SideHustleFinder`,
+    description: `Looking for a side hustle? Discover 150+ side hustle ideas to make extra money from home or anywhere. Find side hustle jobs matched to your skills, schedule, and income goals — free in 90 seconds.`,
     canonical: SITE_URL,
   };
 }
