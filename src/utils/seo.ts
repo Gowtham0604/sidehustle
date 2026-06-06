@@ -6,8 +6,8 @@ export interface SEOMeta {
   canonical?: string;
 }
 
-const SITE_NAME = "SideHustleFinder";
-const SITE_URL = "https://sidehustlefinder.com";
+const SITE_NAME = "SideHustlesJob";
+const SITE_URL = "https://sidehustlesjob.com";
 
 export function sideHustleMeta(hustle: SideHustle): SEOMeta {
   return {
@@ -41,7 +41,7 @@ export function comparisonMeta(a: SideHustle, b: SideHustle): SEOMeta {
 
 export function homeMeta(): SEOMeta {
   return {
-    title: `Side Hustle Ideas to Make Extra Money in ${new Date().getFullYear()} | SideHustleFinder`,
+    title: `Side Hustle Ideas to Make Extra Money in ${new Date().getFullYear()} | SideHustlesJob`,
     description: `Looking for a side hustle? Discover 150+ side hustle ideas to make extra money from home or anywhere. Find side hustle jobs matched to your skills, schedule, and income goals — free in 90 seconds.`,
     canonical: SITE_URL,
   };

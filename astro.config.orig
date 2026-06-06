@@ -6,5 +6,5 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  site: 'https://sidehustlefinder.com',
+  site: 'https://sidehustlesjob.com',
 });

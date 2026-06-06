@@ -18,7 +18,7 @@ const { hustle, featured = false } = Astro.props;
   
   <a
     href={`/side-hustle/${hustle.slug}`}
-    class="absolute inset-0 z-10 rounded-2xl focus-visible:ring-2 focus-visible:ring-[var(--color-violet)] focus:outline-none"
+    class="absolute inset-0 z-30 rounded-2xl focus-visible:ring-2 focus-visible:ring-[var(--color-violet)] focus:outline-none"
     aria-label={`View ${hustle.name} details`}
   ></a>
 
@@ -67,7 +67,7 @@ const { hustle, featured = false } = Astro.props;
   </div>
 
   <!-- CTA row -->
-  <div class="px-6 pb-6 relative z-20">
+  <div class="px-6 pb-6 relative z-20 pointer-events-none">
     <span class="inline-flex items-center gap-2 text-sm font-bold text-[var(--color-violet)] group-hover:text-[var(--color-link-deep)] transition-colors duration-300 pointer-events-none" aria-hidden="true">
       View guide
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none" class="transform group-hover:translate-x-1 transition-transform duration-300" aria-hidden="true">

@@ -2,8 +2,9 @@
 // Navigation component with glassmorphism
 const { pathname } = Astro.url;
 const isHowItWorks = pathname === "/how-it-works" || pathname === "/how-it-works/";
+const isBrowse = pathname === "/browse" || pathname === "/browse/";
 const isHome = pathname === "/" || pathname === "";
-const browseHref = isHome ? "#browse" : "/#browse";
+const browseHref = "/browse";
 const finderHref = isHome ? "#finder" : "/#finder";
 ---
 
@@ -12,18 +13,24 @@ const finderHref = isHome ? "#finder" : "/#finder";
   
   <div class="container-page relative z-10 flex items-center justify-between h-20">
     <!-- Logo -->
-    <a href="/" class="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-violet)] rounded-lg" aria-label="SideHustleFinder home">
+    <a href="/" class="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-violet)] rounded-lg" aria-label="SideHustlesJob home">
       <img src="/favicon-96x96.png" alt="" width="32" height="32" class="w-8 h-8 rounded-[var(--radius-xs)]" />
       <span class="text-xl font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-violet)] transition-colors duration-300">
-        SideHustle<span class="text-[var(--color-violet)]">Finder</span>
+        SideHustles<span class="text-[var(--color-violet)]">Job</span>
       </span>
     </a>
 
     <!-- Desktop Nav -->
     <nav class="hidden md:flex items-center gap-8" aria-label="Main navigation">
-      <a href={browseHref} class="text-sm font-semibold text-[var(--color-body)] hover:text-[var(--color-ink)] transition-colors duration-300 px-3 py-2 rounded-md hover:bg-slate-100/50">
-        Browse Hustles
-      </a>
+      {isBrowse ? (
+        <a href="/" class="text-sm font-semibold text-[var(--color-body)] hover:text-[var(--color-ink)] transition-colors duration-300 px-3 py-2 rounded-md hover:bg-slate-100/50">
+          Home
+        </a>
+      ) : (
+        <a href={browseHref} class="text-sm font-semibold text-[var(--color-body)] hover:text-[var(--color-ink)] transition-colors duration-300 px-3 py-2 rounded-md hover:bg-slate-100/50">
+          Browse Hustles
+        </a>
+      )}
       {isHowItWorks ? (
         <a href="/" class="text-sm font-semibold text-[var(--color-body)] hover:text-[var(--color-ink)] transition-colors duration-300 px-3 py-2 rounded-md hover:bg-slate-100/50">
           Home
@@ -56,9 +63,15 @@ const finderHref = isHome ? "#finder" : "/#finder";
     class="absolute top-full left-0 right-0 bg-white/95 backdrop-blur-2xl border-b border-[var(--color-hairline)] overflow-hidden transition-all duration-300 origin-top scale-y-0 opacity-0 invisible"
   >
     <nav class="container-page py-6 flex flex-col gap-4">
-      <a href={browseHref} class="text-lg font-semibold text-[var(--color-ink)] hover:text-[var(--color-violet)] transition-colors duration-300 px-4 py-3 rounded-xl hover:bg-pink-50">
-        Browse Hustles
-      </a>
+      {isBrowse ? (
+        <a href="/" class="text-lg font-semibold text-[var(--color-ink)] hover:text-[var(--color-violet)] transition-colors duration-300 px-4 py-3 rounded-xl hover:bg-pink-50">
+          Home
+        </a>
+      ) : (
+        <a href={browseHref} class="text-lg font-semibold text-[var(--color-ink)] hover:text-[var(--color-violet)] transition-colors duration-300 px-4 py-3 rounded-xl hover:bg-pink-50">
+          Browse Hustles
+        </a>
+      )}
       {isHowItWorks ? (
         <a href="/" class="text-lg font-semibold text-[var(--color-ink)] hover:text-[var(--color-violet)] transition-colors duration-300 px-4 py-3 rounded-xl hover:bg-pink-50">
           Home

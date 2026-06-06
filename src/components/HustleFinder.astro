@@ -1,5 +1,5 @@
 ---
-// Side Hustle Finder — interactive multi-step quiz, runs entirely client-side
+// Side Hustle Finder — AI-style recommendation experience, fully client-side
 ---
 
 <section id="finder" class="py-16 md:py-32 relative overflow-hidden" aria-labelledby="finder-heading">
@@ -7,47 +7,37 @@
   <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-pink-100 to-purple-100 rounded-full blur-[100px] pointer-events-none"></div>
 
   <div class="container-page relative z-10">
-    <div class="max-w-2xl mx-auto text-center mb-10 md:mb-16">
-      <p class="text-sm font-bold text-[var(--color-violet)] uppercase tracking-widest mb-4">
-        Side Hustle Finder
-      </p>
-      <h2
-        id="finder-heading"
-        class="text-3xl md:text-6xl font-bold text-slate-900 tracking-tight leading-none mb-6 text-balance"
-      >
+    <div class="max-w-3xl mx-auto text-center mb-10 md:mb-16">
+      <p class="text-sm font-bold text-[var(--color-violet)] uppercase tracking-widest mb-4">AI Recommendation Engine</p>
+      <h2 id="finder-heading" class="text-3xl md:text-6xl font-bold text-slate-900 tracking-tight leading-none mb-6 text-balance">
         Find your perfect hustle.
       </h2>
       <p class="text-xl text-slate-600 leading-relaxed font-medium">
-        Answer 7 quick questions and we'll match you with the best opportunities for your situation.
+        Answer 7 questions and our AI advisor will match you with the best opportunities for your situation.
       </p>
     </div>
 
     <!-- Quiz container -->
     <div
       id="finder-quiz"
-      class="max-w-2xl mx-auto bg-white/80 backdrop-blur-xl border border-slate-200 rounded-3xl shadow-xl overflow-hidden"
+      class="max-w-4xl mx-auto bg-white/80 backdrop-blur-xl border border-slate-200 rounded-3xl shadow-xl overflow-hidden"
       role="form"
       aria-label="Side hustle finder quiz"
       style="isolation: isolate;"
     >
       <!-- Progress bar -->
       <div class="h-1 bg-slate-100 relative" aria-hidden="true">
-        <div
-          id="finder-progress"
-          class="absolute inset-y-0 left-0 bg-gradient-to-r from-[var(--color-violet)] to-[var(--color-cyan)] transition-all duration-500 ease-out"
-          style="width: 0%"
-        />
+        <div id="finder-progress" class="absolute inset-y-0 left-0 bg-gradient-to-r from-[var(--color-violet)] to-[var(--color-cyan)] transition-all duration-500 ease-out" style="width: 0%"></div>
       </div>
 
       <!-- Steps -->
-      <div id="finder-steps" class="p-5 sm:p-8 md:p-12 min-h-[360px] flex flex-col justify-center">
-        <!-- Step 1: Remote or Local -->
-        <div class="finder-step transition-opacity duration-300" data-step="1">
-          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6" aria-live="polite">Step 1 of 7</p>
-          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-5 sm:mb-8">
-            Where do you want to work?
-          </h3>
-          <div class="grid grid-cols-1 gap-4" role="radiogroup" aria-labelledby="q1-label">
+      <div id="finder-steps" class="p-5 sm:p-8 md:p-12 lg:px-16 lg:py-14 min-h-[360px] flex flex-col justify-center">
+
+        <!-- Step 1 -->
+        <div class="finder-step" data-step="1">
+          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6">Step 1 of 7</p>
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-5 sm:mb-8">Where do you want to work?</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4" role="radiogroup" aria-labelledby="q1-label">
             <span id="q1-label" class="sr-only">Where do you want to work?</span>
             {[
               { value: "remote", label: "Remote", desc: "Work from anywhere with wifi" },
@@ -55,33 +45,22 @@
               { value: "both", label: "Both", desc: "Open to either option" },
             ].map(({ value, label, desc }) => (
               <label class="finder-option group flex items-center gap-5 p-5 rounded-2xl border border-slate-200 cursor-pointer hover:border-pink-300 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white">
-                <input
-                  type="radio"
-                  name="remote"
-                  value={value}
-                  class="sr-only"
-                  aria-label={label}
-                />
+                <input type="radio" name="remote" value={value} class="sr-only" aria-label={label} />
                 <span class="flex-1 min-w-0">
                   <span class="block text-base font-bold text-slate-900 group-has-[:checked]:text-pink-900">{label}</span>
                   <span class="block text-sm text-slate-500 mt-1 group-has-[:checked]:text-pink-700">{desc}</span>
                 </span>
-                <span
-                  class="shrink-0 w-5 h-5 rounded-full border-2 border-slate-300 group-has-[:checked]:border-pink-500 group-has-[:checked]:bg-pink-500 transition-all duration-300 shadow-[inset_0_0_0_4px_white]"
-                  aria-hidden="true"
-                />
+                <span class="shrink-0 w-5 h-5 rounded-full border-2 border-slate-300 group-has-[:checked]:border-pink-500 group-has-[:checked]:bg-pink-500 transition-all duration-300 shadow-[inset_0_0_0_4px_white]" aria-hidden="true"></span>
               </label>
             ))}
           </div>
         </div>
 
-        <!-- Step 2: Hours per week -->
-        <div class="finder-step hidden transition-opacity duration-300" data-step="2">
+        <!-- Step 2 -->
+        <div class="finder-step hidden" data-step="2">
           <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6">Step 2 of 7</p>
-          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-5 sm:mb-8">
-            How many hours per week can you commit?
-          </h3>
-          <div class="grid grid-cols-2 gap-3 sm:gap-4" role="radiogroup" aria-labelledby="q2-label">
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-5 sm:mb-8">How many hours per week can you commit?</h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4" role="radiogroup" aria-labelledby="q2-label">
             <span id="q2-label" class="sr-only">Hours available per week</span>
             {[
               { value: "under5", label: "Under 5 hrs" },
@@ -97,13 +76,11 @@
           </div>
         </div>
 
-        <!-- Step 3: Experience level -->
-        <div class="finder-step hidden transition-opacity duration-300" data-step="3">
+        <!-- Step 3 -->
+        <div class="finder-step hidden" data-step="3">
           <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6">Step 3 of 7</p>
-          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-5 sm:mb-8">
-            What's your experience level?
-          </h3>
-          <div class="grid grid-cols-1 gap-4" role="radiogroup" aria-labelledby="q3-label">
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-5 sm:mb-8">What's your experience level?</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4" role="radiogroup" aria-labelledby="q3-label">
             <span id="q3-label" class="sr-only">Experience level</span>
             {[
               { value: "beginner", label: "Beginner", desc: "Just getting started, no relevant experience" },
@@ -116,18 +93,16 @@
                   <span class="block text-base font-bold text-slate-900 group-has-[:checked]:text-pink-900">{label}</span>
                   <span class="block text-sm text-slate-500 mt-1 group-has-[:checked]:text-pink-700">{desc}</span>
                 </span>
-                <span class="shrink-0 w-5 h-5 rounded-full border-2 border-slate-300 group-has-[:checked]:border-pink-500 group-has-[:checked]:bg-pink-500 transition-all duration-300 shadow-[inset_0_0_0_4px_white]" aria-hidden="true" />
+                <span class="shrink-0 w-5 h-5 rounded-full border-2 border-slate-300 group-has-[:checked]:border-pink-500 group-has-[:checked]:bg-pink-500 transition-all duration-300 shadow-[inset_0_0_0_4px_white]" aria-hidden="true"></span>
               </label>
             ))}
           </div>
         </div>
 
-        <!-- Step 4: Startup budget -->
-        <div class="finder-step hidden transition-opacity duration-300" data-step="4">
+        <!-- Step 4 -->
+        <div class="finder-step hidden" data-step="4">
           <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6">Step 4 of 7</p>
-          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-5 sm:mb-8">
-            What's your startup budget?
-          </h3>
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-5 sm:mb-8">What's your startup budget?</h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" role="radiogroup" aria-labelledby="q4-label">
             <span id="q4-label" class="sr-only">Startup budget</span>
             {[
@@ -145,12 +120,10 @@
           </div>
         </div>
 
-        <!-- Step 5: Need income quickly -->
-        <div class="finder-step hidden transition-opacity duration-300" data-step="5">
+        <!-- Step 5 -->
+        <div class="finder-step hidden" data-step="5">
           <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6">Step 5 of 7</p>
-          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-5 sm:mb-8">
-            Do you need income quickly?
-          </h3>
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-5 sm:mb-8">Do you need income quickly?</h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4" role="radiogroup" aria-labelledby="q5-label">
             <span id="q5-label" class="sr-only">Need income quickly?</span>
             {[
@@ -166,12 +139,10 @@
           </div>
         </div>
 
-        <!-- Step 6: Skills -->
-        <div class="finder-step hidden transition-opacity duration-300" data-step="6">
+        <!-- Step 6 -->
+        <div class="finder-step hidden" data-step="6">
           <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6">Step 6 of 7</p>
-          <h3 class="text-2xl font-bold text-slate-900 tracking-tight mb-3">
-            What are your skills?
-          </h3>
+          <h3 class="text-2xl font-bold text-slate-900 tracking-tight mb-3">What are your skills?</h3>
           <p class="text-base text-slate-600 font-medium mb-8">Select all that apply.</p>
           <div class="flex flex-wrap gap-3" role="group" aria-labelledby="q6-label">
             <span id="q6-label" class="sr-only">Select your skills</span>
@@ -189,13 +160,11 @@
           </div>
         </div>
 
-        <!-- Step 7: Income goal -->
-        <div class="finder-step hidden transition-opacity duration-300" data-step="7">
+        <!-- Step 7 -->
+        <div class="finder-step hidden" data-step="7">
           <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6">Step 7 of 7</p>
-          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-5 sm:mb-8">
-            What's your income goal?
-          </h3>
-          <div class="grid grid-cols-1 gap-4" role="radiogroup" aria-labelledby="q7-label">
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-5 sm:mb-8">What's your income goal?</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4" role="radiogroup" aria-labelledby="q7-label">
             <span id="q7-label" class="sr-only">Income goal</span>
             {[
               { value: "extra", label: "Extra spending money", desc: "$100–$500/month on the side" },
@@ -209,50 +178,79 @@
                   <span class="block text-base font-bold text-slate-900 group-has-[:checked]:text-pink-900">{label}</span>
                   <span class="block text-sm text-slate-500 mt-1 group-has-[:checked]:text-pink-700">{desc}</span>
                 </span>
-                <span class="shrink-0 w-5 h-5 rounded-full border-2 border-slate-300 group-has-[:checked]:border-pink-500 group-has-[:checked]:bg-pink-500 transition-all duration-300 shadow-[inset_0_0_0_4px_white]" aria-hidden="true" />
+                <span class="shrink-0 w-5 h-5 rounded-full border-2 border-slate-300 group-has-[:checked]:border-pink-500 group-has-[:checked]:bg-pink-500 transition-all duration-300 shadow-[inset_0_0_0_4px_white]" aria-hidden="true"></span>
               </label>
             ))}
           </div>
         </div>
 
-        <!-- Results -->
-        <div class="finder-step hidden transition-opacity duration-300" data-step="results">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-8">
-            <div>
-              <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-2">Your matches</p>
-              <h3 class="text-2xl font-bold text-slate-900 tracking-tight">
-                Here are your top picks.
-              </h3>
+        <!-- Loading state -->
+        <div class="finder-step hidden" data-step="loading">
+          <div class="flex flex-col items-center justify-center py-8 gap-6">
+            <!-- Animated brain/AI icon -->
+            <div class="relative w-16 h-16">
+              <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 animate-ping opacity-20"></div>
+              <div class="relative w-16 h-16 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" class="text-white" aria-hidden="true">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" fill="currentColor"/>
+                </svg>
+              </div>
             </div>
-            <button
-              id="finder-restart"
-              class="self-start sm:self-auto text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors duration-300 bg-white px-4 py-2.5 rounded-full border border-slate-200 hover:border-slate-300 hover:bg-slate-50 min-h-[44px]"
-              aria-label="Restart the quiz"
-            >
+
+            <div class="text-center">
+              <p id="loading-label" class="text-lg font-bold text-slate-900 mb-2 transition-all duration-500">Analyzing your situation...</p>
+              <p class="text-sm text-slate-500 font-medium">Scoring 235+ side hustles against your answers</p>
+            </div>
+
+            <!-- Animated progress dots -->
+            <div class="flex gap-2" aria-hidden="true">
+              <div class="w-2 h-2 rounded-full bg-pink-500 animate-bounce" style="animation-delay: 0ms"></div>
+              <div class="w-2 h-2 rounded-full bg-pink-500 animate-bounce" style="animation-delay: 150ms"></div>
+              <div class="w-2 h-2 rounded-full bg-pink-500 animate-bounce" style="animation-delay: 300ms"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div class="finder-step hidden" data-step="results">
+          <!-- Header with restart -->
+          <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-6">
+            <div>
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center shrink-0">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="white" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                </div>
+                <p class="text-xs font-bold text-pink-600 uppercase tracking-widest">Analysis Complete</p>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900 tracking-tight">Your personalized recommendations</h3>
+            </div>
+            <button id="finder-restart" class="self-start sm:self-auto text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors bg-white px-4 py-2.5 rounded-full border border-slate-200 hover:border-slate-300 hover:bg-slate-50 min-h-[44px] shrink-0">
               Start over
             </button>
           </div>
-          <div id="finder-results" class="space-y-4" role="list" aria-label="Recommended side hustles" aria-live="polite">
-            <!-- Populated by JS -->
+
+          <!-- AI Report Summary -->
+          <div id="ai-report" class="mb-6 p-4 rounded-2xl bg-gradient-to-br from-pink-50 to-purple-50 border border-pink-100 text-sm text-slate-700 leading-relaxed font-medium hidden">
+          </div>
+
+          <!-- Results list -->
+          <div id="finder-results" class="grid grid-cols-1 md:grid-cols-2 gap-4" role="list" aria-label="Recommended side hustles" aria-live="polite">
+          </div>
+
+          <!-- Show more -->
+          <div id="show-more-wrap" class="mt-4 hidden">
+            <button id="show-more-btn" class="w-full py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 border border-slate-200 rounded-2xl hover:bg-slate-50 transition-all duration-300 bg-white">
+              Show more matches ↓
+            </button>
           </div>
         </div>
       </div>
 
       <!-- Navigation -->
-      <div class="px-5 pb-5 sm:px-8 sm:pb-8 md:px-12 md:pb-12 flex items-center justify-between gap-4 border-t border-slate-100 pt-5 sm:pt-6 bg-slate-50/50" id="finder-nav">
-        <button
-          id="finder-prev"
-          class="hidden text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors duration-300 px-4 py-3 rounded-full hover:bg-slate-200/50 min-h-[44px]"
-          aria-label="Go to previous question"
-        >
-          ← Back
-        </button>
-        <div class="flex-1" />
-        <button
-          id="finder-next"
-          class="flex items-center justify-center h-12 px-8 min-w-[140px] text-sm font-bold text-white bg-slate-900 rounded-full transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-800 shadow-md disabled:shadow-none hover:shadow-lg transform hover:-translate-y-0.5 disabled:transform-none"
-          aria-label="Continue to next question"
-        >
+      <div id="finder-nav" class="px-5 pb-5 sm:px-8 sm:pb-8 md:px-12 md:pb-12 lg:px-16 lg:pb-14 flex items-center justify-between gap-4 border-t border-slate-100 pt-5 sm:pt-6 bg-slate-50/50">
+        <button id="finder-prev" class="hidden text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors px-4 py-3 rounded-full hover:bg-slate-200/50 min-h-[44px]" aria-label="Go to previous question">← Back</button>
+        <div class="flex-1"></div>
+        <button id="finder-next" disabled class="flex items-center justify-center h-12 px-8 min-w-[140px] text-sm font-bold text-white bg-slate-900 rounded-full transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-800 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 disabled:transform-none" aria-label="Continue to next question">
           Continue →
         </button>
       </div>
@@ -261,15 +259,25 @@
 </section>
 
 <script>
-  import type { FinderAnswer, SideHustle } from "../types/side-hustle";
-  import { getRecommendations } from "../utils/hustle";
+  import type { FinderAnswer, ScoredHustle } from "../types/side-hustle";
+  import type { SideHustle } from "../types/side-hustle";
+  import { getScoredRecommendations, generateReportSummary } from "../utils/hustle";
   import hustleData from "../data/side-hustles.json";
 
   const hustles = hustleData as SideHustle[];
   const TOTAL_STEPS = 7;
+  const LOADING_MESSAGES = [
+    "Analyzing your situation...",
+    "Finding the best opportunities...",
+    "Comparing side hustles...",
+    "Calculating match scores...",
+    "Finalizing your recommendations...",
+  ];
 
   let currentStep = 1;
   const answers: Partial<FinderAnswer> = {};
+  let allResults: ScoredHustle[] = [];
+  let showingCount = 5;
 
   const steps = document.querySelectorAll<HTMLElement>(".finder-step");
   const nextBtn = document.getElementById("finder-next") as HTMLButtonElement;
@@ -277,27 +285,192 @@
   const progressBar = document.getElementById("finder-progress") as HTMLElement;
   const resultsEl = document.getElementById("finder-results") as HTMLElement;
   const restartBtn = document.getElementById("finder-restart") as HTMLButtonElement;
+  const aiReport = document.getElementById("ai-report") as HTMLElement;
+  const showMoreWrap = document.getElementById("show-more-wrap") as HTMLElement;
+  const showMoreBtn = document.getElementById("show-more-btn") as HTMLButtonElement;
+  const loadingLabel = document.getElementById("loading-label") as HTMLElement;
+  const finderNav = document.getElementById("finder-nav") as HTMLElement;
 
-  function showStep(n: number | "results") {
+  // ─── Confidence badge colours ─────────────────────────────────────────────
+  function confidenceClasses(confidence: ScoredHustle["confidence"]) {
+    if (confidence === "Strong Match") return "bg-emerald-50 text-emerald-700 border-emerald-200";
+    if (confidence === "Good Match") return "bg-blue-50 text-blue-700 border-blue-200";
+    return "bg-slate-50 text-slate-600 border-slate-200";
+  }
+
+  function difficultyColor(d: string) {
+    if (d === "Beginner") return "text-emerald-600";
+    if (d === "Intermediate") return "text-amber-600";
+    return "text-rose-600";
+  }
+
+  // ─── Score bar SVG ────────────────────────────────────────────────────────
+  function matchBar(pct: number): string {
+    const color = pct >= 70 ? "#10b981" : pct >= 45 ? "#3b82f6" : "#94a3b8";
+    return `
+      <div class="flex items-center gap-2 mt-1" aria-label="Match score ${pct}%">
+        <div class="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+          <div style="width:${pct}%; background:${color}" class="h-full rounded-full transition-all duration-700"></div>
+        </div>
+        <span class="text-xs font-bold tabular-nums" style="color:${color}">${pct}%</span>
+      </div>`;
+  }
+
+  // ─── Render one result card ───────────────────────────────────────────────
+  function renderCard(r: ScoredHustle, idx: number): string {
+    const whyHtml = r.whyMatch.length
+      ? r.whyMatch.map(w => `<li class="flex items-start gap-1.5"><span class="text-pink-500 mt-0.5 shrink-0">✓</span><span>${w}</span></li>`).join("")
+      : "";
+
+    return `
+      <div role="listitem" class="group rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:border-slate-300">
+        <!-- Card top: rank + confidence + name -->
+        <div class="p-5 pb-0">
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="shrink-0 w-7 h-7 rounded-full bg-slate-900 text-white text-xs font-bold flex items-center justify-center tabular-nums">#${idx + 1}</span>
+              <div class="min-w-0">
+                <p class="text-[10px] font-bold text-[var(--color-violet)] uppercase tracking-wider truncate">${r.hustle.category}</p>
+                <h4 class="text-base font-bold text-slate-900 leading-tight">${r.hustle.name}</h4>
+              </div>
+            </div>
+            <span class="shrink-0 text-[10px] font-bold px-2.5 py-1 rounded-full border ${confidenceClasses(r.confidence)}">${r.confidence}</span>
+          </div>
+
+          <!-- Match bar -->
+          <div class="mb-3">
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Match Score</p>
+            ${matchBar(r.matchPercent)}
+          </div>
+        </div>
+
+        <!-- Expandable body -->
+        <div class="px-5 pb-5">
+          <!-- Key stats row -->
+          <dl class="grid grid-cols-3 gap-2 py-3 border-y border-slate-100 mb-3 text-center">
+            <div>
+              <dt class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Income</dt>
+              <dd class="text-xs font-bold text-slate-800 tabular-nums leading-tight">${r.hustle.incomePotential}</dd>
+            </div>
+            <div>
+              <dt class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Startup</dt>
+              <dd class="text-xs font-bold text-slate-800 leading-tight">${r.hustle.startupCost}</dd>
+            </div>
+            <div>
+              <dt class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">First $</dt>
+              <dd class="text-xs font-bold text-slate-800 leading-tight">${r.hustle.timeToFirstIncome}</dd>
+            </div>
+          </dl>
+
+          <!-- Why it matches -->
+          ${whyHtml ? `
+          <div class="mb-3">
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Best for you because</p>
+            <ul class="space-y-1 text-xs text-slate-600 font-medium">${whyHtml}</ul>
+          </div>` : ""}
+
+          <!-- Difficulty + CTA row -->
+          <div class="flex items-center justify-between gap-3 pt-1">
+            <span class="text-xs font-semibold ${difficultyColor(r.difficulty)}">● ${r.difficulty}</span>
+            <a
+              href="/side-hustle/${r.hustle.slug}"
+              class="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--color-violet)] hover:text-[var(--color-link-deep)] transition-colors"
+              aria-label="View ${r.hustle.name} guide"
+            >
+              View full guide
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8h9M9 4.5l3.5 3.5L9 11.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  // ─── Render results ────────────────────────────────────────────────────────
+  function renderResults() {
+    const fa: FinderAnswer = {
+      remote: (answers.remote ?? "both") as FinderAnswer["remote"],
+      hoursPerWeek: (answers.hoursPerWeek ?? "5to10") as FinderAnswer["hoursPerWeek"],
+      experienceLevel: (answers.experienceLevel ?? "beginner") as FinderAnswer["experienceLevel"],
+      startupBudget: (answers.startupBudget ?? "zero") as FinderAnswer["startupBudget"],
+      needsQuickIncome: answers.needsQuickIncome ?? false,
+      skills: answers.skills ?? [],
+      incomeGoal: (answers.incomeGoal ?? "extra") as FinderAnswer["incomeGoal"],
+    };
+
+    allResults = getScoredRecommendations(hustles, fa, 10);
+
+    // AI report summary
+    if (allResults.length > 0) {
+      const summary = generateReportSummary(fa, allResults);
+      aiReport.innerHTML = `<span class="font-bold text-slate-900">Your Profile: </span>${summary}`;
+      aiReport.classList.remove("hidden");
+    }
+
+    renderVisibleCards();
+  }
+
+  function renderVisibleCards() {
+    const visible = allResults.slice(0, showingCount);
+
+    if (visible.length === 0) {
+      resultsEl.innerHTML = `<p class="text-base text-slate-500 font-medium text-center py-10 bg-slate-50 rounded-2xl border border-slate-200">No exact matches — try adjusting your answers.</p>`;
+    } else {
+      resultsEl.innerHTML = visible.map((r, i) => renderCard(r, i)).join("");
+    }
+
+    // Show-more button
+    if (allResults.length > showingCount) {
+      showMoreWrap.classList.remove("hidden");
+      showMoreBtn.textContent = `Show ${Math.min(5, allResults.length - showingCount)} more matches ↓`;
+    } else {
+      showMoreWrap.classList.add("hidden");
+    }
+  }
+
+  // ─── Loading sequence ──────────────────────────────────────────────────────
+  async function runLoadingAndShowResults() {
+    showStep("loading");
+
+    let msgIdx = 0;
+    const interval = setInterval(() => {
+      msgIdx = (msgIdx + 1) % LOADING_MESSAGES.length;
+      if (loadingLabel) {
+        loadingLabel.style.opacity = "0";
+        setTimeout(() => {
+          loadingLabel.textContent = LOADING_MESSAGES[msgIdx];
+          loadingLabel.style.opacity = "1";
+        }, 200);
+      }
+    }, 700);
+
+    // Run actual scoring while showing animation
+    await new Promise<void>((resolve) => setTimeout(() => {
+      renderResults();
+      resolve();
+    }, 50));
+
+    // Show for at least 2.2s for the "AI feel"
+    await new Promise((resolve) => setTimeout(resolve, 2200));
+    clearInterval(interval);
+
+    showStep("results");
+  }
+
+  // ─── Step navigation ──────────────────────────────────────────────────────
+  function showStep(n: number | "loading" | "results") {
     steps.forEach((s) => {
       const isActive = s.dataset.step === String(n);
-      if (isActive) {
-        s.classList.remove("hidden");
-        // small delay to allow display block to apply before opacity transition
-        setTimeout(() => s.style.opacity = "1", 10);
-      } else {
-        s.style.opacity = "0";
-        setTimeout(() => s.classList.add("hidden"), 300);
-      }
+      s.classList.toggle("hidden", !isActive);
     });
 
-    const isResults = n === "results";
-    const nav = document.getElementById("finder-nav");
-    if (nav) nav.classList.toggle("hidden", isResults);
+    const isSpecial = n === "results" || n === "loading";
+    finderNav?.classList.toggle("hidden", isSpecial);
 
     if (typeof n === "number") {
       prevBtn?.classList.toggle("hidden", n <= 1);
       progressBar.style.width = `${((n - 1) / TOTAL_STEPS) * 100}%`;
+    } else if (n === "loading") {
+      progressBar.style.width = "95%";
     } else {
       progressBar.style.width = "100%";
     }
@@ -305,41 +478,19 @@
 
   function getStepValue(step: number): string | string[] | null {
     switch (step) {
-      case 1: {
-        const el = document.querySelector<HTMLInputElement>('input[name="remote"]:checked');
-        return el?.value ?? null;
-      }
-      case 2: {
-        const el = document.querySelector<HTMLInputElement>('input[name="hoursPerWeek"]:checked');
-        return el?.value ?? null;
-      }
-      case 3: {
-        const el = document.querySelector<HTMLInputElement>('input[name="experienceLevel"]:checked');
-        return el?.value ?? null;
-      }
-      case 4: {
-        const el = document.querySelector<HTMLInputElement>('input[name="startupBudget"]:checked');
-        return el?.value ?? null;
-      }
-      case 5: {
-        const el = document.querySelector<HTMLInputElement>('input[name="needsQuickIncome"]:checked');
-        return el?.value ?? null;
-      }
-      case 6: {
-        const checked = [...document.querySelectorAll<HTMLInputElement>('input[name="skills"]:checked')];
-        return checked.length > 0 ? checked.map((c) => c.value) : [];
-      }
-      case 7: {
-        const el = document.querySelector<HTMLInputElement>('input[name="incomeGoal"]:checked');
-        return el?.value ?? null;
-      }
-      default:
-        return null;
+      case 1: return document.querySelector<HTMLInputElement>('input[name="remote"]:checked')?.value ?? null;
+      case 2: return document.querySelector<HTMLInputElement>('input[name="hoursPerWeek"]:checked')?.value ?? null;
+      case 3: return document.querySelector<HTMLInputElement>('input[name="experienceLevel"]:checked')?.value ?? null;
+      case 4: return document.querySelector<HTMLInputElement>('input[name="startupBudget"]:checked')?.value ?? null;
+      case 5: return document.querySelector<HTMLInputElement>('input[name="needsQuickIncome"]:checked')?.value ?? null;
+      case 6: return [...document.querySelectorAll<HTMLInputElement>('input[name="skills"]:checked')].map(c => c.value);
+      case 7: return document.querySelector<HTMLInputElement>('input[name="incomeGoal"]:checked')?.value ?? null;
+      default: return null;
     }
   }
 
   function isStepValid(step: number): boolean {
-    if (step === 6) return true; // skills are optional
+    if (step === 6) return true;
     const val = getStepValue(step);
     return val !== null && val !== undefined;
   }
@@ -351,71 +502,24 @@
     nextBtn.setAttribute("aria-disabled", String(!valid));
   }
 
-  function renderResults() {
-    const finderAnswers: FinderAnswer = {
-      remote: (answers.remote ?? "both") as FinderAnswer["remote"],
-      hoursPerWeek: (answers.hoursPerWeek ?? "5to10") as FinderAnswer["hoursPerWeek"],
-      experienceLevel: (answers.experienceLevel ?? "beginner") as FinderAnswer["experienceLevel"],
-      startupBudget: (answers.startupBudget ?? "zero") as FinderAnswer["startupBudget"],
-      needsQuickIncome: answers.needsQuickIncome ?? false,
-      skills: answers.skills ?? [],
-      incomeGoal: (answers.incomeGoal ?? "extra") as FinderAnswer["incomeGoal"],
-    };
-
-    const results = getRecommendations(hustles, finderAnswers, 6);
-
-    resultsEl.innerHTML = results.length
-      ? results
-          .map(
-            (h) => `
-          <a
-            href="/side-hustle/${h.slug}"
-            role="listitem"
-            class="flex items-center justify-between gap-4 p-5 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 transition-all duration-300 group shadow-sm hover:shadow-md"
-          >
-            <div class="min-w-0">
-              <p class="text-[10px] font-bold text-pink-600 uppercase tracking-widest mb-1">${h.category}</p>
-              <p class="text-base font-bold text-slate-900 mb-1 line-clamp-2">${h.name}</p>
-              <p class="text-sm font-medium text-slate-600 group-hover:text-slate-900 transition-colors">${h.incomePotential} · ${h.startupCost} startup</p>
-            </div>
-            <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-pink-100 transition-colors duration-300">
-              <svg width="18" height="18" viewBox="0 0 16 16" fill="none" class="shrink-0 text-slate-400 group-hover:text-pink-600 transition-transform duration-300 transform group-hover:translate-x-1" aria-hidden="true">
-                <path d="M3.5 8h9M9 4.5l3.5 3.5L9 11.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-          </a>`
-          )
-          .join("")
-      : `<p class="text-base text-slate-500 font-medium text-center py-10 bg-slate-50 rounded-2xl border border-slate-200">No exact matches — try adjusting your answers.</p>`;
-  }
-
-  // ─── Event listeners ─────────────────────────────────────────────────────
-
-  // Enable/disable the Continue button whenever any input changes
-  document.querySelector("#finder-quiz")?.addEventListener("change", updateNextBtn);
-
-  // Also listen on individual inputs in case event bubbling is interrupted
-  document.querySelectorAll<HTMLInputElement>('#finder-quiz input[type="radio"], #finder-quiz input[type="checkbox"]').forEach((input) => {
-    input.addEventListener("change", updateNextBtn);
-    // Also handle click events for desktop browsers where change may not fire reliably
-    input.addEventListener("click", updateNextBtn);
+  // ─── Event listeners ──────────────────────────────────────────────────────
+  // Use a single delegated listener on the quiz container for reliability
+  document.querySelector("#finder-quiz")?.addEventListener("change", () => {
+    updateNextBtn();
+  });
+  document.querySelector("#finder-quiz")?.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+    if (target.matches('input[type="radio"], input[type="checkbox"]') ||
+        target.closest('label.finder-option, label')) {
+      // Small delay to let browser update :checked state before we query it
+      setTimeout(updateNextBtn, 0);
+    }
   });
 
-  // Also enable the button when clicking anywhere on a label (desktop fix)
-  document.querySelectorAll<HTMLLabelElement>('#finder-quiz label.finder-option').forEach((label) => {
-    label.addEventListener("click", () => {
-      // Use setTimeout to allow the checked state to update before re-evaluating
-      setTimeout(updateNextBtn, 10);
-    });
-  });
-
-  nextBtn?.addEventListener("click", () => {
-    // Guard: don't advance if step isn't valid
+  nextBtn?.addEventListener("click", async () => {
     if (!isStepValid(currentStep)) return;
-
     const val = getStepValue(currentStep);
 
-    // Save answer
     if (currentStep === 1) answers.remote = val as FinderAnswer["remote"];
     if (currentStep === 2) answers.hoursPerWeek = val as FinderAnswer["hoursPerWeek"];
     if (currentStep === 3) answers.experienceLevel = val as FinderAnswer["experienceLevel"];
@@ -424,8 +528,7 @@
     if (currentStep === 6) answers.skills = (val as string[]) ?? [];
     if (currentStep === 7) {
       answers.incomeGoal = val as FinderAnswer["incomeGoal"];
-      renderResults();
-      showStep("results");
+      await runLoadingAndShowResults();
       return;
     }
 
@@ -438,21 +541,27 @@
     if (currentStep > 1) {
       currentStep--;
       showStep(currentStep);
-      // Re-evaluate after a tick so hidden inputs are visible to the DOM query
       setTimeout(updateNextBtn, 50);
     }
   });
 
   restartBtn?.addEventListener("click", () => {
     currentStep = 1;
-    Object.keys(answers).forEach((k) => delete (answers as Record<string, unknown>)[k]);
-
-    // Clear all inputs
-    document.querySelectorAll<HTMLInputElement>('#finder-quiz input[type="radio"]').forEach((r) => (r.checked = false));
-    document.querySelectorAll<HTMLInputElement>('#finder-quiz input[type="checkbox"]').forEach((c) => (c.checked = false));
-
+    showingCount = 5;
+    allResults = [];
+    Object.keys(answers).forEach(k => delete (answers as Record<string, unknown>)[k]);
+    document.querySelectorAll<HTMLInputElement>('#finder-quiz input[type="radio"]').forEach(r => r.checked = false);
+    document.querySelectorAll<HTMLInputElement>('#finder-quiz input[type="checkbox"]').forEach(c => c.checked = false);
+    aiReport.classList.add("hidden");
+    aiReport.innerHTML = "";
+    resultsEl.innerHTML = "";
     showStep(1);
     updateNextBtn();
+  });
+
+  showMoreBtn?.addEventListener("click", () => {
+    showingCount += 5;
+    renderVisibleCards();
   });
 
   // Init

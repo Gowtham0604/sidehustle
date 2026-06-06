@@ -13,7 +13,7 @@ const faqs: FAQItem[] = [
   {
     question: "How to start a side hustle?",
     answer:
-      "Starting a side hustle comes down to four steps: (1) Pick a hustle that matches your skills, schedule, and budget. (2) Set up the minimum viable presence — a profile on Upwork, a gig on Fiverr, a DoorDash driver account, or a simple website. (3) Get your first client or first delivery — don't wait until everything is perfect. (4) Reinvest early earnings to grow. Most side hustles can be started in a single weekend. Use the SideHustleFinder quiz above to find the best match for your situation.",
+      "Starting a side hustle comes down to four steps: (1) Pick a hustle that matches your skills, schedule, and budget. (2) Set up the minimum viable presence — a profile on Upwork, a gig on Fiverr, a DoorDash driver account, or a simple website. (3) Get your first client or first delivery — don't wait until everything is perfect. (4) Reinvest early earnings to grow. Most side hustles can be started in a single weekend. Use the SideHustlesJob quiz above to find the best match for your situation.",
   },
   {
     question: "Is DoorDash a good side hustle?",
@@ -23,7 +23,7 @@ const faqs: FAQItem[] = [
   {
     question: "What is a good side hustle?",
     answer:
-      "A good side hustle is one that matches your skills, fits your schedule, and meets your income goal. For high earners, freelance web development, copywriting, SEO consulting, or UX design can generate $2,000–$5,000+/month. For beginners, transcription, virtual assistance, or food delivery can get you earning within days. The best side hustle for you depends on your time availability, startup budget, skill level, and whether you prefer active or passive income. Use the SideHustleFinder quiz to get a personalized match.",
+      "A good side hustle is one that matches your skills, fits your schedule, and meets your income goal. For high earners, freelance web development, copywriting, SEO consulting, or UX design can generate $2,000–$5,000+/month. For beginners, transcription, virtual assistance, or food delivery can get you earning within days. The best side hustle for you depends on your time availability, startup budget, skill level, and whether you prefer active or passive income. Use the SideHustlesJob quiz to get a personalized match.",
   },
   {
     question: "What's a good side hustle for making extra money fast?",
@@ -73,6 +73,19 @@ const faqs: FAQItem[] = [
 ];
 ---
 
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.answer
+    }
+  }))
+})} />
+
 <section id="faq" class="py-16 md:py-32 border-t border-slate-200 bg-white" aria-labelledby="faq-heading">
   <div class="container-page">
     <div class="max-w-3xl mx-auto">
@@ -91,9 +104,9 @@ const faqs: FAQItem[] = [
       </div>
 
       <!-- FAQ Accordion -->
-      <div class="divide-y divide-slate-200" itemscope itemtype="https://schema.org/FAQPage">
+      <div class="divide-y divide-slate-200">
         {faqs.map((faq, i) => (
-          <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <div>
             <button
               type="button"
               class="faq-trigger w-full flex items-start justify-between gap-4 py-6 text-left group"
@@ -102,7 +115,6 @@ const faqs: FAQItem[] = [
               id={`faq-question-${i}`}
             >
               <span
-                itemprop="name"
                 class="text-base md:text-lg font-semibold text-slate-900 group-hover:text-pink-600 transition-colors duration-200 leading-snug pr-2"
               >
                 {faq.question}
@@ -132,12 +144,8 @@ const faqs: FAQItem[] = [
               role="region"
               aria-labelledby={`faq-question-${i}`}
               class="faq-panel overflow-hidden max-h-0 transition-[max-height] duration-300 ease-in-out"
-              itemscope
-              itemprop="acceptedAnswer"
-              itemtype="https://schema.org/Answer"
             >
               <p
-                itemprop="text"
                 class="text-slate-600 leading-relaxed pb-6 text-base font-medium"
               >
                 {faq.answer}

@@ -2,7 +2,6 @@
 import Layout from "../layouts/Layout.astro";
 import HustleCard from "../components/HustleCard.astro";
 import HustleFinder from "../components/HustleFinder.astro";
-import Search from "../components/Search.astro";
 import FAQ from "../components/FAQ.astro";
 import type { SideHustle } from "../types/side-hustle";
 import { homeMeta } from "../utils/seo";
@@ -23,43 +22,41 @@ const stats = [
   { label: "Beginner friendly", value: `${hustles.filter((h) => h.beginnerFriendly).length}+` },
 ];
 
-const categories = [...new Set(hustles.map((h) => h.category))].sort();
-
 // Home page JSON-LD: WebSite + WebApplication schema
 const homeJsonLd = JSON.stringify({
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "WebSite",
-      "@id": "https://sidehustlefinder.com/#website",
-      "url": "https://sidehustlefinder.com",
-      "name": "SideHustleFinder",
+      "@id": "https://sidehustlesjob.com/#website",
+      "url": "https://sidehustlesjob.com",
+      "name": "SideHustlesJob",
       "description": "Discover 150+ side hustle ideas to make extra money from home or anywhere. Find side hustle jobs matched to your skills, schedule, and income goals.",
       "publisher": {
         "@type": "Organization",
-        "name": "SideHustleFinder",
-        "url": "https://sidehustlefinder.com",
+        "name": "SideHustlesJob",
+        "url": "https://sidehustlesjob.com",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://sidehustlefinder.com/favicon-96x96.png"
+          "url": "https://sidehustlesjob.com/favicon-96x96.png"
         }
       },
       "potentialAction": {
         "@type": "SearchAction",
         "target": {
           "@type": "EntryPoint",
-          "urlTemplate": "https://sidehustlefinder.com/#browse?q={search_term_string}"
+          "urlTemplate": "https://sidehustlesjob.com/#browse?q={search_term_string}"
         },
         "query-input": "required name=search_term_string"
       }
     },
     {
       "@type": "WebPage",
-      "@id": "https://sidehustlefinder.com/#webpage",
-      "url": "https://sidehustlefinder.com",
-      "name": `Side Hustle Ideas to Make Extra Money in ${new Date().getFullYear()} | SideHustleFinder`,
+      "@id": "https://sidehustlesjob.com/#webpage",
+      "url": "https://sidehustlesjob.com",
+      "name": `Side Hustle Ideas to Make Extra Money in ${new Date().getFullYear()} | SideHustlesJob`,
       "description": "Looking for a side hustle? Discover 150+ side hustle ideas to make extra money from home or anywhere.",
-      "isPartOf": { "@id": "https://sidehustlefinder.com/#website" },
+      "isPartOf": { "@id": "https://sidehustlesjob.com/#website" },
       "breadcrumb": {
         "@type": "BreadcrumbList",
         "itemListElement": [
@@ -67,7 +64,7 @@ const homeJsonLd = JSON.stringify({
             "@type": "ListItem",
             "position": 1,
             "name": "Home",
-            "item": "https://sidehustlefinder.com"
+            "item": "https://sidehustlesjob.com"
           }
         ]
       }
@@ -231,7 +228,7 @@ const homeJsonLd = JSON.stringify({
             Find my side hustle →
           </a>
           <a
-            href="#browse"
+            href="/browse"
             class="w-full sm:w-auto flex items-center justify-center h-14 px-8 text-base font-bold text-slate-700 bg-white border border-slate-200 rounded-full hover:bg-slate-50 hover:border-slate-300 transition-all duration-300 transform hover:-translate-y-1 shadow-sm"
           >
             Browse all
@@ -272,7 +269,7 @@ const homeJsonLd = JSON.stringify({
           </h2>
         </div>
         <a
-          href="#browse"
+          href="/browse"
           class="shrink-0 flex items-center gap-2 text-sm font-semibold text-slate-700 hover:text-slate-900 transition-colors duration-300 px-4 py-2 rounded-full border border-slate-200 bg-white hover:bg-slate-50"
         >
           View all {hustles.length}
@@ -292,62 +289,6 @@ const homeJsonLd = JSON.stringify({
 
   <!-- ─── Finder quiz ──────────────────────────────────────────────────────── -->
   <HustleFinder />
-
-  <!-- ─── Browse All ───────────────────────────────────────────────────────── -->
-  <section id="browse" class="py-16 md:py-32 border-t border-slate-200 bg-slate-50 relative" aria-labelledby="browse-heading">
-    <div class="container-page relative z-10">
-      <!-- Header -->
-      <div class="max-w-3xl mb-12">
-        <p class="text-sm font-bold text-pink-600 uppercase tracking-widest mb-3">Browse all</p>
-        <h2
-          id="browse-heading"
-          class="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight mb-6 text-balance"
-        >
-          {hustles.length} side hustles. Find yours.
-        </h2>
-        <p class="text-lg text-slate-600 leading-relaxed font-medium">Search by skill, category, or keyword. Filter by what matters to you.</p>
-      </div>
-
-      <!-- Search + filters -->
-      <div class="mb-10">
-        <Search />
-      </div>
-
-      <!-- Category tabs -->
-      <div class="flex flex-wrap gap-2.5 mb-10" role="group" aria-label="Filter by category">
-        <button
-          class="cat-filter active px-4 py-2 text-sm rounded-full border border-slate-900 text-white font-semibold bg-slate-900 transition-all duration-300"
-          data-cat="all"
-          aria-pressed="true"
-        >
-          All
-        </button>
-        {categories.map((cat) => (
-          <button
-            class="cat-filter px-4 py-2 text-sm rounded-full border border-slate-200 text-slate-600 hover:border-slate-300 hover:text-slate-900 hover:bg-slate-100 transition-all duration-300 font-medium bg-white"
-            data-cat={cat}
-            aria-pressed="false"
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
-
-      <!-- Card grid -->
-      <div
-        id="hustles-grid"
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-        role="list"
-        aria-label="Side hustle cards"
-      >
-        {hustles.map((hustle) => (
-          <div data-slug={hustle.slug} data-cat={hustle.category} role="listitem" class="transition-all duration-500">
-            <HustleCard hustle={hustle} />
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
 
   <!-- ─── Audience links ───────────────────────────────────────────────────── -->
   <section class="py-16 md:py-32 relative border-t border-slate-200" aria-labelledby="audience-heading">
@@ -464,10 +405,10 @@ const homeJsonLd = JSON.stringify({
           The <strong>side hustle stack</strong> is the idea of layering multiple income streams together — a freelance service for active income, a digital product for semi-passive income, and a content channel for long-term passive income. For example: you might offer freelance copywriting for immediate cash flow, sell a writing template pack on Etsy for passive sales, and build a YouTube channel over time for ad revenue. Each layer compounds your earnings without requiring you to work three times as hard.
         </p>
 
-        <h3 class="text-2xl font-bold text-slate-900 mt-10 mb-4">How SideHustleFinder Works</h3>
+        <h3 class="text-2xl font-bold text-slate-900 mt-10 mb-4">How SideHustlesJob Works</h3>
 
         <p class="text-slate-600 leading-relaxed mb-6">
-          SideHustleFinder takes the guesswork out of choosing a <strong>side hustle</strong>. Instead of scrolling through endless lists of generic ideas, you answer 7 quick questions about where you want to work, how many hours you have, your experience level, your startup budget, and your income goal. Our matching engine then scores every hustle in our database against your answers and surfaces the most relevant opportunities — ranked by fit, not commission or sponsored placement.
+          SideHustlesJob takes the guesswork out of choosing a <strong>side hustle</strong>. Instead of scrolling through endless lists of generic ideas, you answer 7 quick questions about where you want to work, how many hours you have, your experience level, your startup budget, and your income goal. Our matching engine then scores every hustle in our database against your answers and surfaces the most relevant opportunities — ranked by fit, not commission or sponsored placement.
         </p>
 
         <p class="text-slate-600 leading-relaxed mb-6">
@@ -475,7 +416,7 @@ const homeJsonLd = JSON.stringify({
         </p>
 
         <p class="text-slate-600 leading-relaxed">
-          Whether you're a student looking for flexible <strong>side hustle jobs</strong>, a parent who needs <strong>side hustle ideas from home</strong>, or a professional ready to turn your expertise into consulting income — SideHustleFinder has a match for you. It takes 90 seconds, it's completely free, and no account is required. Start the quiz above and find your side hustle today.
+          Whether you're a student looking for flexible <strong>side hustle jobs</strong>, a parent who needs <strong>side hustle ideas from home</strong>, or a professional ready to turn your expertise into consulting income — SideHustlesJob has a match for you. It takes 90 seconds, it's completely free, and no account is required. Start the quiz above and find your side hustle today.
         </p>
 
       </div>
@@ -484,6 +425,35 @@ const homeJsonLd = JSON.stringify({
 
   <!-- ─── FAQ ─────────────────────────────────────────────────────────────── -->
   <FAQ />
+
+  <!-- ─── Company Links ────────────────────────────────────────────────────── -->
+  <section class="py-16 md:py-24 border-t border-slate-200 bg-slate-50" aria-labelledby="company-links-heading">
+    <div class="container-page">
+      <div class="max-w-4xl mx-auto text-center mb-10">
+        <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-3">SideHustlesJob</p>
+        <h2 id="company-links-heading" class="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
+          Learn more about us
+        </h2>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
+        {[
+          { href: "/about", label: "About Us", icon: "👋", desc: "Who we are and why we built this" },
+          { href: "/how-it-works", label: "How It Works", icon: "⚡", desc: "How our matching quiz works" },
+          { href: "/contact", label: "Contact Us", icon: "💬", desc: "Questions, feedback, partnerships" },
+          { href: "/privacy-policy", label: "Privacy Policy", icon: "🔒", desc: "How we handle your data" },
+        ].map(({ href, label, icon, desc }) => (
+          <a
+            href={href}
+            class="flex flex-col items-center text-center gap-2 p-5 rounded-2xl border border-slate-200 bg-white hover:bg-slate-900 hover:border-slate-900 transition-all duration-300 group shadow-sm hover:-translate-y-1"
+          >
+            <span class="text-2xl">{icon}</span>
+            <span class="text-sm font-bold text-slate-800 group-hover:text-white transition-colors">{label}</span>
+            <span class="text-xs text-slate-500 group-hover:text-slate-300 transition-colors leading-snug">{desc}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
 
 </Layout>
 

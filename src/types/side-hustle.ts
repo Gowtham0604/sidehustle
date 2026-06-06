@@ -28,6 +28,15 @@ export interface FinderAnswer {
   incomeGoal: "extra" | "parttime" | "fulltime" | "replace";
 }
 
+export interface ScoredHustle {
+  hustle: SideHustle;
+  score: number;
+  matchPercent: number;
+  whyMatch: string[];
+  difficulty: string;
+  confidence: "Strong Match" | "Good Match" | "Decent Match";
+}
+
 export interface AudienceMeta {
   slug: string;
   title: string;

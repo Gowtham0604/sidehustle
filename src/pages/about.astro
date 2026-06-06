@@ -1,0 +1,139 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const title = "About Us | SideHustlesJob";
+const description = "Learn about SideHustlesJob — our mission to help people discover the right side hustle for their skills, schedule, and income goals.";
+const canonical = "https://sidehustlesjob.com/about";
+
+const stats = [
+  { value: "150+", label: "Side hustles tracked" },
+  { value: "44%", label: "of Americans have a side hustle" },
+  { value: "$810", label: "Average monthly side hustle income" },
+  { value: "Free", label: "Always free to use" },
+];
+---
+
+<Layout title={title} description={description} canonical={canonical}>
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden pt-32 pb-20 md:pt-48 md:pb-32">
+    <div class="absolute inset-0 z-0 bg-gradient-to-br from-slate-50 via-white to-slate-100 opacity-60"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-pink-100/50 to-purple-100/50 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="container-page relative z-10">
+      <div class="max-w-3xl mx-auto text-center">
+        <p class="text-sm font-bold text-pink-600 uppercase tracking-widest mb-4">About Us</p>
+        <h1 class="text-4xl md:text-6xl font-bold text-slate-900 tracking-tight leading-tight mb-6 text-balance">
+          We help people find the right side hustle.
+        </h1>
+        <p class="text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto text-balance font-medium">
+          SideHustlesJob was built with one goal: cut through the noise and match people with real, actionable side hustle opportunities that fit their actual life.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats bar -->
+  <section class="border-y border-slate-200 bg-slate-50" aria-label="Key stats">
+    <div class="container-page">
+      <dl class="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-slate-200">
+        {stats.map(({ value, label }) => (
+          <div class="flex flex-col items-center py-10 px-4 text-center">
+            <dd class="text-4xl font-bold text-slate-800 tracking-tight mb-2">{value}</dd>
+            <dt class="text-xs font-mono text-slate-500 uppercase tracking-wider">{label}</dt>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <!-- Mission -->
+  <section class="py-16 md:py-32">
+    <div class="container-page">
+      <div class="max-w-3xl mx-auto">
+
+        <div class="mb-16">
+          <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-3">Our mission</p>
+          <h2 class="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight leading-tight mb-6">
+            Real opportunities, no fluff.
+          </h2>
+          <div class="space-y-4 text-slate-600 text-lg leading-relaxed">
+            <p>
+              The internet is full of "top 50 side hustle ideas" lists that are vague, outdated, or exist purely to earn an affiliate click. We built SideHustlesJob to be different — a tool that actually helps you decide, not just browse.
+            </p>
+            <p>
+              Every side hustle in our database includes real income ranges, honest startup costs, realistic time-to-first-income estimates, and a step-by-step guide to getting started. We don't inflate numbers or push high-commission opportunities to the top.
+            </p>
+            <p>
+              Our 7-question finder quiz matches you against all 150+ opportunities based on your actual situation — your skills, schedule, location, experience level, and income target. The result is a ranked, personalized list of side hustles most likely to work for you.
+            </p>
+          </div>
+        </div>
+
+        <!-- Values -->
+        <div class="mb-16">
+          <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-3">What we stand for</p>
+          <h2 class="text-3xl font-bold text-slate-900 tracking-tight mb-8">Our values</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {[
+              {
+                icon: "🎯",
+                title: "Relevance over volume",
+                body: "We'd rather show you 5 side hustles that genuinely fit your situation than 50 that don't.",
+              },
+              {
+                icon: "📊",
+                title: "Honest data",
+                body: "Income estimates are based on real market data, not best-case scenarios. We show ranges, not inflated peaks.",
+              },
+              {
+                icon: "🚀",
+                title: "Actionable, not aspirational",
+                body: "Every result comes with a concrete next step. You should be able to take action within 24 hours.",
+              },
+              {
+                icon: "🔒",
+                title: "No account required",
+                body: "You don't need to sign up, hand over your email, or create a profile to use SideHustlesJob. It's free and anonymous.",
+              },
+            ].map(({ icon, title, body }) => (
+              <div class="p-6 rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div class="text-2xl mb-3">{icon}</div>
+                <h3 class="font-bold text-slate-900 mb-2">{title}</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">{body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Who we are -->
+        <div class="mb-16">
+          <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-3">Who we are</p>
+          <h2 class="text-3xl font-bold text-slate-900 tracking-tight mb-6">Built by people who side-hustle too.</h2>
+          <div class="space-y-4 text-slate-600 text-lg leading-relaxed">
+            <p>
+              SideHustlesJob is an independent project created by a small team of developers, writers, and entrepreneurs who have personally explored — and built income from — many of the opportunities in our database.
+            </p>
+            <p>
+              We're not a VC-backed startup chasing growth metrics. We're a focused product with a single purpose: helping people find real ways to earn more money on their own terms.
+            </p>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="rounded-2xl bg-slate-900 p-8 md:p-10 text-center">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">Ready to find your side hustle?</h2>
+          <p class="text-slate-400 mb-6">Answer 7 quick questions. Get matched in 90 seconds. No account needed.</p>
+          <a
+            href="/#finder"
+            class="inline-flex items-center justify-center h-12 px-8 font-bold text-slate-900 bg-white rounded-full hover:bg-slate-100 transition-colors duration-300 shadow-lg"
+          >
+            Find my side hustle →
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</Layout>

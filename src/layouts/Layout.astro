@@ -15,17 +15,17 @@ interface Props {
 }
 
 const {
-  title = `Side Hustle Ideas to Make Extra Money in ${new Date().getFullYear()} | SideHustleFinder`,
+  title = `Side Hustle Ideas to Make Extra Money in ${new Date().getFullYear()} | SideHustlesJob`,
   description = "Looking for a side hustle? Discover 150+ side hustle ideas to make extra money from home or anywhere. Find side hustle jobs matched to your skills, schedule, and income goals — free in 90 seconds.",
   canonical,
   jsonLd,
-  ogImage = "https://sidehustlefinder.com/og-image.png",
+  ogImage = "https://sidehustlesjob.com/og-image.png",
   keywords = "side hustle, what is a side hustle, side hustle jobs, side hustle ideas, side hustle ideas to make extra money, side hustle stack, side hustle from home, side hustle ideas from home",
   ogType = "website",
 } = Astro.props;
 
-const siteUrl = "https://sidehustlefinder.com";
-const siteName = "SideHustleFinder";
+const siteUrl = "https://sidehustlesjob.com";
+const siteName = "SideHustlesJob";
 const resolvedCanonical = canonical ?? siteUrl;
 ---
 
@@ -52,16 +52,16 @@ const resolvedCanonical = canonical ?? siteUrl;
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="SideHustleFinder — Discover the best side hustle ideas to make extra money" />
+    <meta property="og:image:alt" content="SideHustlesJob — Discover the best side hustle ideas to make extra money" />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@sidehustlefinder" />
+    <meta name="twitter:site" content="@sidehustlesjob" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
-    <meta name="twitter:image:alt" content="SideHustleFinder — Discover the best side hustle ideas to make extra money" />
+    <meta name="twitter:image:alt" content="SideHustlesJob — Discover the best side hustle ideas to make extra money" />
 
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
