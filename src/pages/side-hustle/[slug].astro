@@ -1,0 +1,255 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import HustleCard from "../../components/HustleCard.astro";
+import type { SideHustle } from "../../types/side-hustle";
+import { getRelated } from "../../utils/hustle";
+import { sideHustleMeta, jsonLd, faqJsonLd } from "../../utils/seo";
+import hustleData from "../../data/side-hustles.json";
+
+export function getStaticPaths() {
+  const hustles = hustleData as SideHustle[];
+  return hustles.map((h) => ({ params: { slug: h.slug }, props: { hustle: h } }));
+}
+
+interface Props {
+  hustle: SideHustle;
+}
+
+const { hustle } = Astro.props;
+const all = hustleData as SideHustle[];
+const related = getRelated(hustle, all, 3);
+const meta = sideHustleMeta(hustle);
+const faqs = [
+  {
+    question: `How much can I make with ${hustle.name}?`,
+    answer: `The income potential for ${hustle.name} is ${hustle.incomePotential} per month. ${hustle.description}`,
+  },
+  {
+    question: `How much does it cost to start ${hustle.name}?`,
+    answer: `The startup cost for ${hustle.name} is ${hustle.startupCost}. ${hustle.startupCost === "$0" ? "You can start for free with no upfront investment." : "This is a low-cost way to get started."}`,
+  },
+  {
+    question: `How long until I make my first money with ${hustle.name}?`,
+    answer: `Most people make their first income from ${hustle.name} within ${hustle.timeToFirstIncome}.`,
+  },
+];
+// Combine structured data into an array graph for valid JSON-LD
+const structuredData = JSON.stringify({
+  "@context": "https://schema.org",
+  "@graph": [
+    JSON.parse(jsonLd(hustle)),
+    JSON.parse(faqJsonLd(faqs)),
+  ],
+});
+
+const difficultyColor: Record<string, string> = {
+  Beginner: "text-emerald-700 bg-emerald-50 border-emerald-200",
+  Intermediate: "text-amber-700 bg-amber-50 border-amber-200",
+  Advanced: "text-rose-700 bg-rose-50 border-rose-200",
+};
+---
+
+<Layout title={meta.title} description={meta.description} canonical={meta.canonical} jsonLd={structuredData}>
+  <!-- Breadcrumb -->
+  <nav class="border-b border-[var(--color-hairline)] bg-[var(--color-canvas)]" aria-label="Breadcrumb">
+    <div class="container-page py-3">
+      <ol class="flex items-center gap-1.5 text-xs text-[var(--color-mute)]" role="list">
+        <li><a href="/" class="hover:text-[var(--color-body)] transition-colors">Home</a></li>
+        <li aria-hidden="true">/</li>
+        <li><span class="text-[var(--color-body)]">{hustle.name}</span></li>
+      </ol>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="pt-12 pb-16 bg-[var(--color-canvas)]" aria-labelledby="hustle-heading">
+    <div class="container-page">
+      <div class="max-w-3xl">
+        <!-- Category + difficulty -->
+        <div class="flex items-center gap-2 mb-5">
+          <span class="text-xs font-mono text-[var(--color-mute)] uppercase tracking-wider">{hustle.category}</span>
+          <span aria-hidden="true" class="text-[var(--color-hairline)]">·</span>
+          <span
+            class:list={[
+              "text-xs font-medium px-2 py-0.5 rounded-full border",
+              difficultyColor[hustle.difficulty] ?? "text-[var(--color-body)] bg-[var(--color-canvas-soft)] border-[var(--color-hairline)]",
+            ]}
+          >
+            {hustle.difficulty}
+          </span>
+        </div>
+
+        <h1
+          id="hustle-heading"
+          class="text-4xl md:text-5xl font-semibold text-[var(--color-ink)] tracking-[-2px] leading-[1.05] mb-5 text-balance"
+        >
+          {hustle.name}
+        </h1>
+        <p class="text-lg text-[var(--color-body)] leading-7 mb-8 max-w-2xl">
+          {hustle.description}
+        </p>
+
+        <!-- Quick stats -->
+        <dl class="inline-grid grid-cols-2 sm:grid-cols-4 gap-0 rounded-[var(--radius-md)] border border-[var(--color-hairline)] overflow-hidden bg-[var(--color-canvas)] card-shadow mb-8">
+          {[
+            { label: "Income", value: hustle.incomePotential },
+            { label: "Startup", value: hustle.startupCost },
+            { label: "First income", value: hustle.timeToFirstIncome },
+            { label: "Work type", value: hustle.remote ? "Remote" : "Local" },
+          ].map(({ label, value }, i) => (
+            <div class:list={["px-5 py-4", i > 0 ? "border-l border-[var(--color-hairline)]" : ""]}>
+              <dt class="text-[10px] font-mono text-[var(--color-mute)] uppercase tracking-wider mb-1">{label}</dt>
+              <dd class="text-sm font-semibold text-[var(--color-ink)] tabular-nums">{value}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <!-- CTA -->
+        <a
+          href="/#finder"
+          class="inline-flex items-center h-12 px-6 text-base font-medium text-[var(--color-on-primary)] bg-[var(--color-ink)] rounded-[var(--radius-pill)] hover:opacity-90 transition-opacity duration-150 focus-visible:ring-2 focus-visible:ring-[var(--color-link)]"
+        >
+          Find more hustles like this →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="py-16 bg-[var(--color-canvas-soft)] border-t border-[var(--color-hairline)]">
+    <div class="container-page">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+
+        <!-- Main content -->
+        <div class="lg:col-span-2 space-y-12">
+
+          <!-- Pros & Cons -->
+          <div>
+            <h2 class="text-2xl font-semibold text-[var(--color-ink)] tracking-tight mb-6">Pros & cons.</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <!-- Pros -->
+              <div class="bg-[var(--color-canvas)] rounded-[var(--radius-md)] card-shadow p-6">
+                <h3 class="text-xs font-mono text-[var(--color-mute)] uppercase tracking-wider mb-4">Pros</h3>
+                <ul class="space-y-3" role="list">
+                  {hustle.pros.map((pro) => (
+                    <li class="flex items-start gap-2.5 text-sm text-[var(--color-body)]">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="shrink-0 mt-0.5 text-emerald-500" aria-hidden="true">
+                        <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      {pro}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <!-- Cons -->
+              <div class="bg-[var(--color-canvas)] rounded-[var(--radius-md)] card-shadow p-6">
+                <h3 class="text-xs font-mono text-[var(--color-mute)] uppercase tracking-wider mb-4">Cons</h3>
+                <ul class="space-y-3" role="list">
+                  {hustle.cons.map((con) => (
+                    <li class="flex items-start gap-2.5 text-sm text-[var(--color-body)]">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="shrink-0 mt-0.5 text-amber-500" aria-hidden="true">
+                        <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M7 4.5v3M7 9.5v.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      </svg>
+                      {con}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Skills needed -->
+          <div>
+            <h2 class="text-2xl font-semibold text-[var(--color-ink)] tracking-tight mb-4">Skills you'll need.</h2>
+            <div class="flex flex-wrap gap-2">
+              {hustle.skills.map((skill) => (
+                <span class="px-3 py-1.5 text-sm text-[var(--color-body)] bg-[var(--color-canvas)] rounded-full border border-[var(--color-hairline)] card-shadow">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <!-- FAQ -->
+          <div>
+            <h2 class="text-2xl font-semibold text-[var(--color-ink)] tracking-tight mb-6">Frequently asked questions.</h2>
+            <dl class="space-y-4">
+              {faqs.map(({ question, answer }) => (
+                <div class="bg-[var(--color-canvas)] rounded-[var(--radius-md)] card-shadow p-6">
+                  <dt class="text-base font-semibold text-[var(--color-ink)] mb-2">{question}</dt>
+                  <dd class="text-sm text-[var(--color-body)] leading-6">{answer}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="space-y-6" aria-label="Side hustle details">
+          <!-- Tags -->
+          <div class="bg-[var(--color-canvas)] rounded-[var(--radius-md)] card-shadow p-6">
+            <h3 class="text-xs font-mono text-[var(--color-mute)] uppercase tracking-wider mb-4">Tags</h3>
+            <div class="flex flex-wrap gap-1.5">
+              {hustle.tags.map((tag) => (
+                <span class="text-xs px-2 py-1 rounded-full bg-[var(--color-canvas-soft)] text-[var(--color-body)] border border-[var(--color-hairline)]">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <!-- Details -->
+          <div class="bg-[var(--color-canvas)] rounded-[var(--radius-md)] card-shadow p-6">
+            <h3 class="text-xs font-mono text-[var(--color-mute)] uppercase tracking-wider mb-4">Details</h3>
+            <dl class="space-y-3">
+              <div class="flex justify-between gap-2">
+                <dt class="text-xs text-[var(--color-mute)]">Hours/week</dt>
+                <dd class="text-xs font-medium text-[var(--color-ink)]">{hustle.hoursPerWeek ?? "Flexible"}</dd>
+              </div>
+              <div class="flex justify-between gap-2 pt-3 border-t border-[var(--color-hairline)]">
+                <dt class="text-xs text-[var(--color-mute)]">Beginner friendly</dt>
+                <dd class="text-xs font-medium text-[var(--color-ink)]">{hustle.beginnerFriendly ? "Yes" : "No"}</dd>
+              </div>
+              <div class="flex justify-between gap-2 pt-3 border-t border-[var(--color-hairline)]">
+                <dt class="text-xs text-[var(--color-mute)]">Weekly pay</dt>
+                <dd class="text-xs font-medium text-[var(--color-ink)]">{hustle.weeklyPay ? "Yes" : "No"}</dd>
+              </div>
+              <div class="flex justify-between gap-2 pt-3 border-t border-[var(--color-hairline)]">
+                <dt class="text-xs text-[var(--color-mute)]">Local option</dt>
+                <dd class="text-xs font-medium text-[var(--color-ink)]">{hustle.localAvailable ? "Yes" : "No"}</dd>
+              </div>
+            </dl>
+          </div>
+
+          <!-- Use finder CTA -->
+          <div class="bg-[var(--color-ink)] rounded-[var(--radius-md)] p-6 text-center">
+            <p class="text-sm text-[var(--color-on-primary)]/70 mb-2">Not sure this is the one?</p>
+            <p class="text-base font-semibold text-[var(--color-on-primary)] mb-4">Take the 7-question quiz.</p>
+            <a
+              href="/#finder"
+              class="inline-flex items-center h-9 px-4 text-sm font-medium text-[var(--color-ink)] bg-[var(--color-on-primary)] rounded-[var(--radius-pill)] hover:opacity-90 transition-opacity duration-150"
+            >
+              Find my hustle
+            </a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related -->
+  {related.length > 0 && (
+    <section class="py-16 bg-[var(--color-canvas)] border-t border-[var(--color-hairline)]" aria-labelledby="related-heading">
+      <div class="container-page">
+        <h2 id="related-heading" class="text-2xl font-semibold text-[var(--color-ink)] tracking-tight mb-8">
+          Related side hustles.
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {related.map((h) => <HustleCard hustle={h} />)}
+        </div>
+      </div>
+    </section>
+  )}
+</Layout>

@@ -1,0 +1,167 @@
+@import "tailwindcss";
+@source "../**/*.{astro,ts,html}";
+
+@theme {
+  /* ─── Premium Brand Colors (Light Mode) ─── */
+  --color-ink: #0f172a;
+  --color-on-primary: #ffffff;
+  --color-body: #475569;
+  --color-mute: #64748b;
+  --color-hairline: rgba(0, 0, 0, 0.08);
+  --color-hairline-strong: rgba(0, 0, 0, 0.15);
+  
+  --color-canvas: #ffffff;
+  --color-canvas-soft: #f8fafc;
+  --color-canvas-soft-2: #f1f5f9;
+  --color-canvas-card: rgba(255, 255, 255, 0.9);
+  
+  --color-link: #8b5cf6;
+  --color-link-deep: #7c3aed;
+  --color-link-bg-soft: rgba(139, 92, 246, 0.1);
+  
+  --color-success: #10b981;
+  --color-error: #ef4444;
+  --color-warning: #f59e0b;
+  
+  --color-violet: #8b5cf6;
+  --color-violet-soft: rgba(139, 92, 246, 0.1);
+  --color-cyan: #06b6d4;
+  --color-cyan-soft: rgba(6, 182, 212, 0.1);
+  --color-highlight-pink: #ec4899;
+
+  /* Premium Gradients */
+  --color-gradient-start: #8b5cf6;
+  --color-gradient-mid: #ec4899;
+  --color-gradient-end: #06b6d4;
+
+  /* ─── Typography ─── */
+  --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  /* ─── Border Radius ─── */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill-sm: 64px;
+  --radius-pill: 100px;
+
+  /* ─── Breakpoints ─── */
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 960px;
+  --breakpoint-lg: 1200px;
+  --breakpoint-xl: 1400px;
+}
+
+/* ─── Base layer ─── */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background-color: var(--color-canvas);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    scroll-behavior: smooth;
+    color-scheme: light;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: var(--color-violet);
+    color: #ffffff;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Focus visible */
+  :focus-visible {
+    outline: 2px solid var(--color-violet);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+}
+
+/* ─── Custom utilities ─── */
+@utility container-page {
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@utility mesh-gradient {
+  background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(139, 92, 246, 0.08) 0%, transparent 70%),
+              radial-gradient(ellipse 60% 50% at 80% 0%, rgba(236, 72, 153, 0.05) 0%, transparent 60%),
+              radial-gradient(ellipse 70% 60% at 20% 0%, rgba(6, 182, 212, 0.05) 0%, transparent 60%),
+              var(--color-canvas);
+}
+
+@utility mesh-gradient-card {
+  background: radial-gradient(120% 120% at 50% 0%, rgba(255, 255, 255, 0.8) 0%, transparent 50%),
+              var(--color-canvas-soft);
+}
+
+@utility glass-panel {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-hairline);
+  box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(255,255,255,0.5) inset;
+}
+
+@utility text-gradient {
+  background: linear-gradient(to right, var(--color-gradient-start), var(--color-gradient-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@utility card-shadow {
+  box-shadow: 0 0 0 1px var(--color-hairline) inset,
+              0px 4px 8px -2px rgba(0,0,0,0.05);
+}
+
+@utility card-shadow-md {
+  box-shadow: 0 0 0 1px var(--color-hairline) inset,
+              0px 8px 24px -4px rgba(0,0,0,0.08),
+              0 0 20px 0 rgba(139, 92, 246, 0.05);
+}
+
+@utility card-shadow-lg {
+  box-shadow: 0 0 0 1px var(--color-hairline) inset,
+              0px 16px 32px -8px rgba(0,0,0,0.1),
+              0 0 40px 0 rgba(139, 92, 246, 0.08);
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@utility text-pretty {
+  text-wrap: pretty;
+}
+
+@utility tabular-nums {
+  font-variant-numeric: tabular-nums;
+}

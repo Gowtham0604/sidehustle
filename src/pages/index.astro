@@ -1,11 +1,304 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import HustleCard from "../components/HustleCard.astro";
+import HustleFinder from "../components/HustleFinder.astro";
+import Search from "../components/Search.astro";
+import type { SideHustle } from "../types/side-hustle";
+import { homeMeta } from "../utils/seo";
+import hustleData from "../data/side-hustles.json";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const hustles = hustleData as SideHustle[];
+const meta = homeMeta();
+
+// Featured = top 3 by income potential + beginner-friendly mix
+const featured = hustles
+  .filter((h) => h.beginnerFriendly && h.remote)
+  .slice(0, 3);
+
+const stats = [
+  { label: "Side hustles", value: `${hustles.length}+` },
+  { label: "Remote options", value: `${hustles.filter((h) => h.remote).length}+` },
+  { label: "Free to start", value: `${hustles.filter((h) => h.startupCost === "$0").length}+` },
+  { label: "Beginner friendly", value: `${hustles.filter((h) => h.beginnerFriendly).length}+` },
+];
+
+const categories = [...new Set(hustles.map((h) => h.category))].sort();
 ---
 
-<Layout>
-	<Welcome />
+<Layout title={meta.title} description={meta.description} canonical={meta.canonical}>
+  <!-- ─── Hero ─────────────────────────────────────────────────────────────── -->
+  <section class="relative overflow-hidden pt-32 pb-32 md:pt-48 md:pb-40" aria-labelledby="hero-heading">
+    <!-- Animated Glowing Background elements -->
+    <div class="absolute inset-0 z-0 bg-gradient-to-br from-slate-50 via-white to-slate-100 opacity-60"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-tr from-violet-100/50 to-cyan-100/50 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="container-page relative z-10">
+      <div class="max-w-4xl mx-auto text-center flex flex-col items-center">
+        <!-- Eyebrow -->
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-slate-200 bg-white shadow-sm text-xs font-semibold text-slate-600 mb-10 transform hover:scale-105 transition-transform duration-300">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-500 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+          </span>
+          {hustles.length}+ real opportunities, no fluff
+        </div>
+
+        <!-- Headline -->
+        <h1
+          id="hero-heading"
+          class="text-5xl md:text-7xl font-bold text-slate-900 tracking-[-0.04em] leading-[1.1] mb-8 text-balance"
+        >
+          Find the best side hustle <br class="hidden md:block"/> for you.
+        </h1>
+
+        <!-- Sub -->
+        <p class="text-lg md:text-xl text-slate-600 leading-relaxed mb-12 max-w-2xl mx-auto text-balance font-medium">
+          Answer 7 quick questions and discover side hustles matched to your skills, schedule, and income goals.
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+          <a
+            href="#finder"
+            class="w-full sm:w-auto flex items-center justify-center h-14 px-8 text-base font-bold text-white bg-slate-900 rounded-full hover:bg-slate-800 transition-all duration-300 shadow-lg shadow-slate-900/10 transform hover:-translate-y-1"
+          >
+            Find my side hustle →
+          </a>
+          <a
+            href="#browse"
+            class="w-full sm:w-auto flex items-center justify-center h-14 px-8 text-base font-bold text-slate-700 bg-white border border-slate-200 rounded-full hover:bg-slate-50 hover:border-slate-300 transition-all duration-300 transform hover:-translate-y-1 shadow-sm"
+          >
+            Browse all
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Quick Stats ──────────────────────────────────────────────────────── -->
+  <section class="border-y border-slate-200 bg-slate-50 relative z-10" aria-label="Site statistics">
+    <div class="container-page">
+      <dl class="grid grid-cols-2 md:grid-cols-4 divide-x divide-slate-200">
+        {stats.map(({ label, value }) => (
+          <div class="flex flex-col items-center py-10 px-4 text-center group">
+            <dd class="text-4xl font-bold text-slate-800 tracking-tight tabular-nums mb-2 group-hover:scale-110 transition-transform duration-300">{value}</dd>
+            <dt class="text-xs font-mono text-slate-500 uppercase tracking-wider group-hover:text-slate-900 transition-colors duration-300">{label}</dt>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <!-- ─── Featured hustles ─────────────────────────────────────────────────── -->
+  <section class="py-24 md:py-32 relative" aria-labelledby="featured-heading">
+    <!-- Subtle glow background -->
+    <div class="absolute top-1/2 left-0 w-96 h-96 bg-violet-100/50 blur-[120px] rounded-full pointer-events-none"></div>
+
+    <div class="container-page relative z-10">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
+        <div>
+          <p class="text-sm font-bold text-violet-600 uppercase tracking-widest mb-3">Popular picks</p>
+          <h2
+            id="featured-heading"
+            class="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight text-balance"
+          >
+            Top side hustles right now.
+          </h2>
+        </div>
+        <a
+          href="#browse"
+          class="shrink-0 flex items-center gap-2 text-sm font-semibold text-slate-700 hover:text-slate-900 transition-colors duration-300 px-4 py-2 rounded-full border border-slate-200 bg-white hover:bg-slate-50"
+        >
+          View all {hustles.length}
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true" class="transition-transform group-hover:translate-x-1">
+            <path d="M3.5 8h9M9 4.5l3.5 3.5L9 11.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {featured.map((hustle) => (
+          <HustleCard hustle={hustle} featured />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Finder quiz ──────────────────────────────────────────────────────── -->
+  <HustleFinder />
+
+  <!-- ─── Browse All ───────────────────────────────────────────────────────── -->
+  <section id="browse" class="py-24 md:py-32 border-t border-slate-200 bg-slate-50 relative" aria-labelledby="browse-heading">
+    <div class="container-page relative z-10">
+      <!-- Header -->
+      <div class="max-w-3xl mb-12">
+        <p class="text-sm font-bold text-violet-600 uppercase tracking-widest mb-3">Browse all</p>
+        <h2
+          id="browse-heading"
+          class="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight mb-6 text-balance"
+        >
+          {hustles.length} side hustles. Find yours.
+        </h2>
+        <p class="text-lg text-slate-600 leading-relaxed font-medium">Search by skill, category, or keyword. Filter by what matters to you.</p>
+      </div>
+
+      <!-- Search + filters -->
+      <div class="mb-10">
+        <Search />
+      </div>
+
+      <!-- Category tabs -->
+      <div class="flex flex-wrap gap-2.5 mb-10" role="group" aria-label="Filter by category">
+        <button
+          class="cat-filter active px-4 py-2 text-sm rounded-full border border-slate-900 text-white font-semibold bg-slate-900 transition-all duration-300"
+          data-cat="all"
+          aria-pressed="true"
+        >
+          All
+        </button>
+        {categories.map((cat) => (
+          <button
+            class="cat-filter px-4 py-2 text-sm rounded-full border border-slate-200 text-slate-600 hover:border-slate-300 hover:text-slate-900 hover:bg-slate-100 transition-all duration-300 font-medium bg-white"
+            data-cat={cat}
+            aria-pressed="false"
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      <!-- Card grid -->
+      <div
+        id="hustles-grid"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+        role="list"
+        aria-label="Side hustle cards"
+      >
+        {hustles.map((hustle) => (
+          <div data-slug={hustle.slug} data-cat={hustle.category} role="listitem" class="transition-all duration-500">
+            <HustleCard hustle={hustle} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Audience links ───────────────────────────────────────────────────── -->
+  <section class="py-24 md:py-32 relative border-t border-slate-200" aria-labelledby="audience-heading">
+    <div class="container-page relative z-10">
+      <div class="max-w-2xl mb-14">
+        <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-3">By audience</p>
+        <h2
+          id="audience-heading"
+          class="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight leading-tight text-balance"
+        >
+          Find hustles for your situation.
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        {[
+          { href: "/side-hustles-for-students", label: "Students" },
+          { href: "/side-hustles-for-developers", label: "Developers" },
+          { href: "/side-hustles-for-teachers", label: "Teachers" },
+          { href: "/side-hustles-for-designers", label: "Designers" },
+          { href: "/side-hustles-for-retirees", label: "Retirees" },
+          { href: "/side-hustles-for-parents", label: "Parents" },
+          { href: "/side-hustles-for-writers", label: "Writers" },
+          { href: "/side-hustles-for-marketers", label: "Marketers" },
+          { href: "/side-hustles-for-nurses", label: "Nurses" },
+          { href: "/side-hustles-for-accountants", label: "Accountants" },
+        ].map(({ href, label }) => (
+          <a
+            href={href}
+            class="flex items-center justify-between gap-2 p-5 rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-300 group shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_4px_30px_rgba(139,92,246,0.1)] hover:-translate-y-1 backdrop-blur-md"
+          >
+            <span class="text-sm font-semibold text-[var(--color-ink)] group-hover:text-white">{label}</span>
+            <svg width="14" height="14" viewBox="0 0 12 12" fill="none" class="shrink-0 text-[var(--color-mute)] group-hover:text-[var(--color-cyan)] transition-colors transform group-hover:translate-x-1" aria-hidden="true">
+              <path d="M2.5 6h7M6 2.5l3.5 3.5L6 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        ))}
+      </div>
+
+      <!-- Constraint links -->
+      <div class="mt-20">
+        <div class="max-w-2xl mb-14">
+          <p class="text-sm font-bold text-[var(--color-mute)] uppercase tracking-widest mb-3">By constraint</p>
+          <h2 class="text-3xl md:text-4xl font-bold text-[var(--color-ink)] tracking-tight leading-tight text-balance">
+            Find what fits your limits.
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          {[
+            { href: "/side-hustles-with-no-money", label: "No Money" },
+            { href: "/side-hustles-with-no-experience", label: "No Experience" },
+            { href: "/side-hustles-from-home", label: "From Home" },
+            { href: "/side-hustles-that-pay-weekly", label: "Weekly Pay" },
+            { href: "/side-hustles-for-beginners", label: "Beginners" },
+            { href: "/high-income-side-hustles", label: "High Income" },
+            { href: "/passive-income-side-hustles", label: "Passive Income" },
+            { href: "/side-hustles-under-100", label: "Under $100" },
+          ].map(({ href, label }) => (
+            <a
+              href={href}
+              class="flex items-center justify-between gap-2 p-5 rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-300 group shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_4px_30px_rgba(45,212,191,0.1)] hover:-translate-y-1 backdrop-blur-md"
+            >
+              <span class="text-sm font-semibold text-[var(--color-ink)] group-hover:text-white">{label}</span>
+              <svg width="14" height="14" viewBox="0 0 12 12" fill="none" class="shrink-0 text-[var(--color-mute)] group-hover:text-[var(--color-cyan)] transition-colors transform group-hover:translate-x-1" aria-hidden="true">
+                <path d="M2.5 6h7M6 2.5l3.5 3.5L6 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
 </Layout>
+
+<script>
+  function setupFilters() {
+    const catBtns = document.querySelectorAll<HTMLButtonElement>(".cat-filter");
+    const grid = document.getElementById("hustles-grid");
+
+    catBtns.forEach((btn) => {
+      // cloning and replacing to prevent multiple listeners
+      const newBtn = btn.cloneNode(true) as HTMLButtonElement;
+      btn.parentNode?.replaceChild(newBtn, btn);
+
+      newBtn.addEventListener("click", () => {
+        const cat = newBtn.dataset.cat ?? "all";
+
+        document.querySelectorAll<HTMLButtonElement>(".cat-filter").forEach((b) => {
+          b.setAttribute("aria-pressed", "false");
+          b.classList.remove("border-[var(--color-cyan)]", "text-[var(--color-canvas)]", "bg-[var(--color-cyan)]", "shadow-[0_0_15px_rgba(45,212,191,0.3)]");
+          b.classList.add("border-[var(--color-hairline-strong)]", "text-[var(--color-body)]", "bg-transparent");
+        });
+        newBtn.setAttribute("aria-pressed", "true");
+        newBtn.classList.add("border-[var(--color-cyan)]", "text-[var(--color-canvas)]", "bg-[var(--color-cyan)]", "shadow-[0_0_15px_rgba(45,212,191,0.3)]");
+        newBtn.classList.remove("border-[var(--color-hairline-strong)]", "text-[var(--color-body)]", "bg-transparent");
+
+        grid?.querySelectorAll<HTMLElement>("[data-slug]").forEach((card) => {
+          const match = cat === "all" || card.dataset.cat === cat;
+          if (match) {
+            card.style.display = "";
+            setTimeout(() => {
+              card.style.opacity = "1";
+              card.style.transform = "translateY(0)";
+            }, 50);
+          } else {
+            card.style.opacity = "0";
+            card.style.transform = "translateY(10px)";
+            setTimeout(() => {
+              card.style.display = "none";
+            }, 300); // Wait for transition
+          }
+        });
+      });
+    });
+  }
+
+  setupFilters();
+  document.addEventListener("astro:page-load", setupFilters);
+</script>

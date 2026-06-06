@@ -1,0 +1,184 @@
+---
+// Instant client-side search component
+---
+
+<div class="w-full" id="search-container">
+  <div class="relative group">
+    <label for="search-input" class="sr-only">Search side hustles</label>
+    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 16 16" fill="none" class="text-[var(--color-mute)] group-focus-within:text-[var(--color-cyan)] transition-colors duration-300">
+        <circle cx="6.5" cy="6.5" r="4" stroke="currentColor" stroke-width="2"/>
+        <path d="M11 11l2.5 2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <input
+      id="search-input"
+      type="search"
+      placeholder="Search by skill, category, or keyword…"
+      autocomplete="off"
+      spellcheck="false"
+      class="w-full h-14 pl-14 pr-12 bg-white border border-slate-200 rounded-full text-base font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 transition-all duration-300 shadow-sm hover:shadow-md"
+      aria-label="Search side hustles"
+      aria-controls="search-results"
+      aria-autocomplete="list"
+    />
+    <div id="search-clear" class="absolute inset-y-0 right-0 pr-4 hidden items-center">
+      <button
+        id="search-clear-btn"
+        class="flex items-center justify-center w-7 h-7 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700 transition-all duration-300"
+        aria-label="Clear search"
+      >
+        <svg width="12" height="12" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+          <path d="M2 2l6 6M8 2L2 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="flex flex-wrap gap-2.5 mt-5" role="group" aria-label="Filter side hustles">
+    <button
+      class="search-filter active px-4 py-2 text-sm font-semibold rounded-full border border-slate-900 text-white bg-slate-900 shadow-sm transition-all duration-300 data-[active]:border-slate-900 data-[active]:text-white data-[active]:bg-slate-900"
+      data-filter="all"
+      aria-pressed="true"
+    >
+      All
+    </button>
+    {["Remote", "Beginner", "No Cost", "Weekly Pay", "High Income"].map((f) => (
+      <button
+        class="search-filter px-4 py-2 text-sm font-medium rounded-full border border-slate-200 text-slate-600 bg-white hover:border-slate-300 hover:text-slate-900 hover:bg-slate-50 transition-all duration-300"
+        data-filter={f.toLowerCase().replace(/\s+/g, "-")}
+        aria-pressed="false"
+      >
+        {f}
+      </button>
+    ))}
+  </div>
+
+  <!-- Results count -->
+  <p
+    id="search-count"
+    class="text-sm font-medium text-slate-500 mt-4 tracking-wide"
+    role="status"
+    aria-live="polite"
+  />
+</div>
+
+<script>
+  import type { SideHustle } from "../types/side-hustle";
+  import hustleData from "../data/side-hustles.json";
+  import { filterHustles } from "../utils/hustle";
+
+  const hustles = hustleData as SideHustle[];
+
+  function setupSearch() {
+    const input = document.getElementById("search-input") as HTMLInputElement;
+    const clearBtn = document.getElementById("search-clear-btn") as HTMLButtonElement;
+    const clearWrap = document.getElementById("search-clear") as HTMLElement;
+    const countEl = document.getElementById("search-count") as HTMLElement;
+    const filterBtns = document.querySelectorAll<HTMLButtonElement>(".search-filter");
+
+    const grid = document.getElementById("hustles-grid");
+    if (!grid) return;
+
+    // Reset old listeners if re-running
+    const newInput = input?.cloneNode(true) as HTMLInputElement;
+    input?.parentNode?.replaceChild(newInput, input);
+    
+    const newClearBtn = clearBtn?.cloneNode(true) as HTMLButtonElement;
+    clearBtn?.parentNode?.replaceChild(newClearBtn, clearBtn);
+
+    let activeFilter = "all";
+    let query = "";
+
+    function applyFilters() {
+      if (!grid) return;
+
+      const filtered = filterHustles(hustles, {
+        query: query || undefined,
+        remote: activeFilter === "remote" ? true : undefined,
+        beginnerFriendly: activeFilter === "beginner" ? true : undefined,
+        maxStartupCost: activeFilter === "no-cost" ? "$0" : undefined,
+        weeklyPay: activeFilter === "weekly-pay" ? true : undefined,
+      });
+
+      const allCards = grid.querySelectorAll<HTMLElement>("[data-slug]");
+
+      let visibleCount = 0;
+      allCards.forEach((card) => {
+        const slug = card.dataset.slug ?? "";
+        const isHighIncome =
+          activeFilter === "high-income"
+            ? hustles.find((h) => h.slug === slug && (h.incomePotential === "$2,000–$5,000/mo" || h.incomePotential === "$5,000+/mo" || h.incomePotential === "$1,000–$4,000/mo"))
+            : true;
+
+        const match = filtered.find((h) => h.slug === slug) && isHighIncome;
+        
+        if (match) {
+          card.style.display = "";
+          setTimeout(() => {
+            card.style.opacity = "1";
+            card.style.transform = "translateY(0)";
+          }, 50);
+          visibleCount++;
+        } else {
+          card.style.opacity = "0";
+          card.style.transform = "translateY(10px)";
+          setTimeout(() => {
+            card.style.display = "none";
+          }, 300);
+        }
+      });
+
+      if (countEl) {
+        countEl.textContent =
+          visibleCount === hustles.length
+            ? `Showing all ${visibleCount} side hustles`
+            : `Showing ${visibleCount} of ${hustles.length} side hustles`;
+      }
+    }
+
+    newInput?.addEventListener("input", () => {
+      query = newInput.value.trim();
+      clearWrap?.classList.toggle("hidden", !query);
+      clearWrap?.classList.toggle("flex", !!query);
+      applyFilters();
+    });
+
+    newClearBtn?.addEventListener("click", () => {
+      newInput.value = "";
+      query = "";
+      clearWrap?.classList.add("hidden");
+      clearWrap?.classList.remove("flex");
+      applyFilters();
+      newInput.focus();
+    });
+
+    filterBtns.forEach((btn) => {
+      const newBtn = btn.cloneNode(true) as HTMLButtonElement;
+      btn.parentNode?.replaceChild(newBtn, btn);
+
+      newBtn.addEventListener("click", () => {
+        activeFilter = newBtn.dataset.filter ?? "all";
+        document.querySelectorAll<HTMLButtonElement>(".search-filter").forEach((b) => {
+          b.setAttribute("aria-pressed", "false");
+          b.classList.remove("border-slate-900", "text-white", "bg-slate-900", "shadow-sm");
+          b.classList.add("border-slate-200", "text-slate-600", "bg-white");
+        });
+        newBtn.setAttribute("aria-pressed", "true");
+        newBtn.classList.add("border-slate-900", "text-white", "bg-slate-900", "shadow-sm");
+        newBtn.classList.remove("border-slate-200", "text-slate-600", "bg-white");
+        applyFilters();
+      });
+    });
+
+    // Initial count
+    if (grid && countEl) {
+      const allCards = grid.querySelectorAll<HTMLElement>("[data-slug]");
+      countEl.textContent = `Showing all ${allCards.length} side hustles`;
+    }
+  }
+
+  setupSearch();
+  document.addEventListener("astro:page-load", setupSearch);
+</script>

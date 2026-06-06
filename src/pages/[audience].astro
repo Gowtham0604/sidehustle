@@ -1,0 +1,160 @@
+---
+/**
+ * Handles both audience pages (e.g. /side-hustles-for-students)
+ * and constraint pages (e.g. /side-hustles-with-no-money, /high-income-side-hustles)
+ */
+import Layout from "../layouts/Layout.astro";
+import HustleCard from "../components/HustleCard.astro";
+import Search from "../components/Search.astro";
+import type { SideHustle } from "../types/side-hustle";
+import {
+  AUDIENCE_PAGES,
+  CONSTRAINT_PAGES,
+  audienceFilter,
+  constraintFilter,
+} from "../utils/audience";
+import hustleData from "../data/side-hustles.json";
+
+export function getStaticPaths() {
+  const audiencePaths = AUDIENCE_PAGES.map((p) => ({
+    params: { audience: p.slug },
+    props: { type: "audience" as const, meta: p },
+  }));
+  const constraintPaths = CONSTRAINT_PAGES.map((p) => ({
+    params: { audience: p.slug },
+    props: { type: "constraint" as const, meta: p },
+  }));
+  return [...audiencePaths, ...constraintPaths];
+}
+
+interface Props {
+  type: "audience" | "constraint";
+  meta: {
+    slug: string;
+    title: string;
+    headline: string;
+    description: string;
+    metaDescription: string;
+  };
+}
+
+const { type, meta } = Astro.props;
+const all = hustleData as SideHustle[];
+
+const filterFn =
+  type === "audience"
+    ? audienceFilter(meta.slug)
+    : constraintFilter(meta.slug);
+
+const hustles = all.filter(filterFn);
+const featured = hustles.slice(0, 3);
+---
+
+<Layout
+  title={`${meta.title} | SideHustleFinder`}
+  description={meta.metaDescription}
+  canonical={`https://sidehustlefinder.com/${meta.slug}`}
+>
+  <!-- Breadcrumb -->
+  <nav class="border-b border-[var(--color-hairline)] bg-[var(--color-canvas)]" aria-label="Breadcrumb">
+    <div class="container-page py-3">
+      <ol class="flex items-center gap-1.5 text-xs text-[var(--color-mute)]" role="list">
+        <li><a href="/" class="hover:text-[var(--color-body)] transition-colors">Home</a></li>
+        <li aria-hidden="true">/</li>
+        <li><span class="text-[var(--color-body)]">{meta.title}</span></li>
+      </ol>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="pt-16 pb-20 mesh-gradient" aria-labelledby="page-heading">
+    <div class="container-page">
+      <div class="max-w-2xl">
+        <p class="text-xs font-mono text-[var(--color-mute)] uppercase tracking-wider mb-4">
+          {type === "audience" ? "By audience" : "By situation"}
+        </p>
+        <h1
+          id="page-heading"
+          class="text-4xl md:text-5xl font-semibold text-[var(--color-ink)] tracking-[-2px] leading-[1.05] mb-4 text-balance"
+        >
+          {meta.headline}
+        </h1>
+        <p class="text-lg text-[var(--color-body)] leading-7 mb-8">
+          {meta.description}
+        </p>
+        <div class="flex items-center gap-3">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--color-canvas)]/80 border border-[var(--color-hairline)] text-xs font-medium text-[var(--color-body)]">
+            <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-success)]" aria-hidden="true"></span>
+            {hustles.length} {hustles.length === 1 ? "result" : "results"}
+          </span>
+          <a
+            href="/#finder"
+            class="text-sm text-[var(--color-link)] hover:text-[var(--color-link-deep)] transition-colors"
+          >
+            Take the quiz instead →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="py-16 bg-[var(--color-canvas-soft)] border-t border-[var(--color-hairline)]" aria-label="Side hustle listings">
+    <div class="container-page">
+      <!-- Search -->
+      {hustles.length > 6 && (
+        <div class="mb-8">
+          <Search />
+        </div>
+      )}
+
+      {hustles.length === 0 ? (
+        <!-- Empty state -->
+        <div class="flex flex-col items-center justify-center py-24 text-center">
+          <p class="text-4xl mb-4" aria-hidden="true">🔍</p>
+          <h2 class="text-xl font-semibold text-[var(--color-ink)] mb-2">No matches found.</h2>
+          <p class="text-sm text-[var(--color-body)] mb-6">Try browsing all side hustles or taking the quiz.</p>
+          <a
+            href="/"
+            class="inline-flex items-center h-10 px-5 text-sm font-medium text-[var(--color-on-primary)] bg-[var(--color-ink)] rounded-[var(--radius-pill)] hover:opacity-90 transition-opacity duration-150"
+          >
+            Back to home
+          </a>
+        </div>
+      ) : (
+        <!-- Grid -->
+        <div
+          id="hustles-grid"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
+          role="list"
+          aria-label="Side hustle cards"
+        >
+          {hustles.map((hustle) => (
+            <div data-slug={hustle.slug} data-cat={hustle.category} role="listitem">
+              <HustleCard hustle={hustle} />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- CTA band -->
+  <section class="py-16 bg-[var(--color-ink)]" aria-label="Quiz call to action">
+    <div class="container-page text-center">
+      <p class="text-xs font-mono text-[var(--color-on-primary)]/50 uppercase tracking-wider mb-4">Personalised results</p>
+      <h2 class="text-3xl font-semibold text-[var(--color-on-primary)] tracking-[-1.28px] mb-4 text-balance">
+        Get matched in 2 minutes.
+      </h2>
+      <p class="text-[var(--color-on-primary)]/70 mb-8 max-w-md mx-auto">
+        Answer 7 questions about your skills, schedule, and goals — we'll show you the best matches.
+      </p>
+      <a
+        href="/#finder"
+        class="inline-flex items-center h-12 px-6 text-base font-medium text-[var(--color-ink)] bg-[var(--color-on-primary)] rounded-[var(--radius-pill)] hover:opacity-90 transition-opacity duration-150"
+      >
+        Find my side hustle →
+      </a>
+    </div>
+  </section>
+</Layout>
