@@ -2,17 +2,17 @@
 // Side Hustle Finder — AI-style recommendation experience, fully client-side
 ---
 
-<section id="finder" class="py-12 sm:py-16 md:py-32 relative overflow-hidden" aria-labelledby="finder-heading">
+<section id="finder" class="py-8 sm:py-16 md:py-32 relative overflow-hidden" aria-labelledby="finder-heading">
   <!-- Glow background -->
-  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] bg-gradient-to-tr from-pink-100 to-purple-100 rounded-full blur-[100px] pointer-events-none"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] sm:w-[400px] sm:h-[400px] md:w-[600px] md:h-[600px] bg-gradient-to-tr from-pink-100 to-purple-100 rounded-full blur-[100px] pointer-events-none"></div>
 
   <div class="container-page relative z-10">
-    <div class="max-w-3xl mx-auto text-center mb-8 sm:mb-10 md:mb-16">
-      <p class="text-xs sm:text-sm font-bold text-[var(--color-violet)] uppercase tracking-widest mb-3 sm:mb-4">AI Recommendation Engine</p>
-      <h2 id="finder-heading" class="text-2xl sm:text-3xl md:text-6xl font-bold text-slate-900 tracking-tight leading-none mb-4 sm:mb-6 text-balance">
+    <div class="max-w-3xl mx-auto text-center mb-5 sm:mb-10 md:mb-16">
+      <p class="text-[11px] sm:text-sm font-bold text-[var(--color-violet)] uppercase tracking-widest mb-2 sm:mb-4">AI Recommendation Engine</p>
+      <h2 id="finder-heading" class="text-xl sm:text-3xl md:text-6xl font-bold text-slate-900 tracking-tight leading-tight mb-2 sm:mb-6 text-balance">
         Find your perfect hustle.
       </h2>
-      <p class="text-base sm:text-xl text-slate-600 leading-relaxed font-medium">
+      <p class="text-sm sm:text-xl text-slate-600 leading-relaxed font-medium hidden sm:block">
         Answer 7 questions and our AI advisor will match you with the best opportunities for your situation.
       </p>
     </div>
@@ -20,7 +20,7 @@
     <!-- Quiz container -->
     <div
       id="finder-quiz"
-      class="max-w-4xl mx-auto bg-white/80 backdrop-blur-xl border border-slate-200 rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden"
+      class="max-w-4xl mx-auto bg-white/90 backdrop-blur-xl border border-slate-200 rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden"
       role="form"
       aria-label="Side hustle finder quiz"
       style="isolation: isolate;"
@@ -31,26 +31,26 @@
       </div>
 
       <!-- Steps -->
-      <div id="finder-steps" class="p-4 sm:p-8 md:p-12 lg:px-16 lg:py-14 min-h-[320px] sm:min-h-[360px] flex flex-col justify-center">
+      <div id="finder-steps" class="p-4 sm:p-8 md:p-12 lg:px-16 lg:py-14 min-h-[280px] sm:min-h-[360px] flex flex-col justify-center">
 
         <!-- Step 1 -->
         <div class="finder-step" data-step="1">
-          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6">Step 1 of 7</p>
-          <h3 class="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 tracking-tight mb-4 sm:mb-8">Where do you want to work?</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4" role="radiogroup" aria-labelledby="q1-label">
+          <p class="text-[10px] font-bold text-slate-400 tracking-widest uppercase mb-2 sm:mb-6">Step 1 of 7</p>
+          <h3 class="text-base sm:text-xl md:text-2xl font-bold text-slate-900 tracking-tight mb-3 sm:mb-8">Where do you want to work?</h3>
+          <div class="grid grid-cols-1 gap-2.5 sm:gap-4" role="radiogroup" aria-labelledby="q1-label">
             <span id="q1-label" class="sr-only">Where do you want to work?</span>
             {[
               { value: "remote", label: "Remote", desc: "Work from anywhere with wifi" },
               { value: "local", label: "Local", desc: "In-person in my city or neighborhood" },
               { value: "both", label: "Both", desc: "Open to either option" },
             ].map(({ value, label, desc }) => (
-              <label class="finder-option group flex items-center gap-3 sm:gap-5 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 cursor-pointer hover:border-pink-300 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white">
+              <label class="finder-option group flex items-center gap-3 sm:gap-5 p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 cursor-pointer hover:border-pink-300 hover:bg-slate-50 transition-all duration-200 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white active:scale-[0.99]">
                 <input type="radio" name="remote" value={value} class="sr-only" aria-label={label} />
                 <span class="flex-1 min-w-0">
                   <span class="block text-sm sm:text-base font-bold text-slate-900 group-has-[:checked]:text-pink-900">{label}</span>
-                  <span class="block text-xs sm:text-sm text-slate-500 mt-0.5 sm:mt-1 group-has-[:checked]:text-pink-700">{desc}</span>
+                  <span class="block text-xs text-slate-500 mt-0.5 group-has-[:checked]:text-pink-700">{desc}</span>
                 </span>
-                <span class="shrink-0 w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 border-slate-300 group-has-[:checked]:border-pink-500 group-has-[:checked]:bg-pink-500 transition-all duration-300 shadow-[inset_0_0_0_3px_white] sm:shadow-[inset_0_0_0_4px_white]" aria-hidden="true"></span>
+                <span class="shrink-0 w-5 h-5 rounded-full border-2 border-slate-300 group-has-[:checked]:border-pink-500 group-has-[:checked]:bg-pink-500 transition-all duration-200 shadow-[inset_0_0_0_3px_white]" aria-hidden="true"></span>
               </label>
             ))}
           </div>
@@ -58,9 +58,9 @@
 
         <!-- Step 2 -->
         <div class="finder-step hidden" data-step="2">
-          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6">Step 2 of 7</p>
-          <h3 class="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 tracking-tight mb-4 sm:mb-8">How many hours per week can you commit?</h3>
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4" role="radiogroup" aria-labelledby="q2-label">
+          <p class="text-[10px] font-bold text-slate-400 tracking-widest uppercase mb-2 sm:mb-6">Step 2 of 7</p>
+          <h3 class="text-base sm:text-xl md:text-2xl font-bold text-slate-900 tracking-tight mb-3 sm:mb-8">How many hours per week can you commit?</h3>
+          <div class="grid grid-cols-2 gap-2.5 sm:gap-4" role="radiogroup" aria-labelledby="q2-label">
             <span id="q2-label" class="sr-only">Hours available per week</span>
             {[
               { value: "under5", label: "Under 5 hrs" },
@@ -68,9 +68,9 @@
               { value: "10to20", label: "10–20 hrs" },
               { value: "20plus", label: "20+ hrs" },
             ].map(({ value, label }) => (
-              <label class="finder-option group flex items-center justify-center p-3 sm:p-6 rounded-xl sm:rounded-2xl border border-slate-200 cursor-pointer hover:border-pink-300 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white text-center min-h-[50px] sm:min-h-[56px]">
+              <label class="finder-option group flex items-center justify-center p-3 sm:p-6 rounded-xl sm:rounded-2xl border border-slate-200 cursor-pointer hover:border-pink-300 hover:bg-slate-50 transition-all duration-200 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white text-center min-h-[48px] active:scale-[0.98]">
                 <input type="radio" name="hoursPerWeek" value={value} class="sr-only" />
-                <span class="text-sm sm:text-base font-bold text-slate-900 group-has-[:checked]:text-pink-900">{label}</span>
+                <span class="text-sm font-bold text-slate-900 group-has-[:checked]:text-pink-900">{label}</span>
               </label>
             ))}
           </div>
@@ -78,22 +78,22 @@
 
         <!-- Step 3 -->
         <div class="finder-step hidden" data-step="3">
-          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6">Step 3 of 7</p>
-          <h3 class="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 tracking-tight mb-4 sm:mb-8">What's your experience level?</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4" role="radiogroup" aria-labelledby="q3-label">
+          <p class="text-[10px] font-bold text-slate-400 tracking-widest uppercase mb-2 sm:mb-6">Step 3 of 7</p>
+          <h3 class="text-base sm:text-xl md:text-2xl font-bold text-slate-900 tracking-tight mb-3 sm:mb-8">What's your experience level?</h3>
+          <div class="grid grid-cols-1 gap-2.5 sm:gap-4" role="radiogroup" aria-labelledby="q3-label">
             <span id="q3-label" class="sr-only">Experience level</span>
             {[
               { value: "beginner", label: "Beginner", desc: "Just getting started, no relevant experience" },
               { value: "intermediate", label: "Intermediate", desc: "Some skills and experience in an area" },
               { value: "advanced", label: "Advanced", desc: "Expert with a proven track record" },
             ].map(({ value, label, desc }) => (
-              <label class="finder-option group flex items-center gap-3 sm:gap-5 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 cursor-pointer hover:border-pink-300 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white">
+              <label class="finder-option group flex items-center gap-3 sm:gap-5 p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 cursor-pointer hover:border-pink-300 hover:bg-slate-50 transition-all duration-200 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white active:scale-[0.99]">
                 <input type="radio" name="experienceLevel" value={value} class="sr-only" />
                 <span class="flex-1 min-w-0">
                   <span class="block text-sm sm:text-base font-bold text-slate-900 group-has-[:checked]:text-pink-900">{label}</span>
-                  <span class="block text-xs sm:text-sm text-slate-500 mt-0.5 sm:mt-1 group-has-[:checked]:text-pink-700">{desc}</span>
+                  <span class="block text-xs text-slate-500 mt-0.5 group-has-[:checked]:text-pink-700">{desc}</span>
                 </span>
-                <span class="shrink-0 w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 border-slate-300 group-has-[:checked]:border-pink-500 group-has-[:checked]:bg-pink-500 transition-all duration-300 shadow-[inset_0_0_0_3px_white] sm:shadow-[inset_0_0_0_4px_white]" aria-hidden="true"></span>
+                <span class="shrink-0 w-5 h-5 rounded-full border-2 border-slate-300 group-has-[:checked]:border-pink-500 group-has-[:checked]:bg-pink-500 transition-all duration-200 shadow-[inset_0_0_0_3px_white]" aria-hidden="true"></span>
               </label>
             ))}
           </div>
@@ -101,9 +101,9 @@
 
         <!-- Step 4 -->
         <div class="finder-step hidden" data-step="4">
-          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6">Step 4 of 7</p>
-          <h3 class="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 tracking-tight mb-4 sm:mb-8">What's your startup budget?</h3>
-          <div class="grid grid-cols-2 gap-3 sm:gap-4" role="radiogroup" aria-labelledby="q4-label">
+          <p class="text-[10px] font-bold text-slate-400 tracking-widest uppercase mb-2 sm:mb-6">Step 4 of 7</p>
+          <h3 class="text-base sm:text-xl md:text-2xl font-bold text-slate-900 tracking-tight mb-3 sm:mb-8">What's your startup budget?</h3>
+          <div class="grid grid-cols-2 gap-2.5 sm:gap-4" role="radiogroup" aria-labelledby="q4-label">
             <span id="q4-label" class="sr-only">Startup budget</span>
             {[
               { value: "zero", label: "$0", desc: "Start for free" },
@@ -111,10 +111,10 @@
               { value: "under200", label: "Under $200", desc: "Willing to invest" },
               { value: "any", label: "$500+", desc: "Higher returns" },
             ].map(({ value, label, desc }) => (
-              <label class="finder-option group flex flex-col items-center justify-center text-center gap-1 sm:gap-2 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-slate-200 cursor-pointer hover:border-pink-300 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white min-h-[80px]">
+              <label class="finder-option group flex flex-col items-center justify-center text-center gap-1 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-slate-200 cursor-pointer hover:border-pink-300 hover:bg-slate-50 transition-all duration-200 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white min-h-[72px] active:scale-[0.98]">
                 <input type="radio" name="startupBudget" value={value} class="sr-only" />
-                <span class="block text-xl sm:text-2xl font-bold text-slate-900 group-has-[:checked]:text-pink-900">{label}</span>
-                <span class="block text-xs sm:text-sm text-slate-500 group-has-[:checked]:text-pink-700">{desc}</span>
+                <span class="block text-lg sm:text-2xl font-bold text-slate-900 group-has-[:checked]:text-pink-900">{label}</span>
+                <span class="block text-xs text-slate-500 group-has-[:checked]:text-pink-700">{desc}</span>
               </label>
             ))}
           </div>
@@ -122,18 +122,18 @@
 
         <!-- Step 5 -->
         <div class="finder-step hidden" data-step="5">
-          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6">Step 5 of 7</p>
-          <h3 class="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 tracking-tight mb-4 sm:mb-8">Do you need income quickly?</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4" role="radiogroup" aria-labelledby="q5-label">
+          <p class="text-[10px] font-bold text-slate-400 tracking-widest uppercase mb-2 sm:mb-6">Step 5 of 7</p>
+          <h3 class="text-base sm:text-xl md:text-2xl font-bold text-slate-900 tracking-tight mb-3 sm:mb-8">Do you need income quickly?</h3>
+          <div class="grid grid-cols-2 gap-2.5 sm:gap-4" role="radiogroup" aria-labelledby="q5-label">
             <span id="q5-label" class="sr-only">Need income quickly?</span>
             {[
               { value: "true", label: "Yes", desc: "Within a few weeks" },
               { value: "false", label: "No", desc: "I can play the long game" },
             ].map(({ value, label, desc }) => (
-              <label class="finder-option group flex flex-col items-center text-center p-4 sm:p-8 rounded-xl sm:rounded-2xl border border-slate-200 cursor-pointer hover:border-pink-300 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white min-h-[72px] sm:min-h-[80px] justify-center">
+              <label class="finder-option group flex flex-col items-center text-center p-4 sm:p-8 rounded-xl sm:rounded-2xl border border-slate-200 cursor-pointer hover:border-pink-300 hover:bg-slate-50 transition-all duration-200 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white min-h-[80px] justify-center active:scale-[0.98]">
                 <input type="radio" name="needsQuickIncome" value={value} class="sr-only" />
-                <span class="text-xl sm:text-2xl font-bold text-slate-900 mb-1 sm:mb-1.5 group-has-[:checked]:text-pink-900">{label}</span>
-                <span class="text-xs sm:text-sm font-medium text-slate-500 group-has-[:checked]:text-pink-700">{desc}</span>
+                <span class="text-xl sm:text-2xl font-bold text-slate-900 mb-1 group-has-[:checked]:text-pink-900">{label}</span>
+                <span class="text-xs font-medium text-slate-500 group-has-[:checked]:text-pink-700">{desc}</span>
               </label>
             ))}
           </div>
@@ -141,9 +141,9 @@
 
         <!-- Step 6 -->
         <div class="finder-step hidden" data-step="6">
-          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6">Step 6 of 7</p>
-          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-2 sm:mb-3">What are your skills?</h3>
-          <p class="text-sm text-slate-600 font-medium mb-5 sm:mb-8">Select all that apply.</p>
+          <p class="text-[10px] font-bold text-slate-400 tracking-widest uppercase mb-2 sm:mb-6">Step 6 of 7</p>
+          <h3 class="text-base sm:text-2xl font-bold text-slate-900 tracking-tight mb-1 sm:mb-3">What are your skills?</h3>
+          <p class="text-xs sm:text-sm text-slate-500 font-medium mb-4 sm:mb-8">Select all that apply.</p>
           <div class="flex flex-wrap gap-2 sm:gap-3" role="group" aria-labelledby="q6-label">
             <span id="q6-label" class="sr-only">Select your skills</span>
             {[
@@ -152,7 +152,7 @@
               "Customer Service", "Sales", "Finance/Accounting",
               "Physical Labor", "Cooking", "Languages",
             ].map((skill) => (
-              <label class="group inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-slate-200 cursor-pointer text-xs sm:text-sm font-semibold text-slate-600 hover:border-slate-300 hover:text-slate-900 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-pink-500 has-[:checked]:text-pink-900 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white">
+              <label class="group inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-slate-200 cursor-pointer text-xs font-semibold text-slate-600 hover:border-slate-300 hover:text-slate-900 hover:bg-slate-50 transition-all duration-200 has-[:checked]:border-pink-500 has-[:checked]:text-pink-900 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white active:scale-95">
                 <input type="checkbox" name="skills" value={skill.toLowerCase()} class="sr-only" />
                 {skill}
               </label>
@@ -162,9 +162,9 @@
 
         <!-- Step 7 -->
         <div class="finder-step hidden" data-step="7">
-          <p class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-3 sm:mb-6">Step 7 of 7</p>
-          <h3 class="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 tracking-tight mb-4 sm:mb-8">What's your income goal?</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4" role="radiogroup" aria-labelledby="q7-label">
+          <p class="text-[10px] font-bold text-slate-400 tracking-widest uppercase mb-2 sm:mb-6">Step 7 of 7</p>
+          <h3 class="text-base sm:text-xl md:text-2xl font-bold text-slate-900 tracking-tight mb-3 sm:mb-8">What's your income goal?</h3>
+          <div class="grid grid-cols-1 gap-2.5 sm:gap-4" role="radiogroup" aria-labelledby="q7-label">
             <span id="q7-label" class="sr-only">Income goal</span>
             {[
               { value: "extra", label: "Extra spending money", desc: "$100–$500/month on the side" },
@@ -172,13 +172,13 @@
               { value: "fulltime", label: "Replace a second income", desc: "$2,000–$5,000/month" },
               { value: "replace", label: "Replace my full-time income", desc: "$5,000+/month" },
             ].map(({ value, label, desc }) => (
-              <label class="finder-option group flex items-center gap-3 sm:gap-5 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 cursor-pointer hover:border-pink-300 hover:bg-slate-50 transition-all duration-300 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white">
+              <label class="finder-option group flex items-center gap-3 sm:gap-5 p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 cursor-pointer hover:border-pink-300 hover:bg-slate-50 transition-all duration-200 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50 has-[:checked]:shadow-sm bg-white active:scale-[0.99]">
                 <input type="radio" name="incomeGoal" value={value} class="sr-only" />
                 <span class="flex-1 min-w-0">
                   <span class="block text-sm sm:text-base font-bold text-slate-900 group-has-[:checked]:text-pink-900">{label}</span>
-                  <span class="block text-xs sm:text-sm text-slate-500 mt-0.5 sm:mt-1 group-has-[:checked]:text-pink-700">{desc}</span>
+                  <span class="block text-xs text-slate-500 mt-0.5 group-has-[:checked]:text-pink-700">{desc}</span>
                 </span>
-                <span class="shrink-0 w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 border-slate-300 group-has-[:checked]:border-pink-500 group-has-[:checked]:bg-pink-500 transition-all duration-300 shadow-[inset_0_0_0_3px_white] sm:shadow-[inset_0_0_0_4px_white]" aria-hidden="true"></span>
+                <span class="shrink-0 w-5 h-5 rounded-full border-2 border-slate-300 group-has-[:checked]:border-pink-500 group-has-[:checked]:bg-pink-500 transition-all duration-200 shadow-[inset_0_0_0_3px_white]" aria-hidden="true"></span>
               </label>
             ))}
           </div>
@@ -247,10 +247,10 @@
       </div>
 
       <!-- Navigation -->
-      <div id="finder-nav" class="px-4 pb-4 sm:px-8 sm:pb-8 md:px-12 md:pb-12 lg:px-16 lg:pb-14 flex items-center justify-between gap-3 sm:gap-4 border-t border-slate-100 pt-4 sm:pt-6 bg-slate-50/50">
-        <button id="finder-prev" class="hidden text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors px-3 sm:px-4 py-2.5 sm:py-3 rounded-full hover:bg-slate-200/50 min-h-[44px]" aria-label="Go to previous question">← Back</button>
+      <div id="finder-nav" class="px-4 pb-4 sm:px-8 sm:pb-8 md:px-12 md:pb-12 lg:px-16 lg:pb-14 flex items-center justify-between gap-3 sm:gap-4 border-t border-slate-100 pt-3.5 sm:pt-6 bg-slate-50/50">
+        <button id="finder-prev" class="hidden text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors px-4 py-2.5 rounded-full hover:bg-slate-200/50 min-h-[44px]" aria-label="Go to previous question">← Back</button>
         <div class="flex-1"></div>
-        <button id="finder-next" disabled class="flex items-center justify-center h-11 sm:h-12 px-6 sm:px-8 min-w-[120px] sm:min-w-[140px] text-sm font-bold text-white bg-slate-900 rounded-full transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-800 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 disabled:transform-none" aria-label="Continue to next question">
+        <button id="finder-next" disabled class="flex items-center justify-center h-11 sm:h-12 px-7 sm:px-8 min-w-[130px] sm:min-w-[140px] text-sm font-bold text-white bg-slate-900 rounded-full transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-800 shadow-md active:scale-[0.97]" aria-label="Continue to next question">
           Continue →
         </button>
       </div>
