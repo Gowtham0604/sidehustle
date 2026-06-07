@@ -274,6 +274,7 @@
     "Finalizing your recommendations...",
   ];
 
+  function initFinder() {
   let currentStep = 1;
   const answers: Partial<FinderAnswer> = {};
   let allResults: ScoredHustle[] = [];
@@ -290,6 +291,9 @@
   const showMoreBtn = document.getElementById("show-more-btn") as HTMLButtonElement;
   const loadingLabel = document.getElementById("loading-label") as HTMLElement;
   const finderNav = document.getElementById("finder-nav") as HTMLElement;
+
+  // Exit early if finder elements aren't on this page
+  if (!nextBtn || !progressBar) return;
 
   // ─── Confidence badge colours ─────────────────────────────────────────────
   function confidenceClasses(confidence: ScoredHustle["confidence"]) {
@@ -567,4 +571,8 @@
   // Init
   showStep(1);
   updateNextBtn();
+  } // end initFinder
+
+  // Run on first load and on every Astro View Transition navigation
+  document.addEventListener("astro:page-load", initFinder);
 </script>
