@@ -16,9 +16,30 @@ pnpm-debug.log*
 # environment variables
 .env
 .env.production
+.env.local
+.env.*.local
 
 # macOS-specific files
 .DS_Store
 
 # jetbrains setting folder
 .idea/
+
+# Wrangler local state and deploy cache (generated at runtime)
+.wrangler/
+
+# Backup and scratch config files
+astro.config.mjs.bak
+astro.config.mjs.test
+astro.config.orig
+
+# Local IDE / editor settings
+.vscode/
+.kiro/settings/
+
+# Local agent tools (Kiro / Kilocode)
+.agents/
+.kilocode/
+
+# Skills lock (auto-generated)
+skills-lock.json
