@@ -15,32 +15,18 @@ import {
 } from "../utils/audience";
 import hustleData from "../data/side-hustles.json";
 
-export function getStaticPaths() {
-  const audiencePaths = AUDIENCE_PAGES.map((p) => ({
-    params: { audience: p.slug },
-    props: { type: "audience" as const, meta: p },
-  }));
-  const constraintPaths = CONSTRAINT_PAGES.map((p) => ({
-    params: { audience: p.slug },
-    props: { type: "constraint" as const, meta: p },
-  }));
-  return [...audiencePaths, ...constraintPaths];
+const { audience } = Astro.params;
+const audienceMeta = AUDIENCE_PAGES.find((p) => p.slug === audience);
+const constraintMeta = CONSTRAINT_PAGES.find((p) => p.slug === audience);
+
+if (!audienceMeta && !constraintMeta) {
+  return Astro.redirect("/404");
 }
 
-interface Props {
-  type: "audience" | "constraint";
-  meta: {
-    slug: string;
-    title: string;
-    headline: string;
-    description: string;
-    metaDescription: string;
-  };
-}
+const type = audienceMeta ? "audience" : "constraint";
+const meta = (audienceMeta ?? constraintMeta)!;
 
-const { type, meta } = Astro.props;
 const all = hustleData as SideHustle[];
-
 const filterFn =
   type === "audience"
     ? audienceFilter(meta.slug)

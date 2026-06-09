@@ -6,17 +6,13 @@ import { getRelated } from "../../utils/hustle";
 import { sideHustleMeta, jsonLd, faqJsonLd } from "../../utils/seo";
 import hustleData from "../../data/side-hustles.json";
 
-export function getStaticPaths() {
-  const hustles = hustleData as SideHustle[];
-  return hustles.map((h) => ({ params: { slug: h.slug }, props: { hustle: h } }));
-}
-
-interface Props {
-  hustle: SideHustle;
-}
-
-const { hustle } = Astro.props;
+const { slug } = Astro.params;
 const all = hustleData as SideHustle[];
+const hustle = all.find((h) => h.slug === slug);
+
+if (!hustle) {
+  return Astro.redirect("/404");
+}
 const related = getRelated(hustle, all, 3);
 const meta = sideHustleMeta(hustle);
 const faqs = [

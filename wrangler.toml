@@ -10,3 +10,7 @@ directory = "./dist"
 [[kv_namespaces]]
 binding = "SESSION"
 id = "cb0e6243ffd5444fb7bba517ee7bf217"
+
+[[routes]]
+pattern = "sidehustlesjob.com"
+custom_domain = true
