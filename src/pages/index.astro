@@ -1,609 +1,246 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import HustleCard from "../components/HustleCard.astro";
-import HustleFinder from "../components/HustleFinder.astro";
-import FAQ from "../components/FAQ.astro";
 import type { SideHustle } from "../types/side-hustle";
-import { homeMeta } from "../utils/seo";
 import hustleData from "../data/side-hustles.json";
 
 const hustles = hustleData as SideHustle[];
-const meta = homeMeta();
 
-// Featured = top 3 by income potential + beginner-friendly mix
-const featured = hustles
-  .filter((h) => h.beginnerFriendly && h.remote)
-  .slice(0, 3);
+const title = "Find the Side Hustle You Can Start This Week | SideHustlesJob";
+const description = "Take a fast, practical quiz and get one best side hustle match, two backups, and a day-by-day 7-day launch plan based on your skills, time, budget, risk tolerance, and income target.";
+const canonical = "https://sidehustlesjob.com";
 
-const stats = [
-  { label: "Side hustles", value: `${hustles.length}+` },
-  { label: "Remote options", value: `${hustles.filter((h) => h.remote).length}+` },
-  { label: "Free to start", value: `${hustles.filter((h) => h.startupCost === "$0").length}+` },
-  { label: "Beginner friendly", value: `${hustles.filter((h) => h.beginnerFriendly).length}+` },
+const sampleOutcomes = [
+  {
+    profile: "No technical skills · $0 budget · 5 hours/week",
+    match: "Virtual Assistant",
+    result: "First client pitch template and 20-prospect list ready in 45 minutes.",
+  },
+  {
+    profile: "Writes well · needs income fast · remote only",
+    match: "Freelance Writing",
+    result: "Pitch template, a 20-client target list, and a starter rate you can charge today.",
+  },
+  {
+    profile: "Local work fine · low risk · flexible evenings",
+    match: "Food Delivery",
+    result: "App setup guide, best shift windows, and a first-week earning target.",
+  },
 ];
 
-// Home page JSON-LD: WebSite + WebApplication schema
-const homeJsonLd = JSON.stringify({
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebSite",
-      "@id": "https://sidehustlesjob.com/#website",
-      "url": "https://sidehustlesjob.com",
-      "name": "SideHustlesJob",
-      "description": "Discover 150+ side hustle ideas to make extra money from home or anywhere. Find side hustle jobs matched to your skills, schedule, and income goals.",
-      "publisher": {
-        "@type": "Organization",
-        "name": "SideHustlesJob",
-        "url": "https://sidehustlesjob.com",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://sidehustlesjob.com/favicon-96x96.png"
-        }
-      },
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": "https://sidehustlesjob.com/#browse?q={search_term_string}"
-        },
-        "query-input": "required name=search_term_string"
-      }
-    },
-    {
-      "@type": "WebPage",
-      "@id": "https://sidehustlesjob.com/#webpage",
-      "url": "https://sidehustlesjob.com",
-      "name": `Side Hustle Ideas to Make Extra Money in ${new Date().getFullYear()} | SideHustlesJob`,
-      "description": "Looking for a side hustle? Discover 150+ side hustle ideas to make extra money from home or anywhere.",
-      "isPartOf": { "@id": "https://sidehustlesjob.com/#website" },
-      "breadcrumb": {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "https://sidehustlesjob.com"
-          }
-        ]
-      }
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is a side hustle?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A side hustle is any income-generating activity you do outside of your primary job or main source of income. It could be a freelance service, gig work, an online business, or a creative project — as long as it pays you. Popular examples include freelance writing, driving for Uber, delivering for DoorDash or Instacart, selling on Etsy, online tutoring, and web development."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How to start a side hustle?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Starting a side hustle comes down to four steps: (1) Pick a hustle that matches your skills, schedule, and budget. (2) Set up the minimum viable presence — a profile on Upwork, a gig on Fiverr, a DoorDash driver account, or a simple website. (3) Get your first client or first delivery — don't wait until everything is perfect. (4) Reinvest early earnings to grow. Most side hustles can be started in a single weekend."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is DoorDash a good side hustle?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "DoorDash is a solid side hustle for people who want flexible, on-demand income with zero experience required. Dashers typically earn $15–$25 per hour including tips, depending on your market and the hours you choose. It's one of the easiest gigs to start — you just need a smartphone, a valid driver's license, insurance, and a background check."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What is a good side hustle?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A good side hustle is one that matches your skills, fits your schedule, and meets your income goal. For high earners, freelance web development, copywriting, SEO consulting, or UX design can generate $2,000–$5,000+/month. For beginners, transcription, virtual assistance, or food delivery can get you earning within days."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What's a good side hustle for making extra money fast?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "If you need money quickly, the fastest side hustles are food delivery (DoorDash, Uber Eats, Instacart), rideshare driving (Uber, Lyft), task-based gigs (TaskRabbit), and freelance services (writing, design, data entry on Upwork or Fiverr). All can generate income within your first week."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is Uber a good side hustle?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Uber is a reliable side hustle if you have a qualifying vehicle and want flexible hours. Drivers typically earn $18–$30 per hour before expenses in most US cities, with surge pricing boosting earnings during peak times. However, you bear the cost of gas, maintenance, and depreciation, which can significantly reduce net earnings."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is Instacart a good side hustle?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Instacart is a good side hustle for people who like grocery shopping and want flexible hours. Shoppers earn $10–$20 per hour on average, plus tips, which can meaningfully boost income. Full-service shoppers who both shop and deliver tend to earn more than in-store-only shoppers."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is Instacart worth it as a side hustle?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Whether Instacart is worth it depends on your market and goals. In high-demand urban areas, experienced shoppers can earn $20–$30+/hour including tips. In smaller markets or during off-peak hours, earnings can dip to $10–$12/hour. Tips are the biggest variable — good service consistently leads to better tips."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is Uber Eats a good side hustle?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Uber Eats is a popular food delivery side hustle with earnings typically between $12–$22 per hour including tips. Like DoorDash, it offers complete schedule flexibility and is easy to start. Uber Eats has the added benefit of being on the same platform as Uber rideshare, so some drivers do both to maximize their active time."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How to start a side hustle with no money?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Many of the best side hustles cost nothing to start. Freelance writing, copywriting, virtual assistance, social media management, online tutoring, transcription, and data annotation all require only a laptop and internet connection. Create a free profile on Upwork, Fiverr, or LinkedIn and offer a discounted rate for your first 2–3 clients to build reviews."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What are current side hustle statistics?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "As of 2024–2025, over 44% of full-time employed Americans have a side hustle. The average side hustler earns approximately $810/month in supplemental income. Nearly 28% of Americans say their side hustle income is essential to covering monthly expenses. The gig economy employs over 59 million Americans annually."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What is the best side hustle?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "There's no single best side hustle — it depends on your skills, time, and income goal. Freelance web development, copywriting, and SEO consulting rank highest for hourly earning potential ($50–$150/hr). For passive income, digital products and affiliate marketing rank highest for scalability. For fastest time-to-income, food delivery and rideshare gigs win."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How to make money with a side hustle?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Making money with a side hustle follows a simple pattern: pick a hustle with demand, show up consistently, and improve over time. For service-based hustles, land your first client within 7 days using Upwork, Fiverr, or direct outreach. For gig work, complete your first shift within the week. Track your hours and earnings from day one, then look for ways to increase your rate or add a complementary income stream."
-          }
-        }
-      ]
-    }
-  ]
-});
+const trustSignals = [
+  { label: `${hustles.length} options scored` },
+  { label: "7 quick questions" },
+  { label: "7-day action plan" },
+  { label: "No account needed" },
+];
 ---
 
-<Layout
-  title={meta.title}
-  description={meta.description}
-  canonical={meta.canonical}
-  jsonLd={homeJsonLd}
-  keywords="side hustle, what is a side hustle, side hustle jobs, side hustle ideas, side hustle ideas to make extra money, side hustle stack, side hustle from home, side hustle ideas from home"
->
-  <!-- ─── Hero ─────────────────────────────────────────────────────────────── -->
-  <section class="relative overflow-hidden pt-20 pb-8 sm:pt-28 sm:pb-20 md:pt-48 md:pb-40" aria-labelledby="hero-heading">
-    <!-- Animated Glowing Background elements -->
-    <div class="absolute inset-0 z-0 bg-gradient-to-br from-slate-50 via-white to-slate-100 opacity-60"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] sm:w-[500px] sm:h-[500px] md:w-[800px] md:h-[800px] bg-gradient-to-tr from-pink-100/50 to-purple-100/50 rounded-full blur-3xl pointer-events-none"></div>
+<Layout title={title} description={description} canonical={canonical} keywords="side hustle quiz, best side hustle for me, start a side hustle this week">
 
-    <div class="container-page relative z-10">
-      <div class="max-w-4xl mx-auto text-center flex flex-col items-center">
-        <!-- Eyebrow -->
-        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-200 bg-white shadow-sm text-xs font-semibold text-slate-600 mb-4 sm:mb-10">
-          <span class="relative flex h-2 w-2 shrink-0">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-500 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-pink-500"></span>
-          </span>
-          {hustles.length}+ real opportunities, no fluff
-        </div>
+  <!-- ─── Hero ──────────────────────────────────────────────────────────── -->
+  <section class="min-h-[calc(100svh-56px)] sm:min-h-[calc(100svh-80px)] pt-20 sm:pt-28 pb-12 sm:pb-20 flex items-center border-b border-slate-200 bg-white" aria-labelledby="hero-heading">
+    <div class="container-page w-full">
+      <div class="grid lg:grid-cols-[1fr_400px] gap-10 lg:gap-16 items-center">
 
-        <!-- Headline — tighter on mobile -->
-        <h1
-          id="hero-heading"
-          class="text-[2rem] leading-[1.15] sm:text-5xl md:text-7xl font-bold text-slate-900 tracking-[-0.02em] sm:tracking-[-0.04em] sm:leading-[1.1] mb-3 sm:mb-8 text-balance"
-        >
-          Find the best side hustle for you.
-        </h1>
+        <!-- Left: copy -->
+        <div class="max-w-2xl">
+          <p class="inline-flex items-center h-7 px-3 rounded-full border border-emerald-200 bg-emerald-50 text-[11px] font-bold text-emerald-700 mb-5 tracking-wide uppercase">
+            Startable this week, not someday
+          </p>
+          <h1 id="hero-heading" class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-[-0.02em] text-slate-950 text-balance">
+            Find the side hustle you can actually start this week.
+          </h1>
+          <p class="mt-5 text-base sm:text-lg leading-7 text-slate-600 max-w-xl">
+            Answer 7 questions. Get one best match, two backups, and a day-by-day launch plan you can act on today.
+          </p>
 
-        <!-- Sub — shorter on mobile -->
-        <p class="text-sm sm:text-lg md:text-xl text-slate-600 leading-relaxed mb-6 sm:mb-12 max-w-2xl mx-auto text-balance font-medium">
-          Answer 7 questions and discover hustles matched to your skills and income goals.
-        </p>
-
-        <!-- CTAs — stacked mobile, inline desktop -->
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-4 w-full sm:w-auto">
-          <a
-            href="#finder"
-            class="w-full sm:w-auto flex items-center justify-center h-12 sm:h-14 px-7 sm:px-8 text-sm sm:text-base font-bold text-white bg-slate-900 rounded-full hover:bg-slate-800 transition-all duration-300 shadow-lg shadow-slate-900/10"
-          >
-            Find my side hustle →
-          </a>
-          <a
-            href="/browse"
-            class="w-full sm:w-auto flex items-center justify-center h-11 sm:h-14 px-7 sm:px-8 text-sm sm:text-base font-semibold text-slate-700 bg-white border border-slate-200 rounded-full hover:bg-slate-50 hover:border-slate-300 transition-all duration-300 shadow-sm"
-          >
-            Browse all
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Quick Stats — compact 2x2 on mobile ──────────────────────────────── -->
-  <section class="border-y border-slate-200 bg-slate-50 relative z-10" aria-label="Site statistics">
-    <div class="container-page">
-      <dl class="grid grid-cols-2 md:grid-cols-4 divide-slate-200" style="divide-color: #e2e8f0;">
-        {stats.map(({ label, value }, i) => (
-          <div class:list={[
-            "flex flex-col items-center py-5 sm:py-10 px-3 sm:px-4 text-center group border-slate-200",
-            i % 2 !== 0 ? "border-l" : "",
-            i >= 2 ? "border-t md:border-t-0" : "",
-            i > 0 ? "md:border-l" : "",
-          ]}>
-            <dd class="text-2xl sm:text-4xl font-bold text-slate-800 tracking-tight tabular-nums mb-0.5 sm:mb-2">{value}</dd>
-            <dt class="text-[10px] sm:text-xs font-mono text-slate-500 uppercase tracking-wider">{label}</dt>
-          </div>
-        ))}
-      </dl>
-    </div>
-  </section>
-
-  <!-- ─── Featured hustles — horizontal scroll on mobile ───────────────────── -->
-  <section class="py-8 sm:py-16 md:py-32 relative" aria-labelledby="featured-heading">
-    <div class="absolute top-1/2 left-0 w-96 h-96 bg-pink-100/50 blur-[120px] rounded-full pointer-events-none"></div>
-
-    <div class="relative z-10">
-      <!-- Header — padded normally -->
-      <div class="container-page">
-        <div class="flex items-center justify-between gap-4 mb-5 sm:mb-16">
-          <div>
-            <p class="text-[11px] sm:text-sm font-bold text-pink-600 uppercase tracking-widest mb-1 sm:mb-3">Popular picks</p>
-            <h2
-              id="featured-heading"
-              class="text-xl sm:text-3xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight text-balance"
+          <!-- Primary CTA -->
+          <div class="mt-8">
+            <a
+              href="/quiz"
+              data-track="hero_start_quiz"
+              class="inline-flex h-12 sm:h-13 items-center justify-center rounded-lg bg-slate-950 px-7 text-sm font-bold text-white hover:bg-slate-800 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-950"
             >
-              Top hustles right now.
-            </h2>
+              Find my best match →
+            </a>
           </div>
-          <a
-            href="/browse"
-            class="shrink-0 flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-700 hover:text-slate-900 transition-colors px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border border-slate-200 bg-white hover:bg-slate-50 whitespace-nowrap"
-          >
-            View all
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M3.5 8h9M9 4.5l3.5 3.5L9 11.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-        </div>
-      </div>
 
-      <!-- Mobile: horizontal scroll cards. Desktop: normal grid -->
-      <div class="md:container-page">
-        <!-- Mobile horizontal scroll -->
-        <div class="md:hidden flex gap-3 overflow-x-auto scrollbar-hide pl-4 pr-4 pb-1">
-          {featured.map((hustle) => (
-            <div class="flex-shrink-0 w-[76vw] max-w-[280px]">
-              <HustleCard hustle={hustle} featured />
+          <!-- Trust signals -->
+          <div class="mt-8 flex flex-wrap gap-2" aria-label="Trust signals">
+            {trustSignals.map((s) => (
+              <div class="inline-flex items-center h-7 px-3 rounded-full border border-slate-200 bg-slate-50">
+                <p class="text-xs font-semibold text-slate-700">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Right: example result preview -->
+        <aside class="rounded-xl border border-slate-200 bg-slate-950 text-white overflow-hidden shadow-2xl shadow-slate-900/20" aria-label="Example output">
+          <div class="px-5 py-3.5 border-b border-white/10 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="h-2 w-2 rounded-full bg-emerald-400" aria-hidden="true"></span>
+              <p class="text-xs font-bold text-emerald-300 uppercase tracking-wider">Example output</p>
             </div>
-          ))}
-          <!-- "See all" card -->
-          <div class="flex-shrink-0 w-[76vw] max-w-[280px]">
-            <a href="/browse" class="flex flex-col items-center justify-center h-full min-h-[200px] rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 text-slate-600 hover:border-pink-300 hover:bg-pink-50 hover:text-pink-600 transition-all duration-300 gap-2 p-6">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-              <span class="text-sm font-bold text-center">See all {hustles.length}+ hustles</span>
-            </a>
+            <p class="text-xs text-slate-500">2 min quiz</p>
           </div>
-        </div>
-        <!-- Desktop grid -->
-        <div class="hidden md:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {featured.map((hustle) => (
-            <HustleCard hustle={hustle} featured />
-          ))}
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Finder quiz ──────────────────────────────────────────────────────── -->
-  <HustleFinder />
-
-  <!-- ─── Audience & Constraint links — horizontal scroll chips on mobile ──── -->
-  <section class="py-8 sm:py-16 md:py-32 relative border-t border-slate-200" aria-labelledby="audience-heading">
-    <div class="relative z-10">
-      <!-- Audience -->
-      <div class="container-page mb-8 sm:mb-14">
-        <p class="text-[11px] sm:text-sm font-bold text-slate-500 uppercase tracking-widest mb-1 sm:mb-3">By audience</p>
-        <h2
-          id="audience-heading"
-          class="text-xl sm:text-3xl md:text-4xl font-bold text-slate-900 tracking-tight leading-tight text-balance"
-        >
-          Find hustles for your situation.
-        </h2>
-      </div>
-
-      <!-- Mobile: horizontal pill chips. Desktop: grid -->
-      <div class="md:container-page">
-        <div class="md:hidden flex gap-2.5 overflow-x-auto scrollbar-hide px-4 pb-1">
-          {[
-            { href: "/side-hustles-for-students", label: "🎓 Students" },
-            { href: "/side-hustles-for-developers", label: "💻 Developers" },
-            { href: "/side-hustles-for-teachers", label: "📚 Teachers" },
-            { href: "/side-hustles-for-designers", label: "🎨 Designers" },
-            { href: "/side-hustles-for-retirees", label: "🌿 Retirees" },
-            { href: "/side-hustles-for-parents", label: "👨‍👩‍👧 Parents" },
-            { href: "/side-hustles-for-writers", label: "✍️ Writers" },
-            { href: "/side-hustles-for-marketers", label: "📣 Marketers" },
-            { href: "/side-hustles-for-nurses", label: "🏥 Nurses" },
-            { href: "/side-hustles-for-accountants", label: "📊 Accountants" },
-          ].map(({ href, label }) => (
-            <a
-              href={href}
-              class="flex-shrink-0 px-4 py-2.5 rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-900 hover:border-slate-900 hover:text-white transition-all duration-200 whitespace-nowrap shadow-sm active:scale-95"
-            >
-              {label}
-            </a>
-          ))}
-        </div>
-        <div class="hidden md:grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
-          {[
-            { href: "/side-hustles-for-students", label: "Students" },
-            { href: "/side-hustles-for-developers", label: "Developers" },
-            { href: "/side-hustles-for-teachers", label: "Teachers" },
-            { href: "/side-hustles-for-designers", label: "Designers" },
-            { href: "/side-hustles-for-retirees", label: "Retirees" },
-            { href: "/side-hustles-for-parents", label: "Parents" },
-            { href: "/side-hustles-for-writers", label: "Writers" },
-            { href: "/side-hustles-for-marketers", label: "Marketers" },
-            { href: "/side-hustles-for-nurses", label: "Nurses" },
-            { href: "/side-hustles-for-accountants", label: "Accountants" },
-          ].map(({ href, label }) => (
-            <a
-              href={href}
-              class="flex items-center justify-between gap-2 p-3 sm:p-5 rounded-[var(--radius-lg)] border border-slate-200 bg-white hover:bg-slate-900 hover:border-slate-900 transition-all duration-300 group shadow-sm hover:shadow-[0_4px_30px_rgba(217,70,168,0.15)] hover:-translate-y-1"
-            >
-              <span class="text-xs sm:text-sm font-semibold text-slate-700 group-hover:text-white transition-colors">{label}</span>
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="shrink-0 text-slate-400 group-hover:text-pink-400 transition-colors" aria-hidden="true">
-                <path d="M2.5 6h7M6 2.5l3.5 3.5L6 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
-          ))}
-        </div>
-      </div>
-
-      <!-- Constraint links -->
-      <div class="mt-8 sm:mt-20">
-        <div class="container-page mb-5 sm:mb-14">
-          <p class="text-[11px] sm:text-sm font-bold text-[var(--color-mute)] uppercase tracking-widest mb-1 sm:mb-3">By constraint</p>
-          <h2 class="text-xl sm:text-3xl md:text-4xl font-bold text-[var(--color-ink)] tracking-tight leading-tight text-balance">
-            Find what fits your limits.
-          </h2>
-        </div>
-
-        <div class="md:container-page">
-          <div class="md:hidden flex gap-2.5 overflow-x-auto scrollbar-hide px-4 pb-1">
-            {[
-              { href: "/side-hustles-with-no-money", label: "💸 No Money" },
-              { href: "/side-hustles-with-no-experience", label: "🌱 No Experience" },
-              { href: "/side-hustles-from-home", label: "🏠 From Home" },
-              { href: "/side-hustles-that-pay-weekly", label: "📅 Weekly Pay" },
-              { href: "/side-hustles-for-beginners", label: "⭐ Beginners" },
-              { href: "/high-income-side-hustles", label: "💰 High Income" },
-              { href: "/passive-income-side-hustles", label: "🔄 Passive Income" },
-              { href: "/side-hustles-under-100", label: "🏷️ Under $100" },
-            ].map(({ href, label }) => (
-              <a
-                href={href}
-                class="flex-shrink-0 px-4 py-2.5 rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-900 hover:border-slate-900 hover:text-white transition-all duration-200 whitespace-nowrap shadow-sm active:scale-95"
-              >
-                {label}
+          <div class="p-5">
+            <div class="rounded-lg bg-white text-slate-950 p-4 mb-4">
+              <div class="flex items-center justify-between gap-3 mb-4">
+                <div>
+                  <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Best match</p>
+                  <h2 class="text-xl font-bold leading-tight">Virtual Assistant</h2>
+                </div>
+                <span class="shrink-0 rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-700">92%</span>
+              </div>
+              <dl class="grid grid-cols-2 gap-2 text-sm">
+                <div class="rounded-md bg-slate-50 p-2.5">
+                  <dt class="text-[10px] text-slate-400 mb-0.5">Startup cost</dt>
+                  <dd class="font-bold text-slate-950">$0</dd>
+                </div>
+                <div class="rounded-md bg-slate-50 p-2.5">
+                  <dt class="text-[10px] text-slate-400 mb-0.5">First dollar</dt>
+                  <dd class="font-bold text-slate-950">1–2 weeks</dd>
+                </div>
+                <div class="rounded-md bg-slate-50 p-2.5">
+                  <dt class="text-[10px] text-slate-400 mb-0.5">Skill level</dt>
+                  <dd class="font-bold text-slate-950">Beginner</dd>
+                </div>
+                <div class="rounded-md bg-slate-50 p-2.5">
+                  <dt class="text-[10px] text-slate-400 mb-0.5">Risk</dt>
+                  <dd class="font-bold text-slate-950">Low</dd>
+                </div>
+              </dl>
+            </div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">7-day plan preview</p>
+            <ol class="space-y-2 text-sm text-slate-200">
+              <li class="flex items-start gap-2.5">
+                <span class="text-emerald-400 font-bold shrink-0 tabular-nums">D1</span>
+                <span>Write a 2-sentence offer for one specific buyer type.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-emerald-400 font-bold shrink-0 tabular-nums">D2</span>
+                <span>Set up your profile with a starter rate and one proof sample.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-emerald-400 font-bold shrink-0 tabular-nums">D3</span>
+                <span>Find 20 prospects. Send 10 direct pitches.</span>
+              </li>
+            </ol>
+            <div class="mt-4 pt-4 border-t border-white/10">
+              <a href="/quiz" data-track="hero_preview_cta" class="flex items-center justify-center h-10 rounded-lg bg-white text-slate-950 text-sm font-bold hover:bg-slate-100 transition-colors">
+                Get my own plan →
               </a>
-            ))}
+            </div>
           </div>
-          <div class="hidden md:grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
-            {[
-              { href: "/side-hustles-with-no-money", label: "No Money" },
-              { href: "/side-hustles-with-no-experience", label: "No Experience" },
-              { href: "/side-hustles-from-home", label: "From Home" },
-              { href: "/side-hustles-that-pay-weekly", label: "Weekly Pay" },
-              { href: "/side-hustles-for-beginners", label: "Beginners" },
-              { href: "/high-income-side-hustles", label: "High Income" },
-              { href: "/passive-income-side-hustles", label: "Passive Income" },
-              { href: "/side-hustles-under-100", label: "Under $100" },
-            ].map(({ href, label }) => (
-              <a
-                href={href}
-                class="flex items-center justify-between gap-2 p-3 sm:p-5 rounded-[var(--radius-lg)] border border-slate-200 bg-white hover:bg-slate-900 hover:border-slate-900 transition-all duration-300 group shadow-sm hover:shadow-[0_4px_30px_rgba(147,51,234,0.15)] hover:-translate-y-1"
-              >
-                <span class="text-xs sm:text-sm font-semibold text-slate-700 group-hover:text-white transition-colors">{label}</span>
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="shrink-0 text-slate-400 group-hover:text-purple-400 transition-colors" aria-hidden="true">
-                  <path d="M2.5 6h7M6 2.5l3.5 3.5L6 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </a>
-            ))}
-          </div>
-        </div>
+        </aside>
+
       </div>
     </div>
   </section>
 
-  <!-- ─── SEO Content — collapsible on mobile ──────────────────────────────── -->
-  <section class="py-8 md:py-24 border-t border-slate-200 bg-white" aria-labelledby="seo-content-heading">
+  <!-- ─── How it works ──────────────────────────────────────────────────── -->
+  <section class="py-14 sm:py-20 bg-slate-50 border-b border-slate-200" aria-labelledby="how-heading">
     <div class="container-page">
-      <div class="max-w-4xl mx-auto">
-        <h2 id="seo-content-heading" class="text-xl sm:text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-4 sm:mb-6">
-          What Is a Side Hustle — And How Do You Find the Right One?
-        </h2>
-
-        <!-- Mobile: collapsed by default, "Read more" toggle -->
-        <div id="seo-preview" class="md:hidden">
-          <p class="text-sm text-slate-600 leading-relaxed mb-3">
-            A <strong>side hustle</strong> is any income-generating activity you pursue outside of your primary job. Whether you want an extra $200 a month or you're chasing $5,000 to eventually go full-time, there is a hustle that fits your situation.
-          </p>
-          <button
-            id="seo-expand-btn"
-            class="flex items-center gap-2 text-sm font-bold text-[var(--color-violet)] hover:text-[var(--color-link-deep)] transition-colors"
-            aria-expanded="false"
-            aria-controls="seo-full"
-          >
-            Read more
-            <svg id="seo-expand-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" class="transition-transform duration-300" aria-hidden="true">
-              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-        </div>
-
-        <!-- Full content: always visible on desktop, toggled on mobile -->
-        <div id="seo-full" class="hidden md:block">
-          <p class="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 sm:mb-6">
-            A <strong>side hustle</strong> is any income-generating activity you pursue outside of your primary job. It might be something you do a few hours a week on weekday evenings, or a full weekend project that slowly grows into something bigger. The key difference between a side hustle and a hobby is simple: a side hustle pays you. Whether you want an extra $200 a month for bills or you're chasing $5,000 a month to eventually go full-time, there is a side hustle that fits your situation — you just have to find the right one.
-          </p>
-
-          <h3 class="text-lg sm:text-2xl font-bold text-slate-900 mt-6 sm:mt-10 mb-2 sm:mb-4">Side Hustle Ideas to Make Extra Money in {new Date().getFullYear()}</h3>
-          <p class="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 sm:mb-6">
-            The landscape of <strong>side hustle ideas to make extra money</strong> has never been broader. Remote work technology, the creator economy, and the gig marketplace have unlocked hundreds of legitimate ways to earn on the side. Some of the most popular <strong>side hustle jobs</strong> right now include freelance writing, copywriting, virtual assistance, social media management, video editing, graphic design, online tutoring, and web development. These fields have massive demand, low startup costs, and can be started from your laptop within days.
-          </p>
-
-          <h3 class="text-lg sm:text-2xl font-bold text-slate-900 mt-6 sm:mt-10 mb-2 sm:mb-4">Side Hustle Ideas From Home</h3>
-          <p class="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 sm:mb-6">
-            The best <strong>side hustle ideas from home</strong> don't require a commute, a storefront, or a large investment. They require a laptop, an internet connection, and the willingness to put in consistent hours.
-          </p>
-          <ul class="space-y-2 sm:space-y-3 mb-4 sm:mb-6 text-sm sm:text-base text-slate-600">
-            <li><strong>Content &amp; Writing:</strong> Freelance writing, copywriting, and blogging are among the most accessible <strong>side hustles from home</strong>.</li>
-            <li><strong>Tech &amp; Digital Services:</strong> Web development, UX/UI design, email marketing, and SEO consulting are high-value skills you can sell remotely.</li>
-            <li><strong>Teaching &amp; Coaching:</strong> Online tutoring and business consulting let you monetize expertise you already have.</li>
-            <li><strong>Creative Services:</strong> Graphic design, video editing, and podcast editing are in constant demand.</li>
-            <li><strong>E-commerce:</strong> Dropshipping, print-on-demand, and Etsy selling let you run a product business entirely from home.</li>
-          </ul>
-
-          <h3 class="text-lg sm:text-2xl font-bold text-slate-900 mt-6 sm:mt-10 mb-2 sm:mb-4">How SideHustlesJob Works</h3>
-          <p class="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 sm:mb-6">
-            SideHustlesJob takes the guesswork out of choosing a <strong>side hustle</strong>. You answer 7 quick questions about where you want to work, how many hours you have, your experience level, your startup budget, and your income goal. Our matching engine then scores every hustle in our database against your answers and surfaces the most relevant opportunities — ranked by fit, not commission.
-          </p>
-          <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
-            Whether you're a student looking for flexible <strong>side hustle jobs</strong>, a parent who needs <strong>side hustle ideas from home</strong>, or a professional ready to turn your expertise into consulting income — SideHustlesJob has a match for you. It takes 90 seconds, it's completely free, and no account is required.
-          </p>
-        </div>
+      <div class="max-w-xl mb-10">
+        <p class="text-xs font-bold uppercase text-slate-500 tracking-wider mb-2">How it works</p>
+        <h2 id="how-heading" class="text-2xl sm:text-3xl font-bold text-slate-950">A recommendation, not a directory.</h2>
+        <p class="mt-3 text-sm sm:text-base text-slate-600 leading-7">Most side hustle sites give you 500 options and leave you to figure it out. We give you one.</p>
       </div>
-    </div>
-  </section>
-
-  <!-- ─── FAQ ─────────────────────────────────────────────────────────────── -->
-  <FAQ />
-
-  <!-- ─── Company Links — compact row on mobile ────────────────────────────── -->
-  <section class="py-8 sm:py-16 md:py-24 border-t border-slate-200 bg-slate-50" aria-labelledby="company-links-heading">
-    <div class="container-page">
-      <div class="text-center mb-5 sm:mb-10">
-        <p class="text-[11px] sm:text-sm font-bold text-slate-500 uppercase tracking-widest mb-1 sm:mb-3">SideHustlesJob</p>
-        <h2 id="company-links-heading" class="text-lg sm:text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
-          Learn more about us
-        </h2>
-      </div>
-      <div class="grid grid-cols-4 sm:grid-cols-4 gap-2 sm:gap-4 max-w-3xl mx-auto">
+      <div class="grid sm:grid-cols-3 gap-4">
         {[
-          { href: "/about", label: "About Us", icon: "👋" },
-          { href: "/how-it-works", label: "How It Works", icon: "⚡" },
-          { href: "/contact", label: "Contact", icon: "💬" },
-          { href: "/privacy-policy", label: "Privacy", icon: "🔒" },
-        ].map(({ href, label, icon }) => (
-          <a
-            href={href}
-            class="flex flex-col items-center text-center gap-1.5 p-3 sm:p-5 rounded-2xl border border-slate-200 bg-white hover:bg-slate-900 hover:border-slate-900 transition-all duration-300 group shadow-sm active:scale-95"
-          >
-            <span class="text-2xl sm:text-2xl">{icon}</span>
-            <span class="text-[11px] sm:text-sm font-bold text-slate-800 group-hover:text-white transition-colors leading-tight">{label}</span>
-          </a>
+          ["1", "Tell us your constraints", "Skills, available hours, budget, risk tolerance, and income target."],
+          ["2", "We score realistic options", "The engine favors startability, speed to first dollar, and fit — not hype."],
+          ["3", "Leave with a plan", "One best match, two backups, exact first step, and a 7-day action plan."],
+        ].map(([number, heading, copy]) => (
+          <article class="rounded-lg border border-slate-200 bg-white p-5 sm:p-6">
+            <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-950 text-sm font-bold text-white mb-5">{number}</div>
+            <h3 class="text-base font-bold text-slate-950 mb-2">{heading}</h3>
+            <p class="text-sm leading-6 text-slate-600">{copy}</p>
+          </article>
         ))}
       </div>
+      <div class="mt-8">
+        <a href="/quiz" data-track="howitworks_cta" class="inline-flex h-11 items-center justify-center rounded-lg bg-slate-950 px-6 text-sm font-bold text-white hover:bg-slate-800 transition-colors">
+          Take the quiz — it's free →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Sample outcomes ───────────────────────────────────────────────── -->
+  <section class="py-14 sm:py-20 bg-white border-b border-slate-200" aria-labelledby="outcomes-heading">
+    <div class="container-page">
+      <div class="max-w-xl mb-10">
+        <p class="text-xs font-bold uppercase text-slate-500 tracking-wider mb-2">Sample outcomes</p>
+        <h2 id="outcomes-heading" class="text-2xl sm:text-3xl font-bold text-slate-950">Specific enough to act on today.</h2>
+        <p class="mt-3 text-sm sm:text-base text-slate-600">Every result includes an exact first step — not "research options" or "explore opportunities."</p>
+      </div>
+      <div class="grid sm:grid-cols-3 gap-4">
+        {sampleOutcomes.map((item) => (
+          <article class="rounded-lg border border-slate-200 bg-slate-50 p-5 flex flex-col">
+            <div class="mb-4">
+              <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1.5">Profile</p>
+              <p class="text-sm leading-6 text-slate-700">{item.profile}</p>
+            </div>
+            <div class="pt-4 border-t border-slate-200 flex-1">
+              <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1.5">Likely match</p>
+              <h3 class="text-xl font-bold text-slate-950 mb-2">{item.match}</h3>
+              <p class="text-sm leading-6 text-slate-600">{item.result}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+      <div class="mt-8">
+        <a href="/quiz" data-track="outcomes_cta" class="inline-flex h-11 items-center justify-center rounded-lg border border-slate-300 bg-white px-5 text-sm font-bold text-slate-950 hover:bg-slate-50 transition-colors">
+          Get my match →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── What you get ──────────────────────────────────────────────────── -->
+  <section class="py-14 sm:py-20 bg-slate-50 border-b border-slate-200" aria-labelledby="what-heading">
+    <div class="container-page">
+      <div class="max-w-xl mb-10">
+        <p class="text-xs font-bold uppercase text-slate-500 tracking-wider mb-2">What you get</p>
+        <h2 id="what-heading" class="text-2xl sm:text-3xl font-bold text-slate-950">Everything to make a decision and start.</h2>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {[
+          { title: "One best match", desc: "Not a ranked list of 50. One clear recommendation based on your answers." },
+          { title: "Two backups", desc: "Alternatives in case the first path doesn't click — but try the first one seriously first." },
+          { title: "Why it fits", desc: "Plain-English reasons why this hustle matches your skills, schedule, and budget." },
+          { title: "Startup cost", desc: "Exact upfront investment needed. Most recommendations are $0 to start." },
+          { title: "Time to first dollar", desc: "Honest estimate of how long before you see your first payment." },
+          { title: "7-day action plan", desc: "Day-by-day tasks so you don't waste the week figuring out where to begin." },
+        ].map(({ title, desc }) => (
+          <div class="rounded-lg border border-slate-200 bg-white p-5">
+            <div class="flex items-center gap-2 mb-2.5">
+              <span class="text-emerald-600 font-bold text-lg leading-none" aria-hidden="true">✓</span>
+              <h3 class="text-sm font-bold text-slate-950">{title}</h3>
+            </div>
+            <p class="text-sm leading-6 text-slate-600">{desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Final CTA ─────────────────────────────────────────────────────── -->
+  <section class="py-14 sm:py-20 bg-slate-950" aria-label="Final call to action">
+    <div class="container-page text-center">
+      <h2 class="text-2xl sm:text-4xl font-bold text-white leading-tight text-balance mb-4">
+        Find the side hustle you can start this week.
+      </h2>
+      <p class="text-slate-400 mb-8 max-w-md mx-auto text-sm sm:text-base leading-7">
+        2 minutes. 7 questions. One clear answer with a day-by-day plan.
+      </p>
+      <a href="/quiz" data-track="footer_cta" class="inline-flex h-12 items-center justify-center rounded-lg bg-white px-8 text-sm font-bold text-slate-950 hover:bg-slate-100 transition-colors">
+        Find my best match →
+      </a>
+      <p class="mt-4 text-xs text-slate-600">No account required · Free</p>
     </div>
   </section>
 
 </Layout>
-
-<script>
-  function setupFilters() {
-    const catBtns = document.querySelectorAll<HTMLButtonElement>(".cat-filter");
-    const grid = document.getElementById("hustles-grid");
-
-    catBtns.forEach((btn) => {
-      // cloning and replacing to prevent multiple listeners
-      const newBtn = btn.cloneNode(true) as HTMLButtonElement;
-      btn.parentNode?.replaceChild(newBtn, btn);
-
-      newBtn.addEventListener("click", () => {
-        const cat = newBtn.dataset.cat ?? "all";
-
-        document.querySelectorAll<HTMLButtonElement>(".cat-filter").forEach((b) => {
-          b.setAttribute("aria-pressed", "false");
-          b.classList.remove("border-[var(--color-violet)]", "text-[var(--color-canvas)]", "bg-[var(--color-violet)]", "shadow-[0_0_15px_rgba(217,70,168,0.3)]");
-          b.classList.add("border-[var(--color-hairline-strong)]", "text-[var(--color-body)]", "bg-transparent");
-        });
-        newBtn.setAttribute("aria-pressed", "true");
-        newBtn.classList.add("border-[var(--color-violet)]", "text-[var(--color-canvas)]", "bg-[var(--color-violet)]", "shadow-[0_0_15px_rgba(217,70,168,0.3)]");
-        newBtn.classList.remove("border-[var(--color-hairline-strong)]", "text-[var(--color-body)]", "bg-transparent");
-
-        grid?.querySelectorAll<HTMLElement>("[data-slug]").forEach((card) => {
-          const match = cat === "all" || card.dataset.cat === cat;
-          if (match) {
-            card.style.display = "";
-            setTimeout(() => {
-              card.style.opacity = "1";
-              card.style.transform = "translateY(0)";
-            }, 50);
-          } else {
-            card.style.opacity = "0";
-            card.style.transform = "translateY(10px)";
-            setTimeout(() => {
-              card.style.display = "none";
-            }, 300);
-          }
-        });
-      });
-    });
-  }
-
-  // ─── SEO content expand/collapse (mobile only) ─────────────────────────────
-  function setupSEOExpand() {
-    const btn = document.getElementById('seo-expand-btn');
-    const full = document.getElementById('seo-full');
-    const icon = document.getElementById('seo-expand-icon');
-    const preview = document.getElementById('seo-preview');
-    if (!btn || !full) return;
-
-    // Clone to prevent duplicate listeners on navigation
-    const newBtn = btn.cloneNode(true) as HTMLButtonElement;
-    btn.parentNode?.replaceChild(newBtn, btn);
-    const newIcon = document.getElementById('seo-expand-icon');
-
-    newBtn.addEventListener('click', () => {
-      const isExpanded = newBtn.getAttribute('aria-expanded') === 'true';
-      if (isExpanded) {
-        full.classList.add('hidden');
-        newBtn.setAttribute('aria-expanded', 'false');
-        newBtn.childNodes[0].textContent = 'Read more';
-        if (newIcon) newIcon.style.transform = 'rotate(0deg)';
-      } else {
-        full.classList.remove('hidden');
-        newBtn.setAttribute('aria-expanded', 'true');
-        newBtn.childNodes[0].textContent = 'Show less';
-        if (newIcon) newIcon.style.transform = 'rotate(180deg)';
-      }
-    });
-  }
-
-  setupFilters();
-  setupSEOExpand();
-  document.addEventListener("astro:page-load", () => {
-    setupFilters();
-    setupSEOExpand();
-  });
-</script>

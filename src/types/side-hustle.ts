@@ -24,6 +24,7 @@ export interface FinderAnswer {
   experienceLevel: "beginner" | "intermediate" | "advanced";
   startupBudget: "zero" | "under50" | "under200" | "under500" | "any";
   needsQuickIncome: boolean;
+  riskTolerance: "low" | "medium" | "high";
   skills: string[];
   incomeGoal: "extra" | "parttime" | "fulltime" | "replace";
 }
@@ -33,6 +34,10 @@ export interface ScoredHustle {
   score: number;
   matchPercent: number;
   whyMatch: string[];
+  downsides: string[];
+  alternatives: string[];
+  skillMatchExplanation: string;
+  incomeMatchExplanation: string;
   difficulty: string;
   confidence: "Strong Match" | "Good Match" | "Decent Match";
 }
@@ -55,6 +60,29 @@ export interface ConstraintMeta {
   metaDescription: string;
   constraint: string;
   filterFn: (h: SideHustle) => boolean;
+}
+
+// localStorage schemas
+export interface SavedResult {
+  slug: string;
+  name: string;
+  matchPercent: number;
+  savedAt: number;
+}
+
+export interface RecentlyViewed {
+  slug: string;
+  name: string;
+  category: string;
+  viewedAt: number;
+}
+
+export interface SavedComparison {
+  slugA: string;
+  slugB: string;
+  nameA: string;
+  nameB: string;
+  savedAt: number;
 }
 
 export type StartupCostTier = "$0" | "Under $50" | "$50–$200" | "$200–$500" | "$500+";

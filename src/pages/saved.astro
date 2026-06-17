@@ -1,0 +1,139 @@
+---
+/**
+ * /saved — Shows localStorage favorites, recently viewed, and saved results.
+ * Fully client-side rendered — no backend.
+ */
+import Layout from "../layouts/Layout.astro";
+
+const title = "Saved Side Hustles | SideHustlesJob";
+const description = "View your saved side hustles, favorites, recently viewed, and saved comparisons — all stored locally in your browser.";
+const canonical = "https://sidehustlesjob.com/saved";
+---
+
+<Layout title={title} description={description} canonical={canonical}>
+  <section class="pt-20 pb-8 sm:pt-28 sm:pb-12" aria-labelledby="saved-heading">
+    <div class="container-page">
+      <p class="text-xs font-mono text-[var(--color-mute)] uppercase tracking-wider mb-3">Your library</p>
+      <h1 id="saved-heading" class="text-2xl sm:text-4xl font-semibold text-[var(--color-ink)] tracking-[-1.5px] sm:tracking-[-2px] leading-[1.1] mb-3 text-balance">
+        Saved hustles.
+      </h1>
+      <p class="text-sm text-[var(--color-body)] mb-6">
+        Everything is stored locally in your browser — no account needed.
+      </p>
+    </div>
+  </section>
+
+  <section class="pb-16 sm:pb-24 bg-[var(--color-canvas-soft)] border-t border-[var(--color-hairline)]">
+    <div class="container-page pt-8 sm:pt-10 space-y-12">
+
+      <!-- Favorites -->
+      <div id="favorites-section">
+        <h2 class="text-lg font-semibold text-[var(--color-ink)] tracking-tight mb-1">Favorites</h2>
+        <p class="text-xs text-[var(--color-mute)] mb-5">Side hustles you've saved with the ♡ button.</p>
+        <div id="favorites-list" class="flex flex-wrap gap-2">
+          <p class="text-sm text-[var(--color-mute)]">No favorites yet. Browse side hustles and hit Save.</p>
+        </div>
+      </div>
+
+      <!-- Saved results from quiz -->
+      <div id="saved-results-section">
+        <h2 class="text-lg font-semibold text-[var(--color-ink)] tracking-tight mb-1">Saved Quiz Results</h2>
+        <p class="text-xs text-[var(--color-mute)] mb-5">Hustles you saved from the recommendation quiz.</p>
+        <div id="saved-results-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <p class="text-sm text-[var(--color-mute)] col-span-full">No saved results yet. Take the quiz to get recommendations.</p>
+        </div>
+      </div>
+
+      <!-- Recently viewed -->
+      <div id="recents-section">
+        <h2 class="text-lg font-semibold text-[var(--color-ink)] tracking-tight mb-1">Recently Viewed</h2>
+        <p class="text-xs text-[var(--color-mute)] mb-5">Side hustle pages you've visited recently.</p>
+        <div id="recents-list" class="flex flex-wrap gap-2">
+          <p class="text-sm text-[var(--color-mute)]">No recently viewed hustles yet.</p>
+        </div>
+      </div>
+
+      <!-- Saved comparisons -->
+      <div id="comparisons-section">
+        <h2 class="text-lg font-semibold text-[var(--color-ink)] tracking-tight mb-1">Saved Comparisons</h2>
+        <p class="text-xs text-[var(--color-mute)] mb-5">Side-by-side comparisons you've saved.</p>
+        <div id="comparisons-list" class="flex flex-wrap gap-2">
+          <p class="text-sm text-[var(--color-mute)]">No saved comparisons yet.</p>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="pt-4 border-t border-[var(--color-hairline)]">
+        <div class="flex flex-wrap gap-3">
+          <a href="/quiz" class="inline-flex items-center h-10 px-5 text-sm font-medium text-[var(--color-on-primary)] bg-[var(--color-ink)] rounded-[var(--radius-pill)] hover:opacity-90 transition-opacity">
+            Take the quiz →
+          </a>
+          <a href="/browse" class="inline-flex items-center h-10 px-5 text-sm font-medium text-[var(--color-ink)] bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-[var(--radius-pill)] hover:bg-[var(--color-canvas-soft)] transition-colors card-shadow">
+            Browse all hustles →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { getFavorites, getRecents, getSavedResults, getSavedComparisons } from "../utils/storage";
+
+  function init() {
+    // Favorites
+    const favs = getFavorites();
+    const favsList = document.getElementById("favorites-list")!;
+    if (favs.length > 0) {
+      favsList.innerHTML = favs.map(slug => `
+        <a href="/side-hustle/${slug}" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[var(--color-body)] bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-full hover:border-[var(--color-violet)] hover:text-[var(--color-violet)] transition-colors card-shadow">
+          ♥ ${slug.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase())}
+        </a>
+      `).join("");
+    }
+
+    // Saved results
+    const saved = getSavedResults();
+    const savedList = document.getElementById("saved-results-list")!;
+    if (saved.length > 0) {
+      savedList.innerHTML = saved.map(r => `
+        <a href="/side-hustle/${r.slug}" class="flex flex-col gap-2 p-4 bg-[var(--color-canvas)] rounded-[var(--radius-md)] border border-[var(--color-hairline)] hover:border-[var(--color-violet)] transition-colors card-shadow">
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-sm font-semibold text-[var(--color-ink)]">${r.name}</span>
+            <span class="text-xs font-bold text-[var(--color-success)]">${r.matchPercent}% match</span>
+          </div>
+          <div class="flex-1 h-1.5 bg-[var(--color-canvas-soft-2)] rounded-full overflow-hidden">
+            <div style="width:${r.matchPercent}%" class="h-full bg-[var(--color-success)] rounded-full"></div>
+          </div>
+          <span class="text-[10px] text-[var(--color-mute)]">Saved ${new Date(r.savedAt).toLocaleDateString()}</span>
+        </a>
+      `).join("");
+    }
+
+    // Recents
+    const recents = getRecents();
+    const recentsList = document.getElementById("recents-list")!;
+    if (recents.length > 0) {
+      recentsList.innerHTML = recents.map(r => `
+        <a href="/side-hustle/${r.slug}" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[var(--color-body)] bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-full hover:border-[var(--color-ink)] hover:text-[var(--color-ink)] transition-colors card-shadow">
+          ${r.name}
+          <span class="text-[var(--color-mute)]">· ${r.category}</span>
+        </a>
+      `).join("");
+    }
+
+    // Saved comparisons
+    const comparisons = getSavedComparisons();
+    const compList = document.getElementById("comparisons-list")!;
+    if (comparisons.length > 0) {
+      compList.innerHTML = comparisons.map(c => `
+        <a href="/compare/${c.slugA}-vs-${c.slugB}" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[var(--color-body)] bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-full hover:border-[var(--color-violet)] hover:text-[var(--color-violet)] transition-colors card-shadow">
+          ${c.nameA} vs ${c.nameB}
+        </a>
+      `).join("");
+    }
+  }
+
+  init();
+  document.addEventListener("astro:page-load", init);
+</script>

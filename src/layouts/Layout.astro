@@ -71,55 +71,93 @@ const resolvedCanonical = canonical ?? siteUrl;
     <meta name="apple-mobile-web-app-title" content="SideHustle" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Fonts: Outfit + JetBrains Mono via Google Fonts -->
+    <!-- Preload navbar logo (above-the-fold, LCP-critical) -->
+    <link rel="preload" as="image" href="/favicon-96x96.png" fetchpriority="high" />
+
+    <!-- DNS prefetch for deferred 3rd-party scripts -->
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
+    <!-- Fonts: Outfit + JetBrains Mono via Google Fonts — async (non-render-blocking) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Load font CSS asynchronously; swap to stylesheet once loaded -->
     <link
       rel="preload"
       as="style"
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=JetBrains+Mono:wght@400&display=swap"
     />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap"
-      rel="stylesheet"
-    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=JetBrains+Mono:wght@400&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
 
     {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
 
     <ClientRouter />
 
-    <title>{title}</title>
-
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7910815950376611" crossorigin="anonymous"></script>
-
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EQTXMQ3157"></script>
+    <!-- Hash scroll fix for Astro ClientRouter cross-page anchor navigation -->
     <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-EQTXMQ3157');
-    </script>
-  </head>
-  <!-- Hash scroll fix for Astro ClientRouter cross-page anchor navigation -->
-  <script is:inline>
-    function scrollToHash() {
-      const hash = window.location.hash;
-      if (hash) {
-        // Small delay to let the page paint after ClientRouter transition
-        requestAnimationFrame(() => {
-          setTimeout(() => {
-            const el = document.querySelector(hash);
-            if (el) {
-              el.scrollIntoView({ behavior: "smooth", block: "start" });
-            }
-          }, 80);
-        });
+      function scrollToHash() {
+        const hash = window.location.hash;
+        if (hash) {
+          // Use a double-rAF to avoid forced reflow during the transition paint
+          requestAnimationFrame(function() {
+            requestAnimationFrame(function() {
+              var el = document.getElementById(hash.slice(1));
+              if (el) {
+                var top = el.getBoundingClientRect().top + window.scrollY - 80;
+                window.scrollTo({ top: top, behavior: "smooth" });
+              }
+            });
+          });
+        }
       }
-    }
-    document.addEventListener("astro:page-load", scrollToHash);
-  </script>
+      document.addEventListener("astro:page-load", scrollToHash);
+    </script>
+
+    <!-- Novus instrumentation bridge. If a Novus snippet is installed, events use it; otherwise GA/dev console receive the same event names. -->
+    <script is:inline>
+      window.shjTrack = function(eventName, payload) {
+        var properties = payload || {};
+        try {
+          if (window.novus && typeof window.novus.track === "function") {
+            window.novus.track(eventName, properties);
+          }
+          if (typeof window.gtag === "function") {
+            window.gtag("event", eventName, properties);
+          }
+          if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+            console.info("[Novus]", eventName, properties);
+          }
+        } catch (err) {
+          console.warn("Analytics event failed", eventName, err);
+        }
+      };
+
+      window.addEventListener("shj:track", function(event) {
+        var detail = event.detail || {};
+        window.shjTrack(detail.event, detail.payload || {});
+      });
+
+      document.addEventListener("click", function(event) {
+        var target = event.target && event.target.closest ? event.target.closest("[data-track]") : null;
+        if (target) {
+          window.shjTrack(target.getAttribute("data-track"), {
+            path: location.pathname,
+            href: target.getAttribute("href") || ""
+          });
+        }
+      });
+
+      document.addEventListener("astro:page-load", function() {
+        window.shjTrack("page_viewed", { path: location.pathname });
+      });
+    </script>
+
+    <title>{title}</title>
   </head>
   <body class="bg-[var(--color-canvas)] text-[var(--color-ink)] antialiased min-h-screen flex flex-col">
     <!-- Skip to main content for accessibility -->
@@ -137,5 +175,27 @@ const resolvedCanonical = canonical ?? siteUrl;
     </main>
 
     <Footer />
+
+    <!-- Google Analytics — deferred until after LCP to avoid blocking render -->
+    <script is:inline>
+      // Load GA after the page is interactive (requestIdleCallback or setTimeout fallback)
+      function loadGA() {
+        var s = document.createElement('script');
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-EQTXMQ3157';
+        s.async = true;
+        document.head.appendChild(s);
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        window.gtag = gtag;
+        gtag('js', new Date());
+        gtag('config', 'G-EQTXMQ3157');
+      }
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadGA, { timeout: 4000 });
+      } else {
+        setTimeout(loadGA, 3000);
+      }
+    </script>
+
   </body>
 </html>

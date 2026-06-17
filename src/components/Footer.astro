@@ -1,155 +1,31 @@
 ---
 const year = new Date().getFullYear();
-
-const companyLinks = [
-  { href: "/about", label: "About Us" },
-  { href: "/how-it-works", label: "How It Works" },
-  { href: "/contact", label: "Contact Us" },
-  { href: "/privacy-policy", label: "Privacy Policy" },
-  { href: "/terms", label: "Terms & Conditions" },
-];
-
-const audienceLinks = [
-  { href: "/side-hustles-for-students", label: "For Students" },
-  { href: "/side-hustles-for-developers", label: "For Developers" },
-  { href: "/side-hustles-for-teachers", label: "For Teachers" },
-  { href: "/side-hustles-for-designers", label: "For Designers" },
-  { href: "/side-hustles-for-retirees", label: "For Retirees" },
-  { href: "/side-hustles-for-parents", label: "For Parents" },
-];
-
-const constraintLinks = [
-  { href: "/side-hustles-with-no-money", label: "No Money" },
-  { href: "/side-hustles-with-no-experience", label: "No Experience" },
-  { href: "/side-hustles-from-home", label: "From Home" },
-  { href: "/side-hustles-that-pay-weekly", label: "Weekly Pay" },
-  { href: "/side-hustles-for-beginners", label: "Beginners" },
-  { href: "/high-income-side-hustles", label: "High Income" },
-];
-
-const popularLinks = [
-  { href: "/side-hustle/freelance-writing", label: "Freelance Writing" },
-  { href: "/side-hustle/virtual-assistant", label: "Virtual Assistant" },
-  { href: "/side-hustle/video-editing", label: "Video Editing" },
-  { href: "/side-hustle/web-development", label: "Web Development" },
-  { href: "/side-hustle/graphic-design", label: "Graphic Design" },
-  { href: "/side-hustle/copywriting", label: "Copywriting" },
-];
 ---
 
-<footer class="border-t border-[var(--color-hairline)] bg-[var(--color-canvas)]" role="contentinfo">
-  <div class="container-page py-8 sm:py-16">
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 sm:gap-8 mb-6 sm:mb-12">
-      <!-- Brand — full width on mobile -->
-      <div class="col-span-2 sm:col-span-3 md:col-span-1">
-        <a
-          href="/"
-          class="inline-flex items-center gap-2 font-semibold text-sm text-[var(--color-ink)] mb-2 sm:mb-3"
-          aria-label="SideHustlesJob home"
-        >
-          <img src="/favicon-96x96.png" alt="" width="24" height="24" class="w-6 h-6 rounded-[var(--radius-xs)]" />
+<footer class="border-t border-slate-200 bg-white" role="contentinfo">
+  <div class="container-page py-8 sm:py-10">
+    <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+      <div class="max-w-md">
+        <a href="/" class="inline-flex items-center gap-2 text-sm font-bold text-slate-950" aria-label="SideHustlesJob home">
+          <img src="/favicon-96x96.png" alt="" width="24" height="24" class="h-6 w-6 rounded-md" />
           SideHustlesJob
         </a>
-        <p class="text-xs sm:text-sm text-[var(--color-body)] leading-6 max-w-xs">
-          Find the best side hustle for your skills, schedule, and income goals. Real data, no fluff.
+        <p class="mt-2 text-sm leading-6 text-slate-600">
+          Find the side hustle you can realistically start this week.
         </p>
       </div>
 
-      <!-- Company -->
-      <div>
-        <h3 class="text-[10px] sm:text-xs font-mono text-[var(--color-mute)] uppercase tracking-wider mb-3 sm:mb-4">
-          Company
-        </h3>
-        <ul class="space-y-2" role="list">
-          {
-            companyLinks.map(({ href, label }) => (
-              <li>
-                <a
-                  href={href}
-                  class="text-xs sm:text-sm text-[var(--color-body)] hover:text-[var(--color-ink)] transition-colors duration-150"
-                >
-                  {label}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-
-      <!-- By Audience -->
-      <div>
-        <h3 class="text-[10px] sm:text-xs font-mono text-[var(--color-mute)] uppercase tracking-wider mb-3 sm:mb-4">
-          By Audience
-        </h3>
-        <ul class="space-y-2" role="list">
-          {
-            audienceLinks.map(({ href, label }) => (
-              <li>
-                <a
-                  href={href}
-                  class="text-xs sm:text-sm text-[var(--color-body)] hover:text-[var(--color-ink)] transition-colors duration-150"
-                >
-                  {label}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-
-      <!-- By Constraint -->
-      <div>
-        <h3 class="text-[10px] sm:text-xs font-mono text-[var(--color-mute)] uppercase tracking-wider mb-3 sm:mb-4">
-          By Situation
-        </h3>
-        <ul class="space-y-2" role="list">
-          {
-            constraintLinks.map(({ href, label }) => (
-              <li>
-                <a
-                  href={href}
-                  class="text-xs sm:text-sm text-[var(--color-body)] hover:text-[var(--color-ink)] transition-colors duration-150"
-                >
-                  {label}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-
-      <!-- Popular -->
-      <div>
-        <h3 class="text-[10px] sm:text-xs font-mono text-[var(--color-mute)] uppercase tracking-wider mb-3 sm:mb-4">
-          Popular
-        </h3>
-        <ul class="space-y-2" role="list">
-          {
-            popularLinks.map(({ href, label }) => (
-              <li>
-                <a
-                  href={href}
-                  class="text-xs sm:text-sm text-[var(--color-body)] hover:text-[var(--color-ink)] transition-colors duration-150"
-                >
-                  {label}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
+      <div class="flex flex-wrap items-center gap-4">
+        <a href="/quiz" class="text-sm font-bold text-slate-950 hover:text-emerald-700 transition-colors">Take quiz</a>
+        <a href="/how-it-works" class="text-sm font-bold text-slate-600 hover:text-slate-950 transition-colors">How it works</a>
+        <a href="/saved" class="text-sm font-bold text-slate-600 hover:text-slate-950 transition-colors">Saved</a>
+        <a href="/privacy-policy" class="text-sm font-bold text-slate-600 hover:text-slate-950 transition-colors">Privacy</a>
+        <a href="/terms" class="text-sm font-bold text-slate-600 hover:text-slate-950 transition-colors">Terms</a>
       </div>
     </div>
 
-    <!-- Bottom bar -->
-    <div class="border-t border-[var(--color-hairline)] pt-4 sm:pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4">
-      <p class="text-xs text-[var(--color-mute)]">
-        &copy; {year} SideHustlesJob. All rights reserved.
-      </p>
-      <div class="flex flex-wrap items-center gap-3 sm:gap-4 justify-center">
-        <a href="/privacy-policy" class="text-xs text-[var(--color-mute)] hover:text-[var(--color-ink)] transition-colors duration-150">Privacy</a>
-        <a href="/terms" class="text-xs text-[var(--color-mute)] hover:text-[var(--color-ink)] transition-colors duration-150">Terms</a>
-        <a href="/contact" class="text-xs text-[var(--color-mute)] hover:text-[var(--color-ink)] transition-colors duration-150">Contact</a>
-      </div>
+    <div class="mt-6 border-t border-slate-200 pt-5">
+      <p class="text-xs text-slate-500">&copy; {year} SideHustlesJob. Built for practical first steps, not hype.</p>
     </div>
   </div>
 </footer>

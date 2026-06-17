@@ -1,5 +1,121 @@
 import type { SideHustle, FinderAnswer, ScoredHustle } from "../types/side-hustle";
 
+// ─── Roadmap data ────────────────────────────────────────────────────────────
+export interface RoadmapStep {
+  week: string;
+  title: string;
+  tasks: string[];
+}
+
+export function getRoadmap(hustle: SideHustle): RoadmapStep[] {
+  const isRemote = hustle.remote;
+  const isBeginner = hustle.beginnerFriendly;
+  const cost = hustle.startupCost;
+
+  const setupTask = cost === "$0"
+    ? "Create free profiles on relevant platforms (Upwork, Fiverr, or LinkedIn)"
+    : `Invest in required startup tools (~${cost})`;
+
+  return [
+    {
+      week: "Week 1",
+      title: "Research & Setup",
+      tasks: [
+        `Research the ${hustle.name} market — check competitors and pricing`,
+        setupTask,
+        "Define your target client or customer profile",
+        "Set your starting rate (start lower to build reviews, raise after 5 clients)",
+      ],
+    },
+    {
+      week: "Week 2",
+      title: "First Clients / First Gig",
+      tasks: [
+        isBeginner
+          ? "Reach out to 10 warm contacts who might need your service"
+          : "Post samples of work in relevant communities (Reddit, LinkedIn, X)",
+        isRemote
+          ? "Apply to 3–5 gigs on Upwork, Fiverr, or relevant job boards"
+          : "Post on Nextdoor and local Facebook groups",
+        "Do one free or discounted job in exchange for a testimonial",
+        `Track your hours and earnings from day one`,
+      ],
+    },
+    {
+      week: "Week 3–4",
+      title: "First Earnings",
+      tasks: [
+        "Deliver excellent work and ask satisfied clients for a review or referral",
+        "Optimize your profile or listing based on what's getting clicks",
+        "Set up a simple invoice process (Wave, PayPal, or Google Docs template)",
+        `Aim to hit ${hustle.timeToFirstIncome.includes("week") ? "your first payment" : "your first milestone"} by end of month`,
+      ],
+    },
+    {
+      week: "Month 2–3",
+      title: "Build Momentum",
+      tasks: [
+        "Raise your rate by 20–30% once you have 3+ positive reviews",
+        "Focus on 1–2 client types that pay the best and are easiest to retain",
+        "Develop a simple portfolio or case study doc to share with prospects",
+        `Target hitting ${hustle.incomePotential.split("–")[0]}/mo within 90 days`,
+      ],
+    },
+    {
+      week: "Month 4+",
+      title: "Scale",
+      tasks: [
+        "Add a second acquisition channel (referrals, content, or a new platform)",
+        "Consider niching down — specialists earn 2–3× generalists",
+        "Systematize repeatable tasks to reduce time-per-project",
+        `Realistic ceiling: ${hustle.incomePotential} with consistent effort`,
+      ],
+    },
+  ];
+}
+
+// ─── Best for / Not ideal for data ──────────────────────────────────────────
+export function getBestFor(hustle: SideHustle): string[] {
+  const result: string[] = [];
+  if (hustle.beginnerFriendly) result.push("Complete beginners with no prior experience");
+  if (hustle.remote) result.push("People who want to work from home or anywhere");
+  if (hustle.startupCost === "$0") result.push("Anyone who wants to start with zero investment");
+  if (hustle.weeklyPay) result.push("People who need income quickly or on a weekly basis");
+  if (hustle.difficulty === "Advanced") result.push("Experienced professionals looking to monetize expertise");
+  if (hustle.tags.includes("passive")) result.push("People building long-term passive income streams");
+  if ((hustle.hoursPerWeek ?? "").startsWith("5") || (hustle.hoursPerWeek ?? "").startsWith("1–")) {
+    result.push("Full-time employees with limited hours (5–10 hrs/week)");
+  }
+  const income = hustle.incomePotential;
+  if (income === "$2,000–$5,000/mo" || income === "$5,000+/mo") {
+    result.push("People looking to replace or supplement a full-time income");
+  }
+  if (hustle.localAvailable) result.push("People who prefer or need to work locally");
+  return result.length > 0 ? result : ["People looking for a flexible income opportunity"];
+}
+
+export function getNotIdealFor(hustle: SideHustle): string[] {
+  const result: string[] = [];
+  if (!hustle.beginnerFriendly) result.push("Complete beginners — some experience is required");
+  if (!hustle.remote) result.push("People who need a fully remote, location-independent job");
+  if (hustle.startupCost !== "$0" && hustle.startupCost !== "Under $50") {
+    result.push("Anyone with zero budget to invest upfront");
+  }
+  if (hustle.difficulty === "Advanced") result.push("Those looking for a quick, easy side income");
+  const t = (hustle.timeToFirstIncome ?? "").toLowerCase();
+  if (t.includes("month") && !t.includes("2–4")) {
+    result.push("People who need income within the next 1–2 weeks");
+  }
+  if (hustle.tags.includes("local") && !hustle.remote) {
+    result.push("People in rural areas or small towns with limited local demand");
+  }
+  const income = hustle.incomePotential;
+  if (income === "$100–$500/mo") {
+    result.push("People looking to replace a full-time income — ceiling is limited");
+  }
+  return result.length > 0 ? result : ["Anyone expecting overnight results — this takes consistent effort"];
+}
+
 // ─── Cost / income ordering ──────────────────────────────────────────────────
 export const COST_ORDER: Record<string, number> = {
   "$0": 0,
@@ -18,8 +134,8 @@ export const INCOME_ORDER: Record<string, number> = {
 };
 
 // Maximum possible score — used to normalise to 0–100%
-// Skills(60) + Remote(20) + Experience(25) + Budget(20) + QuickIncome(20) + IncomeGoal(20) + BeginnerBonus(10) = 175
-const MAX_SCORE = 175;
+// Skills(60) + Remote(20) + Experience(25) + Budget(20) + QuickIncome(20) + Risk(20) + IncomeGoal(20) + BeginnerBonus(10) = 195
+const MAX_SCORE = 195;
 
 // Minimum raw score a hustle must achieve to appear in results.
 // This prevents completely irrelevant hustles from showing up.
@@ -338,6 +454,29 @@ export function scoreHustle(
     score += 5; // small bonus for not needing quick income (more options)
   }
 
+  // ── Risk tolerance (20 pts) ──
+  const riskRank = getRiskRank(hustle);
+  if (answers.riskTolerance === "low") {
+    if (riskRank === 1) {
+      score += 20;
+      reasons.push("low-risk path — little money required upfront");
+    } else if (riskRank === 2) {
+      score += 8;
+    } else {
+      score -= 8;
+    }
+  } else if (answers.riskTolerance === "medium") {
+    if (riskRank <= 2) {
+      score += 18;
+      reasons.push("balanced risk profile");
+    } else {
+      score += 8;
+    }
+  } else {
+    score += riskRank >= 2 ? 18 : 10;
+    if (riskRank >= 2) reasons.push("higher-upside option if you can tolerate uncertainty");
+  }
+
   // ── Skills overlap (60 pts) — primary ranking factor ──
   const { points: skillPts, reasons: skillReasons } = skillsMatch(hustle, answers.skills);
   score += skillPts;
@@ -383,6 +522,104 @@ export function scoreHustle(
   return { score: Math.max(0, score), reasons };
 }
 
+export function getRiskLevel(hustle: SideHustle): "Low" | "Medium" | "High" {
+  const rank = getRiskRank(hustle);
+  if (rank === 1) return "Low";
+  if (rank === 2) return "Medium";
+  return "High";
+}
+
+function getRiskRank(hustle: SideHustle): 1 | 2 | 3 {
+  const costRankVal = COST_ORDER[hustle.startupCost] ?? 4;
+  const slowIncome = (hustle.timeToFirstIncome ?? "").toLowerCase().includes("month");
+  const advanced = hustle.difficulty === "Advanced";
+  const passive = hustle.tags.includes("passive");
+
+  if (costRankVal >= 3 || (advanced && slowIncome) || passive) return 3;
+  if (costRankVal >= 2 || advanced || slowIncome || !hustle.beginnerFriendly) return 2;
+  return 1;
+}
+
+// ─── Build skill match explanation ──────────────────────────────────────────
+function buildSkillMatchExplanation(hustle: SideHustle, answers: FinderAnswer): string {
+  if (answers.skills.length === 0) return "";
+  const { reasons, hasAnyMatch } = skillsMatch(hustle, answers.skills);
+  if (!hasAnyMatch) return "Your selected skills don't directly match this hustle.";
+  const matched = reasons.map(r => r.replace(/^matches your |^relates to your /, "")).slice(0, 3);
+  return `Your ${matched.join(", ")} skills are directly applicable here.`;
+}
+
+// ─── Build income goal match explanation ────────────────────────────────────
+function buildIncomeMatchExplanation(hustle: SideHustle, answers: FinderAnswer): string {
+  const incomeRankVal = INCOME_ORDER[hustle.incomePotential] ?? 0;
+  const goalLabels: Record<FinderAnswer["incomeGoal"], string> = {
+    extra: "$100–$500/month",
+    parttime: "$500–$2,000/month",
+    fulltime: "$2,000–$5,000/month",
+    replace: "$5,000+/month",
+  };
+  const goal = goalLabels[answers.incomeGoal];
+  const potential = hustle.incomePotential;
+
+  if (answers.incomeGoal === "replace" && incomeRankVal >= 4) {
+    return `${potential} potential — this can realistically replace a full-time income for motivated earners.`;
+  }
+  if (answers.incomeGoal === "fulltime" && incomeRankVal >= 3) {
+    return `${potential} puts you well within your ${goal} goal.`;
+  }
+  if (answers.incomeGoal === "parttime" && incomeRankVal >= 2) {
+    return `${potential} comfortably covers your ${goal} goal.`;
+  }
+  if (answers.incomeGoal === "extra" && incomeRankVal >= 1) {
+    return `${potential} will exceed your ${goal} goal — upside potential is strong.`;
+  }
+  return `Income potential is ${potential}. Your goal is ${goal} — achievable with consistent effort.`;
+}
+
+// ─── Build potential downsides ───────────────────────────────────────────────
+function buildDownsides(hustle: SideHustle, answers: FinderAnswer): string[] {
+  const downsides: string[] = [];
+
+  // From cons data
+  if (hustle.cons.length > 0) {
+    downsides.push(...hustle.cons.slice(0, 2));
+  }
+
+  // Contextual warnings
+  if (answers.needsQuickIncome) {
+    const t = (hustle.timeToFirstIncome ?? "").toLowerCase();
+    if (t.includes("month") && !t.includes("1–2") && !t.includes("2–4")) {
+      downsides.push(`Slow ramp-up — first income can take ${hustle.timeToFirstIncome}`);
+    }
+  }
+  if (answers.startupBudget === "zero" && hustle.startupCost !== "$0") {
+    downsides.push(`Requires upfront investment: ${hustle.startupCost}`);
+  }
+  if (answers.experienceLevel === "beginner" && hustle.difficulty === "Advanced") {
+    downsides.push("Steep learning curve — may need significant skill-building first");
+  }
+
+  return [...new Set(downsides)].slice(0, 3);
+}
+
+// ─── Get alternative hustles ─────────────────────────────────────────────────
+function getAlternativeHustles(hustle: SideHustle, all: SideHustle[]): string[] {
+  return all
+    .filter((h) => h.slug !== hustle.slug)
+    .map((h) => {
+      let score = 0;
+      if (h.category === hustle.category) score += 30;
+      const sharedTags = h.tags.filter((t) => hustle.tags.includes(t)).length;
+      score += sharedTags * 10;
+      const sharedSkills = h.skills.filter((s) => hustle.skills.includes(s)).length;
+      score += sharedSkills * 5;
+      return { slug: h.slug, name: h.name, score };
+    })
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3)
+    .map((h) => h.name);
+}
+
 // ─── Get scored recommendations ──────────────────────────────────────────────
 export function getScoredRecommendations(
   hustles: SideHustle[],
@@ -413,6 +650,10 @@ export function getScoredRecommendations(
         score,
         matchPercent,
         whyMatch: uniqueReasons,
+        downsides: buildDownsides(hustle, answers),
+        alternatives: getAlternativeHustles(hustle, hustles),
+        skillMatchExplanation: buildSkillMatchExplanation(hustle, answers),
+        incomeMatchExplanation: buildIncomeMatchExplanation(hustle, answers),
         difficulty: hustle.difficulty,
         confidence,
         hasSkillMatch,
@@ -425,11 +666,15 @@ export function getScoredRecommendations(
     })
     .sort((a, b) => b.score - a.score)
     .slice(0, limit)
-    .map(({ hustle, score, matchPercent, whyMatch, difficulty, confidence }): ScoredHustle => ({
+    .map(({ hustle, score, matchPercent, whyMatch, downsides, alternatives, skillMatchExplanation, incomeMatchExplanation, difficulty, confidence }): ScoredHustle => ({
       hustle,
       score,
       matchPercent,
       whyMatch,
+      downsides,
+      alternatives,
+      skillMatchExplanation,
+      incomeMatchExplanation,
       difficulty,
       confidence,
     }));
@@ -472,12 +717,17 @@ export function generateReportSummary(answers: FinderAnswer, results: ScoredHust
       : "both remote and local work";
 
   const quick = answers.needsQuickIncome ? ", and need income quickly" : "";
+  const riskLabel: Record<FinderAnswer["riskTolerance"], string> = {
+    low: "low",
+    medium: "moderate",
+    high: "higher",
+  };
   const skillsNote =
     answers.skills.length > 0
       ? ` Your skills in ${answers.skills.slice(0, 3).join(", ")} were factored in.`
       : "";
 
-  return `You have ${hoursLabel[answers.hoursPerWeek]} per week, prefer ${remote}, have ${answers.experienceLevel}-level experience${quick}. Your target is ${goalLabel[answers.incomeGoal]}.${skillsNote} Based on these factors, <strong>${topNames}</strong> are your strongest matches.`;
+  return `You have ${hoursLabel[answers.hoursPerWeek]} per week, prefer ${remote}, have ${answers.experienceLevel}-level experience, and want ${riskLabel[answers.riskTolerance]} risk${quick}. Your target is ${goalLabel[answers.incomeGoal]}.${skillsNote} Based on these factors, <strong>${topNames}</strong> are your strongest matches.`;
 }
 
 // ─── Related hustles ────────────────────────────────────────────────────────

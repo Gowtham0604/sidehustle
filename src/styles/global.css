@@ -1,6 +1,21 @@
 @import "tailwindcss";
 @source "../**/*.{astro,ts,html}";
 
+/*
+ * Metric-adjusted fallback font for Outfit.
+ * Overrides the metrics of the system-ui fallback so the layout doesn't
+ * shift when Outfit swaps in (eliminates FOUT-driven CLS on the hero h1).
+ * Values measured against Outfit 400 at 16px.
+ */
+@font-face {
+  font-family: "Outfit Fallback";
+  src: local("system-ui");
+  ascent-override: 96%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+  size-adjust: 103%;
+}
+
 @theme {
   /* ─── Brand Colors — matched to favicon (black + pink/magenta) ─── */
   --color-ink: #0f0f0f;
@@ -37,7 +52,7 @@
   --color-gradient-end: #9333ea;
 
   /* ─── Typography ─── */
-  --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Outfit', 'Outfit Fallback', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 
   /* ─── Border Radius ─── */

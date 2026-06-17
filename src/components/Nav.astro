@@ -1,175 +1,46 @@
 ---
-// Navigation component with glassmorphism
 const { pathname } = Astro.url;
-const isHowItWorks = pathname === "/how-it-works" || pathname === "/how-it-works/";
-const isBrowse = pathname === "/browse" || pathname === "/browse/";
-const isHome = pathname === "/" || pathname === "";
-const browseHref = "/browse";
-const finderHref = isHome ? "#finder" : "/#finder";
+const isQuiz = pathname.startsWith("/quiz");
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="navbar">
-  <div class="absolute inset-0 bg-white/90 backdrop-blur-xl border-b border-[var(--color-hairline)] shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300"></div>
-  
-  <div class="container-page relative z-10 flex items-center justify-between h-14 sm:h-20">
+<header class="fixed inset-x-0 top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur-sm" id="navbar">
+  <div class="container-page flex h-14 items-center justify-between sm:h-16">
+
     <!-- Logo -->
-    <a href="/" class="flex items-center gap-2.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-violet)] rounded-lg" aria-label="SideHustlesJob home">
-      <img src="/favicon-96x96.png" alt="" width="28" height="28" class="w-7 h-7 sm:w-8 sm:h-8 rounded-[var(--radius-xs)]" />
-      <span class="text-lg sm:text-xl font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-violet)] transition-colors duration-300">
-        SideHustles<span class="text-[var(--color-violet)]">Job</span>
-      </span>
+    <a href="/" class="flex items-center gap-2 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-950" aria-label="SideHustlesJob home">
+      <img src="/favicon-96x96.png" alt="" width="28" height="28" loading="eager" fetchpriority="high" class="h-7 w-7 rounded-md" />
+      <span class="text-sm sm:text-base font-bold tracking-tight text-slate-950">SideHustlesJob</span>
     </a>
 
-    <!-- Desktop Nav -->
-    <nav class="hidden md:flex items-center gap-8" aria-label="Main navigation">
-      {isBrowse ? (
-        <a href="/" class="text-sm font-semibold text-[var(--color-body)] hover:text-[var(--color-ink)] transition-colors duration-300 px-3 py-2 rounded-md hover:bg-slate-100/50">
-          Home
-        </a>
-      ) : (
-        <a href={browseHref} class="text-sm font-semibold text-[var(--color-body)] hover:text-[var(--color-ink)] transition-colors duration-300 px-3 py-2 rounded-md hover:bg-slate-100/50">
-          Browse Hustles
-        </a>
-      )}
-      {isHowItWorks ? (
-        <a href="/" class="text-sm font-semibold text-[var(--color-body)] hover:text-[var(--color-ink)] transition-colors duration-300 px-3 py-2 rounded-md hover:bg-slate-100/50">
-          Home
-        </a>
-      ) : (
-        <a href="/how-it-works" class="text-sm font-semibold text-[var(--color-body)] hover:text-[var(--color-ink)] transition-colors duration-300 px-3 py-2 rounded-md hover:bg-slate-100/50">
-          How it Works
-        </a>
-      )}
-      <a href={finderHref} class="relative inline-flex items-center justify-center h-10 px-6 overflow-hidden font-bold text-white bg-gradient-to-r from-[var(--color-violet)] to-[var(--color-cyan)] rounded-full transition-all duration-300 hover:opacity-90 shadow-[0_0_20px_rgba(217,70,168,0.25)] hover:shadow-[0_0_30px_rgba(217,70,168,0.4)] transform hover:-translate-y-0.5">
-        <span class="relative z-10">Get Started</span>
+    <!-- Desktop nav -->
+    <nav class="hidden items-center gap-1 md:flex" aria-label="Main navigation">
+      <a href="/how-it-works" class="h-8 inline-flex items-center px-3 rounded-md text-sm text-slate-600 hover:text-slate-950 hover:bg-slate-50 transition-colors">
+        How it works
+      </a>
+      <a href="/browse" class="h-8 inline-flex items-center px-3 rounded-md text-sm text-slate-600 hover:text-slate-950 hover:bg-slate-50 transition-colors">
+        Browse
+      </a>
+      <a href="/saved" class="h-8 inline-flex items-center px-3 rounded-md text-sm text-slate-600 hover:text-slate-950 hover:bg-slate-50 transition-colors">
+        Saved
       </a>
     </nav>
 
-    <!-- Mobile: CTA button + hamburger -->
-    <div class="md:hidden flex items-center gap-2">
+    <!-- CTA -->
+    <div class="flex items-center gap-2">
       <a
-        href={finderHref}
-        class="flex items-center justify-center h-9 px-4 text-xs font-bold text-white bg-gradient-to-r from-[var(--color-violet)] to-[var(--color-cyan)] rounded-full shadow-sm"
-        aria-label="Take the quiz"
+        href="/quiz"
+        data-track="nav_start_quiz"
+        class:list={[
+          "inline-flex h-9 items-center justify-center rounded-lg px-4 text-sm font-bold transition-colors",
+          isQuiz
+            ? "bg-emerald-600 text-white hover:bg-emerald-700"
+            : "bg-slate-950 text-white hover:bg-slate-800",
+        ]}
       >
-        Take Quiz
+        <span class="hidden sm:inline">Find my match</span>
+        <span class="sm:hidden">Quiz</span>
       </a>
-      <button 
-        id="mobile-menu-btn"
-        class="flex flex-col justify-center gap-[5px] w-9 h-9 rounded-xl bg-slate-100 border border-slate-200 items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-cyan)]"
-        aria-label="Toggle menu"
-        aria-expanded="false"
-      >
-        <span class="w-4.5 h-0.5 bg-[var(--color-ink)] transition-all duration-300 origin-center block w-[18px]" aria-hidden="true"></span>
-        <span class="w-4.5 h-0.5 bg-[var(--color-ink)] transition-all duration-300 origin-center block w-[18px]" aria-hidden="true"></span>
-      </button>
     </div>
-  </div>
 
-  <!-- Mobile Menu Dropdown — full-sheet style -->
-  <div 
-    id="mobile-menu"
-    class="absolute top-full left-0 right-0 bg-white border-b border-[var(--color-hairline)] overflow-hidden transition-all duration-300 origin-top scale-y-0 opacity-0 invisible shadow-xl"
-  >
-    <nav class="px-4 pt-2 pb-5 flex flex-col gap-1" aria-label="Mobile navigation">
-      <a href="/" class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-semibold text-[var(--color-ink)] hover:bg-pink-50 hover:text-[var(--color-violet)] transition-colors duration-200">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        Home
-      </a>
-      <a href={browseHref} class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-semibold text-[var(--color-ink)] hover:bg-pink-50 hover:text-[var(--color-violet)] transition-colors duration-200">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-        Browse Hustles
-      </a>
-      <a href="/how-it-works" class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-semibold text-[var(--color-ink)] hover:bg-pink-50 hover:text-[var(--color-violet)] transition-colors duration-200">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-        How It Works
-      </a>
-      <div class="h-px bg-slate-100 my-1 mx-4"></div>
-      <a href={finderHref} class="mx-4 mt-1 flex items-center justify-center gap-2 h-12 font-bold text-white bg-gradient-to-r from-[var(--color-violet)] to-[var(--color-cyan)] rounded-xl shadow-md text-sm">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        Find my side hustle →
-      </a>
-    </nav>
   </div>
 </header>
-
-<!-- Mobile Bottom Navigation Bar -->
-<nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t border-slate-200 safe-area-bottom" id="mobile-bottom-nav" aria-label="Bottom navigation">
-  <div class="grid grid-cols-3 h-16">
-    <a href="/" class="mobile-nav-item flex flex-col items-center justify-center gap-1 text-slate-500 hover:text-[var(--color-violet)] transition-colors active:scale-95 duration-150" data-path="/">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      <span class="text-[10px] font-semibold">Home</span>
-    </a>
-    <a href={browseHref} class="mobile-nav-item flex flex-col items-center justify-center gap-1 text-slate-500 hover:text-[var(--color-violet)] transition-colors active:scale-95 duration-150" data-path="/browse">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-      <span class="text-[10px] font-semibold">Browse</span>
-    </a>
-    <a href="/how-it-works" class="mobile-nav-item flex flex-col items-center justify-center gap-1 text-slate-500 hover:text-[var(--color-violet)] transition-colors active:scale-95 duration-150" data-path="/how-it-works">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-      <span class="text-[10px] font-semibold">How it Works</span>
-    </a>
-  </div>
-</nav>
-
-<script>
-  function initNav() {
-    const navbar = document.getElementById('navbar');
-    const btn = document.getElementById('mobile-menu-btn');
-    const menu = document.getElementById('mobile-menu');
-    const spans = btn?.querySelectorAll('span');
-    
-    // Smooth scroll shadow
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 20) {
-        navbar?.querySelector('div')?.classList.add('shadow-md');
-      } else {
-        navbar?.querySelector('div')?.classList.remove('shadow-md');
-      }
-    }, { passive: true });
-
-    // Mobile menu toggle
-    let isOpen = false;
-    btn?.addEventListener('click', () => {
-      isOpen = !isOpen;
-      btn.setAttribute('aria-expanded', isOpen.toString());
-      
-      if (isOpen) {
-        menu?.classList.remove('scale-y-0', 'opacity-0', 'invisible');
-        menu?.classList.add('scale-y-100', 'opacity-100', 'visible');
-        if (spans && spans.length === 2) {
-          spans[0].style.transform = 'translateY(4px) rotate(45deg)';
-          spans[1].style.transform = 'translateY(-4px) rotate(-45deg)';
-        }
-      } else {
-        menu?.classList.add('scale-y-0', 'opacity-0', 'invisible');
-        menu?.classList.remove('scale-y-100', 'opacity-100', 'visible');
-        if (spans && spans.length === 2) {
-          spans[0].style.transform = 'none';
-          spans[1].style.transform = 'none';
-        }
-      }
-    });
-
-    // Close menu on link click
-    menu?.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        if (isOpen) btn?.click();
-      });
-    });
-
-    // Bottom nav active state
-    const currentPath = window.location.pathname.replace(/\/$/, '') || '/';
-    document.querySelectorAll('.mobile-nav-item').forEach((item) => {
-      const el = item as HTMLElement;
-      const itemPath = el.dataset.path ?? '';
-      const isActive = currentPath === itemPath || (itemPath !== '/' && currentPath.startsWith(itemPath));
-      if (isActive) {
-        el.classList.remove('text-slate-500');
-        el.classList.add('text-[var(--color-violet)]');
-      }
-    });
-  }
-
-  initNav();
-  document.addEventListener('astro:page-load', initNav);
-</script>
