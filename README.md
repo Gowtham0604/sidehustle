@@ -20,3 +20,7 @@ cd backend && go test ./...
 ```
 
 Copy each `.env.example` file to a local `.env` file before adding environment-specific configuration. Do not commit secrets.
+
+## Database
+
+The production schema is source-controlled in `database/migrations/001_initial_schema.sql`. See [the Supabase database setup guide](docs/database.md) before creating or connecting a project.
