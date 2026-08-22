@@ -21,12 +21,12 @@ Supabase Auth supplies identity for the one administrator. There is no custom us
 
 ## Run the source-controlled migration
 
-`database/migrations/001_initial_schema.sql` is the source of truth. It creates the `extensions` schema and enables PostGIS there. Do not create application tables manually in the Table Editor.
+`backend/migrations/001_initial_schema.sql` is the source of truth. It creates the `extensions` schema and enables PostGIS there. Do not create application tables manually in the Table Editor.
 
 Until a Supabase CLI project is linked, run the migration in **SQL Editor** as one script:
 
 1. Open **SQL Editor → New query**.
-2. Paste the full contents of `database/migrations/001_initial_schema.sql`.
+2. Paste the full contents of `backend/migrations/001_initial_schema.sql`.
 3. Run it once against the new project.
 4. Confirm the three tables, two buckets, RLS policies, and the `companies_location_idx` GiST index in the dashboard.
 

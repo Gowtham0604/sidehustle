@@ -4,9 +4,29 @@ SideHustlesJob is a Bengaluru company discovery platform. This repository contai
 
 ## Repository layout
 
+```
+SIDEHUSTLE/
+├── backend/
+│   ├── cmd/api/main.go
+│   ├── internal/
+│   │   ├── company/
+│   │   ├── submission/
+│   │   ├── promotion/
+│   │   ├── admin/
+│   │   └── platform/          # database, config, http, logging
+│   ├── migrations/
+│   ├── .env.example
+│   ├── go.mod
+│   └── go.sum
+├── frontend/
+├── docs/openapi.yaml
+├── scripts/
+├── Makefile
+└── README.md
+```
+
 - `frontend/` — React, TypeScript, Vite, React Router, TanStack Query, Tailwind CSS, and Leaflet foundation
-- `backend/` — Go API foundation organized by bounded context
-- `database/` — reserved for future SQL migrations and tooling-compatible seed directory
+- `backend/` — Go API foundation organized by bounded context, including SQL migrations
 - `docs/` — API contract documentation
 - `scripts/` — repository automation
 
@@ -23,4 +43,4 @@ Copy each `.env.example` file to a local `.env` file before adding environment-s
 
 ## Database
 
-The production schema is source-controlled in `database/migrations/001_initial_schema.sql`. See [the Supabase database setup guide](docs/database.md) before creating or connecting a project.
+The production schema is source-controlled in `backend/migrations/001_initial_schema.sql`. See [the Supabase database setup guide](docs/database.md) before creating or connecting a project.
