@@ -1,0 +1,10 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { jobs } from "../utils/jobs";
+const areas = [...new Set(jobs.map((job) => job.area))].sort();
+---
+
+<Layout title="Part-time Jobs by Bengaluru Area | SideHustlesJob" description="Find part-time jobs by neighborhood across Bengaluru." canonical="https://sidehustlesjob.com/locations">
+  <section class="border-b border-slate-200 bg-[#f6f7f3] pt-28 pb-12 sm:pt-36"><div class="container-page"><p class="text-xs font-bold uppercase tracking-[0.14em] text-emerald-700">Neighborhoods</p><h1 class="mt-2 text-3xl font-bold tracking-tight text-slate-950 sm:text-5xl">Find work by Bengaluru area.</h1><p class="mt-4 text-sm leading-7 text-slate-600">Choose the neighborhood you want to commute from and see the local part-time listings.</p></div></section>
+  <section class="bg-white py-10 sm:py-14"><div class="container-page grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{areas.map((area) => { const areaJobs = jobs.filter((job) => job.area === area); return <a href={`/jobs?q=${encodeURIComponent(area)}`} class="flex items-center justify-between rounded-lg border border-slate-200 p-5 hover:border-emerald-400"><div><h2 class="font-bold text-slate-950">{area}</h2><p class="mt-1 text-xs text-slate-500">{areaJobs.length} {areaJobs.length === 1 ? "job" : "jobs"}</p></div><span class="text-emerald-700" aria-hidden="true">&#8594;</span></a>})}</div></section>
+</Layout>

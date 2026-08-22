@@ -183,6 +183,7 @@ const skills = [
   import type { FinderAnswer, ScoredHustle } from "../types/side-hustle";
   import type { SideHustle } from "../types/side-hustle";
   import { getRiskLevel, getScoredRecommendations } from "../utils/hustle";
+  import { computeSuccessScore, successScoreCardHTML, animateSuccessScore } from "../utils/successScore";
   import hustleData from "../data/side-hustles.json";
 
   const hustles = hustleData as SideHustle[];
@@ -384,8 +385,13 @@ const skills = [
       const params = new URLSearchParams();
       results.slice(0, 3).forEach((r) => params.append("match", r.hustle.slug));
       const fa = finalAnswers();
+      params.set("rm", fa.remote);
+      params.set("h", fa.hoursPerWeek);
+      params.set("x", fa.experienceLevel);
+      params.set("b", fa.startupBudget);
       params.set("risk", fa.riskTolerance);
       params.set("goal", fa.incomeGoal);
+      if (fa.skills.length > 0) params.set("sk", fa.skills.join(","));
       return `${window.location.origin}/results?${params.toString()}`;
     }
 
@@ -438,8 +444,10 @@ const skills = [
 
       const backups = results.slice(1, 3);
       const plan = sevenDayPlan(best);
+      const successScore = computeSuccessScore(fa, { hustle: best.hustle, matchPercent: best.matchPercent, downsides: best.downsides });
       shell.innerHTML = `
         <div class="space-y-5">
+          ${successScoreCardHTML(successScore)}
           <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 pb-5 border-b border-slate-200">
             <div>
               <p class="text-xs font-bold uppercase text-[var(--color-violet)] mb-1.5">Your best move this week</p>
@@ -489,6 +497,18 @@ const skills = [
         track("results_shared", { best: best.hustle.slug });
       });
       document.getElementById("restart-plan-btn")?.addEventListener("click", reset);
+      document.getElementById("share-score-btn")?.addEventListener("click", () => {
+        const btn = document.getElementById("share-score-btn") as HTMLButtonElement | null;
+        copyText(shareUrl()).then((copied) => {
+          if (!btn) return;
+          const original = btn.innerHTML;
+          btn.textContent = copied ? "Link copied" : "Copy failed";
+          setTimeout(() => { btn.innerHTML = original; }, 1800);
+        });
+        track("success_score_shared", { best: best.hustle.slug, score: successScore.score, confidence: successScore.confidence });
+      });
+      animateSuccessScore(shell);
+      track("success_score_viewed", { best: best.hustle.slug, score: successScore.score, confidence: successScore.confidence });
       history.replaceState(null, "", `#results`);
       track("quiz_completed", { best: best.hustle.slug, backups: backups.map((r) => r.hustle.slug), answers: fa });
     }

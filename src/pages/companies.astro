@@ -1,0 +1,10 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { jobs } from "../utils/jobs";
+const companies = [...new Map(jobs.map((job) => [job.company, job])).values()];
+---
+
+<Layout title="Companies Hiring Part-time in Bengaluru | SideHustlesJob" description="Explore companies with part-time job leads in Bengaluru and visit their websites." canonical="https://sidehustlesjob.com/companies">
+  <section class="border-b border-slate-200 bg-[#f6f7f3] pt-28 pb-12 sm:pt-36"><div class="container-page"><p class="text-xs font-bold uppercase tracking-[0.14em] text-emerald-700">Company directory</p><h1 class="mt-2 text-3xl font-bold tracking-tight text-slate-950 sm:text-5xl">Companies hiring in Bengaluru.</h1><p class="mt-4 max-w-xl text-sm leading-7 text-slate-600">Browse the employers and hiring partners behind the local listings. Always confirm the current opening before applying.</p></div></section>
+  <section class="bg-white py-10 sm:py-14"><div class="container-page grid gap-4 md:grid-cols-2 lg:grid-cols-3">{companies.map((company) => { const companyJobs = jobs.filter((job) => job.company === company.company); return <article class="rounded-lg border border-slate-200 p-5"><div class="flex items-start justify-between gap-3"><div><h2 class="font-bold text-slate-950">{company.company}</h2><p class="mt-1 text-xs text-slate-500">{companyJobs.length} local {companyJobs.length === 1 ? "opening" : "openings"}</p></div><a href={company.companyWebsite} target="_blank" rel="noreferrer" class="text-xs font-bold text-emerald-700">Website &#8599;</a></div><div class="mt-4 space-y-2">{companyJobs.map((job) => <a href={`/jobs/${job.slug}`} class="block rounded-md bg-slate-50 p-3 text-sm font-semibold text-slate-800 hover:bg-emerald-50"><span class="block">{job.title}</span><span class="mt-1 block text-xs font-normal text-slate-500">{job.area} · {job.salary}</span></a>)}</div></article>})}</div></section>
+</Layout>
