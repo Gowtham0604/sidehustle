@@ -1,46 +1,22 @@
-# Astro Starter Kit: Basics
+# SideHustlesJob
+
+SideHustlesJob is a Bengaluru company discovery platform. This repository contains the public React frontend and Go API foundations; database schema, API operations, and product UI are intentionally not implemented yet.
+
+## Repository layout
+
+- `frontend/` — React, TypeScript, Vite, React Router, TanStack Query, Tailwind CSS, and Leaflet foundation
+- `backend/` — Go API foundation organized by bounded context
+- `database/` — reserved for future SQL migrations and tooling-compatible seed directory
+- `docs/` — API contract documentation
+- `scripts/` — repository automation
+
+## Local development
 
 ```sh
-npm create astro@latest -- --template basics
+npm --prefix frontend install
+npm --prefix frontend run dev
+
+cd backend && go test ./...
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
-
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Copy each `.env.example` file to a local `.env` file before adding environment-specific configuration. Do not commit secrets.

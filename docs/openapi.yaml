@@ -1,0 +1,6 @@
+openapi: 3.1.0
+info:
+  title: SideHustlesJob API
+  version: 0.1.0
+  description: API contract foundation. Operations will be added with their bounded contexts.
+paths: {}

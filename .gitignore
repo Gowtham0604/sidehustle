@@ -1,8 +1,9 @@
 # build output
 dist/
+frontend/dist/
 
 # generated types
-.astro/
+*.tsbuildinfo
 
 # dependencies
 node_modules/
@@ -27,11 +28,6 @@ pnpm-debug.log*
 
 # Wrangler local state and deploy cache (generated at runtime)
 .wrangler/
-
-# Backup and scratch config files
-astro.config.mjs.bak
-astro.config.mjs.test
-astro.config.orig
 
 # Local IDE / editor settings
 .vscode/
